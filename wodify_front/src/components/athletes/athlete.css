@@ -3,9 +3,7 @@
   margin: 0;
 }
 
-
-table{
-  width: 80%;
+.athlete-list{
+  width: 98%;
   margin: 20px auto;
-  text-align: center;
 }

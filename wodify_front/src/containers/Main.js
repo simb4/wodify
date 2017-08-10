@@ -21,7 +21,10 @@ class _Main extends Component {
       <Router>
         <Switch>
           <AuthRoute path="/login" component={Login} {...isLoggedIn}/>
-          <UserRoute exact path="/admin" component={AthleteList} {...isLoggedIn}/>
+          
+          <UserRoute exact path="/admin" component={AdminMainPage} {...isLoggedIn}/>
+          <UserRoute exact path="/admin/athletes" component={AthleteList} {...isLoggedIn}/>
+          
           <HeaderRoute name="not-found" component={NoMatch} />
         </Switch>
       </Router>
@@ -80,8 +83,7 @@ const mapStateToProps = (state) => ({
   isLoggedIn: state.auth.isLoggedIn,
 })
 
-const mapDispatchToProps = {
-};
+const mapDispatchToProps = {}
 
 const MainPage = connect(
   mapStateToProps,

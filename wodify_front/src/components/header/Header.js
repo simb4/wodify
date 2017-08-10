@@ -5,9 +5,7 @@ import { Link } from 'react-router-dom'
 import FlatButton from 'material-ui/FlatButton'
 import AppBar from 'material-ui/AppBar'
 
-
 import * as authActions from '../../actions/authActions'
-
 
 import './header.css';
 
@@ -18,6 +16,29 @@ const styles = {
 };
 
 class _Header extends Component {
+
+  renderIconElementCenter(){
+    if(this.props.isLoggedIn){
+      return (
+        <div>
+          <Link to="/admin/athletes">
+            <FlatButton 
+              className="auth-btn" 
+              label="Атлеты" 
+              labelStyle = { styles.labelStyle }
+            />
+          </Link>
+          <Link to="/admin">
+            <FlatButton 
+              className="auth-btn" 
+              label="WOD" 
+              labelStyle = { styles.labelStyle }
+            />
+          </Link>
+        </div>
+      )
+    }
+  }
 
   renderIconElementRight() {
     if(this.props.isLoggedIn)
@@ -58,6 +79,7 @@ class _Header extends Component {
     }
     return(
       <AppBar
+        iconElementLeft={this.renderIconElementCenter()}
         iconElementRight={ this.renderIconElementRight() }
         style={{ backgroundColor: '#fff', height: headerHeight,
           display: "inline-flex", alignItems: "center" }}
