@@ -25,6 +25,18 @@ const isGettingAthletes = (state = false, action) => {
   }
 }
 
+const programList = (state = [], action) => {
+  switch(action.type) {
+    case actionTypes.ACTION_GET_ATHLETES_SUCCESS:
+      return action.programs
+    case actionTypes.ACTION_GET_ATHLETES_FAILED:
+    case actionTypes.ACTION_GET_ATHLETES_STARTED:
+      return []
+    default:
+      return state
+  }
+}
+
 const wodList = (state = [], action) => {
   switch(action.type){
     case actionTypes.ACTION_GET_WOD_SUCCES:

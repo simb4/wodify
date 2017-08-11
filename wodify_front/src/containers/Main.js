@@ -13,6 +13,7 @@ import AdminMainPage from "../components/admin/AdminMain"
 import AthleteList from "../components/athletes/AthleteList"
 import NewAthlete from "../components/athletes/NewAthlete"
 import Wod from "../components/wod/Wod"
+import CreateWod from "../components/wod/CreateWod"
 
 import NoMatch from './NoMatch';
 
@@ -28,6 +29,8 @@ class _Main extends Component {
           <UserRoute exact path="/admin/athletes" component={AthleteList} {...isLoggedIn}/>
           <UserRoute exact path="/admin/addathlete" component={NewAthlete} {...isLoggedIn}/>
           <UserRoute exact path="/admin/wod" component={Wod} {...isLoggedIn}/>
+          <UserRoute exact path="/admin/createwod" component={CreateWod} {...isLoggedIn}/>
+
           <HeaderRoute name="not-found" component={NoMatch} />
         </Switch>
       </Router>

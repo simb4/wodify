@@ -230,7 +230,50 @@ export const checkAccount = (data) => (dispatch, getState) => {
   );
 };
 
+export const getPrograms = () => (dispatch, getState) => {
 
+  dispatch({
+    type: actionTypes.ACTION_GET_PROGRAMS_STARTED,
+  })
+
+  adminApi
+    .getPrograms(getState().user.token)
+    .then(
+      response => {
+        if(response.status !== 200) {
+          dispatch({
+            type: actionTypes.ACTION_GET_PROGRAMS_FAILED,
+            errorMessage: ERRORS.NUMBER + response.status,
+          })
+        } else {
+          response
+          .text()
+          .then(
+            value => {
+              const responseObject = JSON.parse(value)
+              if(responseObject.code === 0){
+                dispatch({
+                  type: actionTypes.ACTION_GET_PROGRAMS_SUCCESS,
+                  programs: responseObject.programs
+                })
+              } else{
+                dispatch({
+                  type: actionTypes.ACTION_GET_PROGRAMS_FAILED,
+                  errorMessage: responseObject.message
+                })
+              }
+            }
+          )
+        }
+      },
+      error => {
+        dispatch({
+          type: actionTypes.ACTION_GET_PROGRAMS_FAILED,
+          errorMessage: ERRORS.NO_INTERNET
+        })
+      }
+    )
+}
 
 
 

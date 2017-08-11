@@ -7,12 +7,13 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: 'SFUIDisplay-Regular';
   /*background-color: #fff;*/
 }
 
 .wod-list{
-  width: 100%;
+  font-family: 'SFUIDisplay-Regular';
+  width: 96%;
+  margin: 0 auto;
   min-height: 90vh;
   background-color: #fff;
 }
@@ -36,4 +37,24 @@
 .page-title{
   font-size: 34px;
   line-height: 41px;
+}
+
+.add{
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+}
+
+.block{
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.label{
+  color: #8E8E93;
+  font-size: 16px;
+  margin-left: 10px;
+  margin-right: 10px;
 }

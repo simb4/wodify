@@ -44,8 +44,18 @@ class _NewAthlete extends Component {
 
   componentWillReceiveProps(nextProps){
 
-    if(nextProps.isLoading)
-      return;
+    // if(nextProps.isLoading)
+    //   return;
+
+ 
+    if(nextProps.errorMessage !== constants.ERRORS.ACCOUNT_NOT_FOUND){
+      this.setState({errorText: nextProps.errorMessage});
+    }
+ 
+    if(nextProps.isLoginExist){
+      this.setState({errorText: constants.ERRORS.ACCOUNT_ALREADY_EXISTS});
+    }
+ 
 
     if(nextProps.isAccountNotExist && !nextProps.isLoading && 
       !nextProps.isRegistered && this.state.isValidPassword){
@@ -81,7 +91,6 @@ class _NewAthlete extends Component {
       else {
         if(!this.props.isAccountNotExist){
           this.setState({errorText: constants.ERRORS.ACCOUNT_ALREADY_EXISTS})
-          return
         } else {
           this.setState({ errorText: ""});
         }

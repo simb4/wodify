@@ -11,8 +11,8 @@ import './header.css';
 
 const styles = {
     labelStyle: {
-      color: "blue"
-    }
+      color: "#000000",
+    },
 };
 
 class _Header extends Component {
@@ -83,8 +83,12 @@ class _Header extends Component {
       <AppBar
         iconElementLeft={this.renderIconElementCenter()}
         iconElementRight={ this.renderIconElementRight() }
-        style={{ backgroundColor: '#fff', height: headerHeight,
-          display: "inline-flex", alignItems: "center" }}
+        style={{ 
+          backgroundColor: '#fff', 
+          height: headerHeight,
+          display: "inline-flex", 
+          alignItems: "center", 
+        }}
         className="header"
       />
     )
