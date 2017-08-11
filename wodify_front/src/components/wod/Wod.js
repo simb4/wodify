@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom'
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton'
 import IconButton from 'material-ui/IconButton';
-import ActionUpdate from 'material-ui/svg-icons/action/update';
 
 import "./wod.css"
 import ScrollToTop from 'react-scroll-up';
@@ -46,9 +45,7 @@ class _Wod extends Component {
       stripedRows={this.state.stripedRows}
     >
       <TableRowColumn>
-         <IconButton tooltip="SVG Icon">
-          <ActionUpdate />
-        </IconButton>
+        <IconButton iconClassName="muidocs-icon-custom-github" />
       </TableRowColumn>
     </TableBody>
   }

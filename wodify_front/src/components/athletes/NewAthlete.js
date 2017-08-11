@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom'
 import * as authActions from "../../actions/authActions"
 import * as adminActions from "../../actions/adminActions"
 
+import IconButton from 'material-ui/IconButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField'
@@ -28,36 +29,35 @@ class _NewAthlete extends Component {
     super(props)
     this.state={
       username:"",
+      password: "",
       errorText: "",
+      errorPass: "",
       value: 1,
+      isValidPassword: false,
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleChangeEmail = this.handleChangeEmail.bind(this)
     this.handleChangePassword = this.handleChangePassword.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleEnter=this.handleEnter.bind(this)
   }
 
   componentWillReceiveProps(nextProps){
 
-   if(nextProps.isAccountNotExist && !nextProps.isLoading && !nextProps.isRegistered){
-      this.props.register({username: this.state.username, user_type: this.state.value})
-    } else {
-      console.log(this.props.isAccountNotExist,this.props.isLoading,this.props.isRegistered )
-    }
-
-    if(nextProps.errorMessage !== constants.ERRORS.ACCOUNT_NOT_FOUND){
-      this.setState({errorText: nextProps.errorMessage});
-    }
-
-    if(nextProps.isLoginExist){
-      this.setState({errorText: constants.ERRORS.ACCOUNT_ALREADY_EXISTS});
-    }
-
     if(nextProps.isLoading)
       return;
 
+    if(nextProps.isAccountNotExist && !nextProps.isLoading && 
+      !nextProps.isRegistered && this.state.isValidPassword){
+        let data = {
+          username: this.state.username, 
+          password: this.state.password, 
+          user_type: this.state.value
+        }
+        this.props.register(data)
+    }
   }
-
+  
   handleChange = (event, index, value) => this.setState({value})
   handleChangeEmail(e){
     var email = e.target.value
@@ -77,14 +77,35 @@ class _NewAthlete extends Component {
       if(!emailValidation(username)){
         this.setState({ errorText: "Неправильный email"});
         return;
-      } else {
-        this.setState({ errorText: ""});
+      } 
+      else {
+        if(!this.props.isAccountNotExist){
+          this.setState({errorText: constants.ERRORS.ACCOUNT_ALREADY_EXISTS})
+          return
+        } else {
+          this.setState({ errorText: ""});
+        }
       }
     } else {
       this.setState({ errorText: "Неправильный email" });
         return;
     }
     this.props.checkLogin({username: this.state.username})
+
+    let p = this.state.password
+    if(p.length < 6){
+      this.state.errorPass = "Длина пароля должна быть более 6 символов"
+      this.state.isValidPassword = false
+      return 
+    }
+    this.state.errorPass = ""
+    this.state.isValidPassword = true
+  }
+
+  handleEnter(target) {
+    if(target.charCode === 13){
+      this.handleSubmit();
+    }
   }
   renderLoader(){
     if(this.props.isLoading){
@@ -100,7 +121,10 @@ class _NewAthlete extends Component {
     }
   }
   render(){
-    var isDisabled = this.state.username === ""
+    var isDisabled = true
+    if(this.state.username !== "" && this.state.password !== ""){
+      isDisabled = false
+    }
     return(
       <div className="registration-wrapper">
         <TextField
@@ -108,11 +132,20 @@ class _NewAthlete extends Component {
           errorText={this.state.errorText}
           onChange={this.handleChangeEmail}
           value={this.state.username}
+          onKeyPress={this.handleEnter}
+        /><br/>
+        <TextField
+          hintText="Password"
+          errorText={this.state.errorPass}
+          onChange={this.handleChangePassword}
+          value={this.state.password}
+          onKeyPress={this.handleEnter}
         /><br/>
         <SelectField
           floatingLabelText="Frequency"
           value={this.state.value}
           onChange={this.handleChange}
+          onKeyPress={this.handleEnter}
         >
           <MenuItem value={1} primaryText="Атлет" />
           <MenuItem value={2} primaryText="Тренер" />
