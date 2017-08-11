@@ -4,6 +4,19 @@
 }
 
 .athlete-list{
-  width: 98%;
+  width: 90%;
   margin: 20px auto;
+}
+
+.table-menu{
+  height: 60px;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.registration-wrapper{
+  width: 70%;
+  margin: 30px auto;
 }

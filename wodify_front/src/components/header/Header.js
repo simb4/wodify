@@ -21,18 +21,25 @@ class _Header extends Component {
     if(this.props.isLoggedIn){
       return (
         <div>
+          <Link to="/admin">
+            <FlatButton 
+              className="auth-btn" 
+              label="WOD" 
+              labelStyle={ styles.labelStyle }
+            />
+          </Link>
           <Link to="/admin/athletes">
             <FlatButton 
               className="auth-btn" 
               label="Атлеты" 
-              labelStyle = { styles.labelStyle }
+              labelStyle={ styles.labelStyle }
             />
           </Link>
           <Link to="/admin">
             <FlatButton 
               className="auth-btn" 
-              label="WOD" 
-              labelStyle = { styles.labelStyle }
+              label="Классы" 
+              labelStyle={ styles.labelStyle }
             />
           </Link>
         </div>
@@ -60,7 +67,7 @@ class _Header extends Component {
           <FlatButton 
             className="auth-btn" 
             label="войти" 
-            labelStyle = { styles.labelStyle }
+            labelStyle={ styles.labelStyle }
             />
         </Link>
       </div>
@@ -68,14 +75,9 @@ class _Header extends Component {
   }
 
   render() {
-    let headerHeight = '60px';
+    let headerHeight='60px';
     if(this.props.isMobile){
-      headerHeight = '64px';
-    }
-    let s = document.location.pathname;
-    if(s.includes('/login') ||
-      s === '/register'){
-      return null;
+      headerHeight='64px';
     }
     return(
       <AppBar
@@ -89,16 +91,16 @@ class _Header extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps=(state) => ({
   user: state.user.user,
   isLoggedIn: state.auth.isLoggedIn,
 })
 
-const mapDispatchToProps = {
+const mapDispatchToProps={
   logout: authActions.logout,
 }
 
-const Header = connect(
+const Header=connect(
   mapStateToProps,
   mapDispatchToProps
 )(_Header);

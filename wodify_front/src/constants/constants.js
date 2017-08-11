@@ -33,6 +33,7 @@ export const BLUE_TEXTFIELD = {
 
 export const ERRORS = {
 	ACCOUNT_NOT_FOUND: "Не удалось найти аккаунт",
+  ACCOUNT_ALREADY_EXISTS: "Пользователь с таким именем уже существует",
 	NUMBER: "Ошибка # ",
 	NO_INTERNET: "Не удалось подключиться к сети",
 	INCORRECT_PASSWORD: "Неверный пароль. Повторите попытку",

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Loader from '../elements/Loader';
-
 import { Link } from 'react-router-dom'
+
+import CircularProgress from 'material-ui/CircularProgress';
+import FlatButton from 'material-ui/FlatButton'
 
 import Athlete from "./Athlete"
 
@@ -41,6 +43,14 @@ class _AthleteList extends Component {
       <Athlete key={athlete.id} athlete={athlete} isMobile={this.props.isMobile}/>
     );
   }
+  renderLoader(){
+    console.log(this.props.athleteList)
+    console.log('loading')
+    if(this.props.isLoading){
+      return  <CircularProgress size={80} thickness={5} />
+    }
+    return 
+  }
   constructor(props){
     super(props)
     this.state={
@@ -56,6 +66,14 @@ class _AthleteList extends Component {
   render() {
     return (
       <div className="athlete-list">
+        <div className="table-menu">
+          <Link to="/admin/addathlete">
+            <FlatButton 
+              label="добавить атлета"
+            />
+          </Link>
+        </div>
+        {this.renderLoader()}
         <Table 
           fixedHeader={this.state.fixedHeader}
           selectable={this.state.selectable}
@@ -70,7 +88,7 @@ class _AthleteList extends Component {
               <TableHeaderColumn>Имя</TableHeaderColumn>
               <TableHeaderColumn>Почта</TableHeaderColumn>
               <TableHeaderColumn>Номер телефона</TableHeaderColumn>
-              <TableHeaderColumn>Открыть</TableHeaderColumn>
+              <TableHeaderColumn></TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody 
@@ -93,7 +111,9 @@ class _AthleteList extends Component {
 
 const mapStateToProps = (state) => ({
   athleteList: state.admin.athleteList,
-  isLoggedIn: state.auth.isLoggedIn
+  isLoggedIn: state.auth.isLoggedIn,
+  isLoading: state.admin.isGettingAthletes,
+  gettingAthletes: state.admin.isGettingAthletes
 })
 
 const mapDispatchToProps = {

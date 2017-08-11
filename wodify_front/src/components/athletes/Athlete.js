@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import FlatButton from 'material-ui/FlatButton'
 
-
 import {
   Table,
   TableBody,
@@ -20,7 +19,7 @@ class Athlete extends Component {
       <TableRow>
         <TableRowColumn>{this.props.athlete.first_name + " " +
          this.props.athlete.last_name}</TableRowColumn>
-        <TableRowColumn>-</TableRowColumn>
+        <TableRowColumn>{this.props.athlete.username}</TableRowColumn>
         <TableRowColumn>{this.props.athlete.phone_number}</TableRowColumn>
         <TableRowColumn>
           <Link to="/admin/athletes">

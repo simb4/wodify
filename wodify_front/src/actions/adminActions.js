@@ -1,5 +1,7 @@
 import * as actionTypes from '../constants/actionTypes'
 import * as adminApi from '../api/adminApi'
+import * as authApi from '../api/authApi'
+
 import { ERRORS } from '../constants/constants'
 
 export const getAthletes = () => (dispatch, getState) => {
@@ -137,8 +139,96 @@ export const addAthlete = (data) => (dispatch, getState) => {
 		)
 }
 
+export const registerUser = (data) => (dispatch, getState) => {
 
+	console.log(data)
+	dispatch({
+		type: actionTypes.ACTION_REGISTRATION_STARTED,
+	})
 
+	adminApi
+		.register(getState().user.token, data)
+		.then(
+			response => {
+				if(response.status !== 200) {
+					dispatch({
+						type: actionTypes.ACTION_REGISTRATION_FAILED,
+						errorMessage: ERRORS.NUMBER + response.status
+					})
+				} else {
+					response
+						.text()
+						.then(
+							value => {
+								const responseObject = JSON.parse(value)
+								if(responseObject.code === 0) {
+									dispatch({
+										type: actionTypes.ACTION_REGISTRATION_SUCCESS
+									})
+								} else {
+									dispatch({
+										type: actionTypes.ACTION_REGISTRATION_FAILED,
+										errorMessage: responseObject.message
+									})
+								}
+							}
+						)
+				}
+			},
+			error => {
+				dispatch({
+					type: actionTypes.ACTION_REGISTRATION_FAILED,
+					errorMessage: ERRORS.NO_INTERNET
+				})
+			}
+		)
+}
+
+export const checkAccount = (data) => (dispatch, getState) => {
+  if (getState().auth.isRegistering) {
+    return Promise.resolve();
+  }
+  dispatch({
+    type: actionTypes.ACTION_CHECK_ACCOUNT_STARTED
+  });
+
+  authApi
+    .checkLogin(data) 
+    .then(
+      response => {
+        if (response.status !== 200) {
+          dispatch({
+            type: actionTypes.ACTION_CHECK_ACCOUNT_FAILED,
+            errorMessage: ERRORS.NUMBER + response.status
+          });
+        } else {
+          response
+            .text()
+            .then(
+              value => {
+                const responseObject = JSON.parse(value);
+                if(responseObject.code === 0 && responseObject.exists){
+                  dispatch({
+                    type: actionTypes.ACTION_CHECK_ACCOUNT_EXISTS,
+                    errorMessage: ERRORS.ACCOUNT_ALREADY_EXISTS
+                  });
+                }else{
+                  dispatch({
+                    type: actionTypes.ACTION_CHECK_ACCOUNT_NOTEXIST,
+                  });
+                }
+              }
+            );
+        }
+      },
+      error => {
+        dispatch({
+          type: actionTypes.ACTION_CHECK_ACCOUNT_FAILED,
+          errorMessage: ERRORS.NO_INTERNET
+        })
+      }
+  );
+};
 
 
 

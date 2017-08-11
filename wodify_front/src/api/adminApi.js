@@ -11,6 +11,21 @@ const addWodUrl = SERVER_URL + "main/add_wod/"
 const listAthletesUrl = SERVER_URL + "main/list_athletes/"
 const listProgramsUrl = SERVER_URL + "main/list_programs/"
 const listSectionsUrl = SERVER_URL + "main/list_sections/"
+const registrationUrl = SERVER_URL + "main/register/"
+
+export const register = (token, data) => (
+  fetch(
+    registrationUrl,
+    {
+      method: 'POST',
+      headers: {
+        ...STD_HEADERS,
+        "Auth-token": token,
+      },
+      body: qs.stringify(data)
+    }
+  )
+)
 
 export const addAthlete = (token, data) => (
 	fetch(

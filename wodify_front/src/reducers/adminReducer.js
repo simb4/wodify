@@ -13,6 +13,18 @@ const athleteList = (state = [], action) => {
   }
 }
 
+const isGettingAthletes = (state = false, action) => {
+  switch(action.type){
+    case actionTypes.ACTION_GET_ATHLETES_STARTED:
+      return true
+    case actionTypes.ACTION_GET_ATHLETES_FAILED:
+    case actionTypes.ACTION_GET_ATHLETES_SUCCESS:
+      return false
+    default:
+      return state
+  }
+}
+
 const wodList = (state = [], action) => {
   switch(action.type){
     case actionTypes.ACTION_GET_WOD_SUCCES:
@@ -37,8 +49,48 @@ const addWod = (state = {}, action) => {
   }
 }
 
+const isRegistering = (state = false, action) => {
+    switch(action.type){
+        case actionTypes.ACTION_REGISTRATION_STARTED:
+            return true 
+        case actionTypes.ACTION_REGISTRATION_SUCCESS:
+        case actionTypes.ACTION_REGISTRATION_FAILED:
+            return false
+        default:
+            return state
+    }
+}
+
+const isRegistered = (state = false, action) => {
+  switch(action.type) {
+    case actionTypes.ACTION_REGISTRATION_SUCCESS:
+      return true
+    case actionTypes.ACTION_REGISTRATION_FAILED:
+    case actionTypes.ACTION_REGISTRATION_STARTED:
+      return false
+    default:
+      return state
+  }
+}
+
+const isRegisteringLoginExist = (state = false, action) => {
+  switch(action.type){
+    case actionTypes.ACTION_CHECK_ACCOUNT_NOTEXIST:
+      return true
+    case actionTypes.ACTION_CHECK_ACCOUNT_EXISTS:
+    case actionTypes.ACTION_CHECK_ACCOUNT_STARTED:
+    case actionTypes.ACTION_CHECK_ACCOUNT_FAILED:
+      return false
+    default:
+      return state
+  }
+}
+
 const adminReducer = combineReducers({
-  athleteList
+  athleteList,
+  isRegistering,
+  isRegisteringLoginExist,
+  isRegistered,
 });
 
 export default adminReducer;

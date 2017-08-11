@@ -11,6 +11,7 @@ import Profile from '../components/profile/Profile';
 import HomePage from '../components/home/HomePage';
 import AdminMainPage from "../components/admin/AdminMain"
 import AthleteList from "../components/athletes/AthleteList"
+import NewAthlete from "../components/athletes/NewAthlete"
 
 import NoMatch from './NoMatch';
 
@@ -24,6 +25,7 @@ class _Main extends Component {
           
           <UserRoute exact path="/admin" component={AdminMainPage} {...isLoggedIn}/>
           <UserRoute exact path="/admin/athletes" component={AthleteList} {...isLoggedIn}/>
+          <UserRoute exact path="/admin/addathlete" component={NewAthlete} {...isLoggedIn}/>
           
           <HeaderRoute name="not-found" component={NoMatch} />
         </Switch>
