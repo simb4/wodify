@@ -1,0 +1,33 @@
+@font-face{
+  font-family: "SFUIDisplay-Regular";
+  src: url(./SFUIDisplay-Regular.otf) format("truetype");
+}
+
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'SFUIDisplay-Regular';
+  background-color: #fff;
+}
+
+.table-nav{
+  width: 100%;
+  padding: 5px;
+}
+
+.inner-nav{
+  width: 96%;
+  margin: 2px auto;
+}
+
+.week{
+  font-size: 17px;
+  margin-top: 24px;
+  color: #8E8E93;
+}
+
+.page-title{
+  font-size: 34px;
+  line-height: 41px;
+}

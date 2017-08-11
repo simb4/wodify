@@ -21,7 +21,7 @@ class _Header extends Component {
     if(this.props.isLoggedIn){
       return (
         <div>
-          <Link to="/admin">
+          <Link to="/admin/wod">
             <FlatButton 
               className="auth-btn" 
               label="WOD" 
