@@ -49,8 +49,7 @@ export const getAthletes = () => (dispatch, getState) => {
 		)
 }
 
-export const addWod = (data) => (dispatch, getState) => {
-
+export const createWod = (data) => (dispatch, getState) => {
 	dispatch({
 		type: actionTypes.ACTION_ADD_WOD_STARTED,
 	})

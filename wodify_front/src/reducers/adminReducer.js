@@ -27,10 +27,10 @@ const isGettingAthletes = (state = false, action) => {
 
 const programList = (state = [], action) => {
   switch(action.type) {
-    case actionTypes.ACTION_GET_ATHLETES_SUCCESS:
+    case actionTypes.ACTION_GET_PROGRAMS_SUCCESS:
       return action.programs
-    case actionTypes.ACTION_GET_ATHLETES_FAILED:
-    case actionTypes.ACTION_GET_ATHLETES_STARTED:
+    case actionTypes.ACTION_GET_PROGRAMS_FAILED:
+    case actionTypes.ACTION_GET_PROGRAMS_STARTED:
       return []
     default:
       return state
@@ -49,13 +49,25 @@ const wodList = (state = [], action) => {
   }
 }
 
-const addWod = (state = {}, action) => {
+// const addWod = (state = {}, action) => {
+//   switch (action.type){
+//     case actionTypes.ACTION_ADD_WOD_SUCCESS:
+//       return action.wod
+//     case actionTypes.ACTION_ADD_WOD_FAILED:
+//     case actionTypes.ACTION_ADD_WOD_STARTED:
+//       return {}
+//     default:
+//       return state
+//   }
+// }
+
+const isWodCreated = (state = false, action) => {
   switch (action.type){
     case actionTypes.ACTION_ADD_WOD_SUCCESS:
-      return action.wod
+      return true
     case actionTypes.ACTION_ADD_WOD_FAILED:
     case actionTypes.ACTION_ADD_WOD_STARTED:
-      return {}
+      return false
     default:
       return state
   }
@@ -103,6 +115,11 @@ const adminReducer = combineReducers({
   isRegistering,
   isRegisteringLoginExist,
   isRegistered,
+  programList,
+  // addWod,
+  // wodList,
+  isGettingAthletes,
+  isWodCreated,
 });
 
 export default adminReducer;
