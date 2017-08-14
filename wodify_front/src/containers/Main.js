@@ -7,8 +7,8 @@ import * as constants from "../constants/constants";
 
 import Login from '../components/auth/Login';
 import Header from '../components/header/Header'
-import Profile from '../components/profile/Profile';
-import HomePage from '../components/home/HomePage';
+// import Profile from '../components/profile/Profile';
+// import HomePage from '../components/home/HomePage';
 import AdminMainPage from "../components/admin/AdminMain"
 import AthleteList from "../components/athletes/AthleteList"
 import NewAthlete from "../components/athletes/NewAthlete"

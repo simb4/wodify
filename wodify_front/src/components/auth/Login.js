@@ -22,13 +22,9 @@ const STEPS = [
   },
   {
     id: STEP_AUTH_LOGIN,
-    title: 'Добро пожаловать',
-    subtitle: 'Введите ваш Email, пожалуйста',
   },
   {
     id: STEP_AUTH_PASSWORD,
-    title: 'Добро пожаловать!',
-    subtitle: '',
   },
   {
     id: STEP_RESET_BY_USERNAME,
@@ -56,7 +52,6 @@ class Login extends Component {
     if (this.state.step_id === STEP_AUTH_LOGIN && nextProps.isLoginExist 
         && !this.state.backClick) {
       this.setState({ step_id: STEP_AUTH_PASSWORD });
-      STEPS[STEP_AUTH_PASSWORD].subtitle = this.state.username;
     }
   }
   handleBack(){
@@ -100,12 +95,6 @@ class Login extends Component {
       <div className="content-auth">
         <div className="auth-cart">
           <div className="auth-logo">
-          </div>
-          <div className="auth-title">
-            {STEPS[step_id].title}
-          </div>
-          <div className="auth-subtitle">
-            {STEPS[step_id].subtitle}
           </div>
           <div className="auth-body">
             {this.renderBody()}

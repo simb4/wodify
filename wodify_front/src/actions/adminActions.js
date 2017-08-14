@@ -93,6 +93,53 @@ export const createWod = (data) => (dispatch, getState) => {
 		)
 }
 
+
+export const getWeeksWod = () => (dispatch, getState) => {
+  dispatch({
+    type: actionTypes.ACTION_GET_WEEK_WOD_STARTED,
+  })
+
+  adminApi
+    .getWodOfWeek(getState().user.token)
+    .then(
+      response => {
+        if(response.status !== 200) {
+          dispatch({
+            type: actionTypes.ACTION_GET_WEEK_WOD_FAILED,
+            errorMessage: ERRORS.NUMBER + response.status
+          })
+        } else {
+          response
+            .text()
+            .then(
+              value => {
+                const responseObject = JSON.parse(value)
+                if(responseObject.code === 0){
+                  dispatch({
+                    type: actionTypes.ACTION_GET_WEEK_WOD_SUCCESS,
+                    wodOfWeek: responseObject,
+                  })
+                } else {
+                  dispatch({
+                    type: actionTypes.ACTION_GET_WEEK_WOD_FAILED,
+                    errorMessage: responseObject.message,
+                  })
+                }
+              }
+            )
+        }
+      },
+      error => {
+        dispatch({
+          type: actionTypes.ACTION_GET_WEEK_WOD_FAILED,
+          errorMessage: ERRORS.NO_INTERNET
+        })
+      }
+    )
+}
+
+
+
 export const addAthlete = (data) => (dispatch, getState) => {
 
 	dispatch({
@@ -140,7 +187,6 @@ export const addAthlete = (data) => (dispatch, getState) => {
 
 export const registerUser = (data) => (dispatch, getState) => {
 
-	console.log(data)
 	dispatch({
 		type: actionTypes.ACTION_REGISTRATION_STARTED,
 	})

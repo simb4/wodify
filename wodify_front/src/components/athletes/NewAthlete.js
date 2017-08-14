@@ -2,18 +2,15 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 
-import * as authActions from "../../actions/authActions"
 import * as adminActions from "../../actions/adminActions"
 
-import IconButton from 'material-ui/IconButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import TextField from 'material-ui/TextField'
-import FlatButton from 'material-ui/FlatButton'
 
-import {emailValidation, phoneValidation} from '../elements/Validator';
+import {emailValidation} from '../elements/Validator';
 import * as constants from '../../constants/constants'
 
 const styles = {
@@ -43,10 +40,6 @@ class _NewAthlete extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-
-    // if(nextProps.isLoading)
-    //   return;
-
  
     if(nextProps.errorMessage !== constants.ERRORS.ACCOUNT_NOT_FOUND){
       this.setState({errorText: nextProps.errorMessage});
@@ -55,7 +48,6 @@ class _NewAthlete extends Component {
     if(nextProps.isLoginExist){
       this.setState({errorText: constants.ERRORS.ACCOUNT_ALREADY_EXISTS});
     }
- 
 
     if(nextProps.isAccountNotExist && !nextProps.isLoading && 
       !nextProps.isRegistered && this.state.isValidPassword){
@@ -103,12 +95,16 @@ class _NewAthlete extends Component {
 
     let p = this.state.password
     if(p.length < 6){
-      this.state.errorPass = "Длина пароля должна быть более 6 символов"
-      this.state.isValidPassword = false
+      this.setState({
+        errorPass: "Длина пароля должна быть более 6 символов",
+        isValidPassword: false,
+      })
       return 
     }
-    this.state.errorPass = ""
-    this.state.isValidPassword = true
+    this.setState({
+      errorPass: "",
+      isValidPassword: true
+    })
   }
 
   handleEnter(target) {

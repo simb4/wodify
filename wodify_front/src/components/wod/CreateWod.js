@@ -9,9 +9,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import RaisedButton from 'material-ui/RaisedButton';
 import * as actions from "../../actions/adminActions"
 
-import { Link } from 'react-router-dom'
-import FlatButton from 'material-ui/FlatButton'
-
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 

@@ -61,6 +61,7 @@ const wodList = (state = [], action) => {
 //   }
 // }
 
+// Should I write reducer for creating wod???!!! 
 const isWodCreated = (state = false, action) => {
   switch (action.type){
     case actionTypes.ACTION_ADD_WOD_SUCCESS:
@@ -73,15 +74,39 @@ const isWodCreated = (state = false, action) => {
   }
 }
 
+const gettingWodOfWeek = (state = false, action) => {
+  switch(action.type){
+    case actionTypes.ACTION_GET_WEEK_WOD_STARTED:
+      return true
+    case actionTypes.ACTION_GET_WEEK_WOD_FAILED:
+    case actionTypes.ACTION_GET_WEEK_WOD_SUCCESS:
+      return false
+    default:
+      return state
+  }
+}
+
+const isWodOfWeekGot = (state = [], action) => {
+  switch(action.type){
+    case actionTypes.ACTION_GET_WEEK_WOD_STARTED:
+    case actionTypes.ACTION_GET_WEEK_WOD_FAILED: 
+      return []
+    case actionTypes.ACTION_GET_WEEK_WOD_SUCCESS:
+      return action.wodOfWeek
+    default:
+      return state
+  }
+}
+
 const isRegistering = (state = false, action) => {
     switch(action.type){
-        case actionTypes.ACTION_REGISTRATION_STARTED:
-            return true 
-        case actionTypes.ACTION_REGISTRATION_SUCCESS:
-        case actionTypes.ACTION_REGISTRATION_FAILED:
-            return false
-        default:
-            return state
+      case actionTypes.ACTION_REGISTRATION_STARTED:
+        return true 
+      case actionTypes.ACTION_REGISTRATION_SUCCESS:
+      case actionTypes.ACTION_REGISTRATION_FAILED:
+        return false
+      default:
+        return state
     }
 }
 
@@ -116,8 +141,9 @@ const adminReducer = combineReducers({
   isRegisteringLoginExist,
   isRegistered,
   programList,
-  // addWod,
-  // wodList,
+  gettingWodOfWeek,
+  isWodOfWeekGot,
+  wodList,
   isGettingAthletes,
   isWodCreated,
 });

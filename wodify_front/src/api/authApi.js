@@ -4,7 +4,7 @@ import qs from 'qs'
 
 const loginUrl = SERVER_URL + "main/login/";
 const loginCheckUrl = SERVER_URL + "main/login/check/";
-const logOut = SERVER_URL + "main/logout"
+// const logOut = SERVER_URL + "main/logout"
 
 export const checkLogin = (data) => (
   fetch(

@@ -9,7 +9,7 @@ import * as authActions from '../../actions/authActions'
 
 import './header.css';
 
-const styles = {
+const styles={
     labelStyle: {
       color: "#000000",
     },
@@ -55,7 +55,7 @@ class _Header extends Component {
             <FlatButton 
               className="auth-btn" 
               label="выйти" 
-              labelStyle = { styles.labelStyle }
+              labelStyle={ styles.labelStyle }
               onClick={this.props.logout}
             />
           </Link>

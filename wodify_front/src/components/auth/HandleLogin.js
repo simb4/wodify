@@ -6,7 +6,10 @@ import VTextField from '../elements/VTextField';
 import FlatButton from 'material-ui/FlatButton';
 
 import {emailValidation, phoneValidation} from '../elements/Validator';
-import ERRORS from '../../constants/constants'
+
+   // title: 'Добро пожаловать',
+   //  subtitle: 'Введите ваш Email, пожалуйста',
+
 
 class _HandleLogin extends Component {
   constructor(props) {
@@ -59,6 +62,12 @@ class _HandleLogin extends Component {
     var isDisabled = this.props.isLoading || this.state.username === "";
     return (
       <div>
+        <div className="auth-title">
+            Добро пожаловать
+          </div>
+          <div className="auth-subtitle">
+            Введите ваш Email, пожалуйста
+          </div>
         <VTextField id="login"
           autoFocus
           fullWidth={true}

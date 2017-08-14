@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Loader from '../elements/Loader';
 import { Link } from 'react-router-dom'
 
 import CircularProgress from 'material-ui/CircularProgress';
@@ -9,21 +8,24 @@ import FlatButton from 'material-ui/FlatButton'
 import Athlete from "./Athlete"
 
 import ScrollToTop from 'react-scroll-up';
-import Waypoint from 'react-waypoint';
 import {
   Table,
   TableBody,
-  TableFooter,
   TableHeader,
   TableHeaderColumn,
   TableRow,
-  TableRowColumn,
 } from 'material-ui/Table';
 
 import './athlete.css'
 
 
 import * as actions from '../../actions/adminActions';
+
+const styles = {
+  header: {
+    fontSize: "14px"
+  }
+}
 
 class _AthleteList extends Component {
   componentWillMount() {
@@ -44,8 +46,6 @@ class _AthleteList extends Component {
     );
   }
   renderLoader(){
-    console.log(this.props.athleteList)
-    console.log('loading')
     if(this.props.isLoading){
       return  <CircularProgress size={80} thickness={5} />
     }
@@ -67,6 +67,7 @@ class _AthleteList extends Component {
     return (
       <div className="athlete-list">
         <div className="table-menu">
+          <p className="page-title"><b>Атлеты</b></p>
           <Link to="/admin/addathlete">
             <FlatButton 
               label="добавить атлета"
@@ -85,10 +86,10 @@ class _AthleteList extends Component {
             enableSelectAll={this.state.enableSelectAll}
           >
             <TableRow>
-              <TableHeaderColumn>Имя</TableHeaderColumn>
-              <TableHeaderColumn>Почта</TableHeaderColumn>
-              <TableHeaderColumn>Номер телефона</TableHeaderColumn>
-              <TableHeaderColumn></TableHeaderColumn>
+              <TableHeaderColumn style={styles.header}>Имя</TableHeaderColumn>
+              <TableHeaderColumn style={styles.header}>Почта</TableHeaderColumn>
+              <TableHeaderColumn style={styles.header}>Номер телефона</TableHeaderColumn>
+              <TableHeaderColumn style={styles.header}></TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody 

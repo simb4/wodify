@@ -37,6 +37,13 @@ class _HandlePassword extends Component {
     var isDisabled = this.props.isLoading || this.state.password === "";
     return (
      <div>
+        <div className="auth-back">
+          <FlatButton fullWidth={false} className="orangeText centerElements" 
+            onClick={this.props.onBackClick}>
+            <i className="material-icons">&#xE5C4;</i>
+            <span>Назад</span>
+          </FlatButton>
+        </div>
         <VTextField id="password"
           autoFocus
           fullWidth={true}
@@ -56,13 +63,6 @@ class _HandlePassword extends Component {
             primary={true}
             onClick={this.handleSubmit.bind(this)}
             disabled={isDisabled} />
-        </div>
-        <div className="auth-back">
-          <FlatButton fullWidth={false} className="orangeText centerElements" 
-            onClick={this.props.onBackClick}>
-            <i className="material-icons">&#xE5C4;</i>
-            <span>Назад</span>
-          </FlatButton>
         </div>
       </div>
       )
