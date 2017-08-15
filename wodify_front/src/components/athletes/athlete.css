@@ -20,3 +20,20 @@
   width: 70%;
   margin: 30px auto;
 }
+
+.name-ava{
+  display: inline-flex;
+  align-items: center;
+}
+
+.ava{
+  margin-right: 10px;
+}
+
+.filter{
+  width: 100%;
+  
+}
+
+
+

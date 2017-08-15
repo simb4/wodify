@@ -4,6 +4,15 @@ import { Link } from 'react-router-dom'
 
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton'
+import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} 
+  from 'material-ui/Toolbar';
+import IconMenu from 'material-ui/IconMenu';
+import IconButton from 'material-ui/IconButton';
+import FontIcon from 'material-ui/FontIcon';
+import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
+import MenuItem from 'material-ui/MenuItem';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import Athlete from "./Athlete"
 
@@ -28,9 +37,9 @@ const styles = {
 }
 
 class _AthleteList extends Component {
+  handleChange = (event, index, value) => this.setState({value});
   componentWillMount() {
     this.props.clearFlags()
-    console.log("cleared")
     const callBack = (ok) => {  // нужно дописать лоадинг
       if (ok) {
 
@@ -44,7 +53,12 @@ class _AthleteList extends Component {
   }
   renderAthlete(athlete) {
     return (
-      <Athlete key={athlete.id} athlete={athlete} isMobile={this.props.isMobile}/>
+      <Athlete
+        key={athlete.id} 
+        athlete={athlete} 
+        isMobile={this.props.isMobile}
+        user={this.props.user}
+      />
     );
   }
   renderLoader(){
@@ -63,6 +77,7 @@ class _AthleteList extends Component {
       multiSelectable: false,
       enableSelectAll: false,
       showCheckboxes: false,
+      value: 3,
     }
   }
   render() {
@@ -77,6 +92,37 @@ class _AthleteList extends Component {
           </Link>
         </div>
         {this.renderLoader()}
+        <div className="filter">
+          <Toolbar>
+            <ToolbarGroup firstChild={true}>
+              <DropDownMenu value={this.state.value} onChange={this.handleChange}>
+                <MenuItem value={1} primaryText="Все атлеты" />
+                <MenuItem value={2} primaryText="All Voice" />
+                <MenuItem value={3} primaryText="All Text" />
+                <MenuItem value={4} primaryText="Complete Voice" />
+                <MenuItem value={5} primaryText="Complete Text" />
+                <MenuItem value={6} primaryText="Active Voice" />
+                <MenuItem value={7} primaryText="Active Text" />
+              </DropDownMenu>
+            </ToolbarGroup>
+            <ToolbarGroup>
+              <ToolbarTitle text="Options" />
+              <FontIcon className="muidocs-icon-custom-sort" />
+              <ToolbarSeparator />
+              <RaisedButton label="Create Broadcast" primary={true} />
+              <IconMenu
+                iconButtonElement={
+                  <IconButton touch={true}>
+                    <NavigationExpandMoreIcon />
+                  </IconButton>
+                }
+              >
+                <MenuItem primaryText="Download" />
+                <MenuItem primaryText="More Info" />
+              </IconMenu>
+            </ToolbarGroup>
+          </Toolbar>
+        </div>
         <Table 
           fixedHeader={this.state.fixedHeader}
           selectable={this.state.selectable}
@@ -88,10 +134,15 @@ class _AthleteList extends Component {
             enableSelectAll={this.state.enableSelectAll}
           >
             <TableRow>
-              <TableHeaderColumn style={styles.header}>Имя</TableHeaderColumn>
-              <TableHeaderColumn style={styles.header}>Почта</TableHeaderColumn>
-              <TableHeaderColumn style={styles.header}>Номер телефона</TableHeaderColumn>
-              <TableHeaderColumn style={styles.header}></TableHeaderColumn>
+              <TableHeaderColumn style={styles.header}>
+                Имя
+              </TableHeaderColumn>
+              <TableHeaderColumn style={styles.header}>
+                Почта
+              </TableHeaderColumn>
+              <TableHeaderColumn style={styles.header}>
+                Номер телефона
+              </TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody 
@@ -100,7 +151,8 @@ class _AthleteList extends Component {
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}
           >
-            { this.props.athleteList.map((athlete) => this.renderAthlete(athlete)) }
+            {this.props.athleteList.map((athlete) => 
+              this.renderAthlete(athlete)) }
           </TableBody>  
         </Table>
         { !this.props.isMobile && 
@@ -116,7 +168,8 @@ const mapStateToProps = (state) => ({
   athleteList: state.admin.athleteList,
   isLoggedIn: state.auth.isLoggedIn,
   isLoading: state.admin.isGettingAthletes,
-  gettingAthletes: state.admin.isGettingAthletes
+  gettingAthletes: state.admin.isGettingAthletes,
+  user: state.user.user
 })
 
 const mapDispatchToProps = {

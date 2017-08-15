@@ -2,3 +2,24 @@
   padding: 0;
   margin: 0;
 }
+
+.hmenu{
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 24px;
+  cursor: pointer;
+}
+
+.fullname{
+  margin-right: 10px;
+}
+
+.link{
+  text-decoration: none;
+}
+
+.popover{
+  top: 60px !important;
+  width: 200px;
+}

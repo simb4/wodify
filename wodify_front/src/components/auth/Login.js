@@ -76,7 +76,8 @@ class Login extends Component {
               data={{username: this.state.username}}/>
     if(step_id === STEP_AUTH_PASSWORD)
       return <Password onSubmit={this.handlePassword}
-              onBackClick={this.handleBack} onResetClick={this.handleResetPassword}
+              onBackClick={this.handleBack} 
+              onResetClick={this.handleResetPassword}
               data={{password: this.state.password}}/>
     if(step_id === STEP_RESET_PASSWORD){
       // this.props.resetPassword({username: this.state.username})
