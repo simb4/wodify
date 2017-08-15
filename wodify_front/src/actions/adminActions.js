@@ -4,6 +4,12 @@ import * as authApi from '../api/authApi'
 
 import { ERRORS } from '../constants/constants'
 
+export const clearFlags = () => (dispatch, getState) => {
+  dispatch({
+    type: actionTypes.ACTION_CLEAR_REGISTRATION
+  })
+}
+
 export const getAthletes = () => (dispatch, getState) => {
 
 	dispatch({

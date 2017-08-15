@@ -6,6 +6,7 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 
+import Loader from "../elements/Loader"
 import RaisedButton from 'material-ui/RaisedButton';
 import * as actions from "../../actions/adminActions"
 
@@ -14,13 +15,16 @@ import MenuItem from 'material-ui/MenuItem';
 
 import "./wod.css"
 
+var alerted = false
+
 class _CreateWod extends Component {
   constructor(props) {
     super(props);
     this.state = {
       startDate: "",
       date: "",
-      program: 1,
+      program: 0,
+      created: false
     };
     this.handleChange = this.handleChange.bind(this)
     this.renderProgram = this.renderProgram.bind(this)
@@ -30,6 +34,11 @@ class _CreateWod extends Component {
   componentWillMount(){
     if (!this.props.programs.length) {
       this.props.getPrograms();
+    }
+  }
+  componentWillReceiveProps(nextProps){
+    if(nextProps.isLoading === "created"){
+      this.setState({created: true})
     }
   }
   handleChange(date){
@@ -50,27 +59,41 @@ class _CreateWod extends Component {
   handleProgramChange = (event, index, program) => this.setState({program});
 
   handleSubmit(){
-    if(this.props.wodCreated)
-      return 
 
-    console.log("ok")
     let data = {
       date_of_wod: this.state.date,
       program_id: this.state.program
     }
-    if(this.state.date !== "")
+    if(this.state.date !== ""){
       this.props.onCreateWod(data)
+    }
   }
 
   redirectToComponents(){
-    console.log("ok")
-    if(this.props.wodCreated){
+    if(this.state.created){
       return <Redirect to={{
-        pathname: '/admin/createwod/components',
+        pathname: '/admin/createwod/add_sections',
         from: '/admin/createwod'}}/>
     }
     return
   }
+  renderLoader(){
+    var message = this.props.isLoading
+    if(message === "started"){
+      alerted = false
+      return (
+        <Loader size={80} thickness={7}/>
+      )
+    } else if(!alerted && message !== "created" && message !== ""){
+      alert(this.props.isLoading)
+      alerted = true
+      return
+    } else if(message === "created"){
+      alerted = false
+      return
+    }
+  }
+
   render() {
     return (
      <div>
@@ -89,6 +112,7 @@ class _CreateWod extends Component {
         <div className="block">
           <p className="label"> Выберите программу</p>
           <DropDownMenu value={this.state.program} onChange={this.handleProgramChange}>
+              <MenuItem value={0} label="----" primaryText="----"/>
               {this.props.programs.map((program) => this.renderProgram(program))}
           </DropDownMenu>
         </div>
@@ -98,6 +122,7 @@ class _CreateWod extends Component {
         onClick={this.handleSubmit}
       />
       {this.redirectToComponents()}
+      {this.renderLoader()}
      </div>
     );
   }
@@ -107,7 +132,8 @@ class _CreateWod extends Component {
 const mapStateToProps = (state) => ({
   programs: state.admin.programList,
   isLoggedIn: state.auth.isLoggedIn,
-  wodCreated: state.admin.isWodCreated,
+  isLoading: state.admin.creatingWod,
+  // wodCreated: state.admin.isWodCreated,
 })
 
 const mapDispatchToProps = {

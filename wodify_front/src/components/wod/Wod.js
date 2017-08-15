@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
+import Loader from "../elements/Loader"
+
 import FlatButton from 'material-ui/FlatButton'
 
 import "./wod.css"
@@ -80,7 +82,7 @@ class _Wod extends Component {
         <p className="week">{date}</p>
       )
     }
-    return
+    return <Loader size={30} thickness={2}/>
   }
   renderWods(){
     let wods = this.props.wodOfWeek.wods
@@ -109,7 +111,7 @@ class _Wod extends Component {
               <Link to="/admin/createwod">
                 <FlatButton 
                   className="create-wod-btn" 
-                  label="Добавить WOD" 
+                  label="Добавить WOD"
                   labelStyle={ styles.labelStyle }
                 />
               </Link>
@@ -120,14 +122,12 @@ class _Wod extends Component {
           headerStyle={styles.tableHeader}
           fixedHeader={this.state.fixedHeader}
           selectable={this.state.selectable}
-          multiSelectable={this.state.multiSelectable}
-        >
+          multiSelectable={this.state.multiSelectable} >
           <TableHeader 
             headerStyle={styles.tableHeader}
             displaySelectAll={this.state.showCheckboxes}
             adjustForCheckbox={this.state.showCheckboxes}
-            enableSelectAll={this.state.enableSelectAll}
-          >
+            enableSelectAll={this.state.enableSelectAll} >
             <TableRow style={styles.TableRow}>
               <TableHeaderColumn style={styles.TableHeaderColumn}>Понедельник</TableHeaderColumn>
               <TableHeaderColumn style={styles.TableHeaderColumn}>Вторник</TableHeaderColumn>

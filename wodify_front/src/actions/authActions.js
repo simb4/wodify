@@ -28,11 +28,8 @@ export const checkLogin = (data) => (dispatch, getState) => {
                 if(responseObject.code === 0 && responseObject.exists){
                   dispatch({
                     type: actionTypes.ACTION_CHECK_LOGIN_EXIST,
-                    token: responseObject.token,
-                    user: responseObject.user,
                   });
                 }else{
-                  console.log(responseObject)
                   dispatch({
                     type: actionTypes.ACTION_CHECK_LOGIN_FAILED,
                     errorMessage: ERRORS.ACCOUNT_NOT_FOUND
@@ -81,9 +78,6 @@ export const login = (data) => (dispatch, getState) => {
                     token: responseObject.token,
                     user: responseObject.user
                   });
-                  console.log(getState().auth.isLoggedIn)
-                  console.log("ok")
-
                 }else{
                   dispatch({
                     type: actionTypes.ACTION_LOGIN_FAILED,
@@ -102,6 +96,49 @@ export const login = (data) => (dispatch, getState) => {
       }
   );
 };
+
+export const resetPassword = (data) => (dispatch, getState) => {
+  dispatch({
+    type: actionTypes.ACTION_CHANGE_PASSWORD_STARTED,
+  }) 
+
+  authApi
+    .resetPassword(data)
+    .then(
+      response => {
+        if(response.status !== 200){
+          dispatch({
+            type: actionTypes.ACTION_CHANGE_PASSWORD_FAILED,
+            errorMessage: ERRORS.NUMBER + response.status
+          })
+        } else {
+          response
+          .text()
+          .then(
+            value => {
+              const responseObject = JSON.parse(value)
+              if(responseObject.code === 0){
+                dispatch({
+                  type: actionTypes.ACTION_CHANGE_PASSWORD_SUCCESS
+                })
+              } else {
+                dispatch({
+                  type: actionTypes.ACTION_CHANGE_PASSWORD_FAILED,
+                  errorMessage: responseObject.message
+                })
+              }
+            }
+          )
+        }
+      },
+      error => {
+        dispatch({
+          type: actionTypes.ACTION_CHANGE_PASSWORD_FAILED,
+          errorMessage: ERRORS.NO_INTERNET
+        })
+      } 
+    )
+}
 
 export const logout = () => (dispatch, getState) => {
   dispatch({

@@ -5,6 +5,7 @@ import _ from 'lodash'
 
 import HandleLogin from './HandleLogin';
 import Password from './HandlePassword';
+import ResetPasswordPage from './ResetPassword'
 
 import LinearProgress from 'material-ui/LinearProgress';
 
@@ -13,25 +14,10 @@ import './Auth.css';
 
 import * as actions from "../../actions/authActions";
 
-const STEP_AUTH_LOGIN = 1;
-const STEP_AUTH_PASSWORD = 2;
-const STEP_RESET_BY_USERNAME = 3;
-const STEPS = [
-  { 
-    id: 0,
-  },
-  {
-    id: STEP_AUTH_LOGIN,
-  },
-  {
-    id: STEP_AUTH_PASSWORD,
-  },
-  {
-    id: STEP_RESET_BY_USERNAME,
-    title: 'Восстановление пароля',
-    subtitle: '',
-  },
-];
+const STEP_AUTH_LOGIN = 1
+const STEP_AUTH_PASSWORD = 2
+const STEP_RESET_PASSWORD = 3
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -47,10 +33,11 @@ class Login extends Component {
     this.handleBack = this.handleBack.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+    this.handleResetPassword = this.handleResetPassword.bind(this)
   }
   componentWillReceiveProps(nextProps){
-    if (this.state.step_id === STEP_AUTH_LOGIN && nextProps.isLoginExist 
-        && !this.state.backClick) {
+    if (this.state.step_id === STEP_AUTH_LOGIN &&  
+      nextProps.isLoginExist && !this.state.backClick) {
       this.setState({ step_id: STEP_AUTH_PASSWORD });
     }
   }
@@ -73,9 +60,13 @@ class Login extends Component {
     };
     this.props.onLoginClick(data);
   }
+  handleResetPassword(){
+    this.setState({step_id: STEP_RESET_PASSWORD});
+  }
   renderProgress(){
     if(this.props.isLoading)
-      return <LinearProgress mode="indeterminate" className="linearProgress"/>
+      return <LinearProgress mode="indeterminate" 
+        className="linearProgress"/>
     return null;
   }
   renderBody() {
@@ -85,12 +76,18 @@ class Login extends Component {
               data={{username: this.state.username}}/>
     if(step_id === STEP_AUTH_PASSWORD)
       return <Password onSubmit={this.handlePassword}
-              onBackClick={this.handleBack} onResetClick={this.handleResetUser}
+              onBackClick={this.handleBack} onResetClick={this.handleResetPassword}
               data={{password: this.state.password}}/>
+    if(step_id === STEP_RESET_PASSWORD){
+      // this.props.resetPassword({username: this.state.username})
+      // if(this.props.isPasswordChanged){
+        return <ResetPasswordPage onSubmit={this.onResetPassword} 
+          token={this.state.token}/>
+      // }
+    }
   }
   
   render() {
-    let step_id = this.state.step_id;
     return (
       <div className="content-auth">
         <div className="auth-cart">
@@ -110,6 +107,8 @@ const mapStateToProps = (state) => ({
   isLoginExist: state.auth.isLoginExist,
   isLoading: state.auth.isLoggingIn,
   isLoggedIn: state.auth.isLoggedIn,
+  isPasswordChanging: state.auth.isPasswordChanging,
+  isPasswordChanged: state.auth.isPasswordChanged
 })
 
 const mapDispatchToProps = {

@@ -49,27 +49,15 @@ const wodList = (state = [], action) => {
   }
 }
 
-// const addWod = (state = {}, action) => {
-//   switch (action.type){
-//     case actionTypes.ACTION_ADD_WOD_SUCCESS:
-//       return action.wod
-//     case actionTypes.ACTION_ADD_WOD_FAILED:
-//     case actionTypes.ACTION_ADD_WOD_STARTED:
-//       return {}
-//     default:
-//       return state
-//   }
-// }
-
-// Should I write reducer for creating wod???!!! 
-const isWodCreated = (state = false, action) => {
+const creatingWod = (state = "", action) => {
   switch (action.type){
     case actionTypes.ACTION_ADD_WOD_SUCCESS:
-      return true
-    case actionTypes.ACTION_ADD_WOD_FAILED:
+      return "created"
     case actionTypes.ACTION_ADD_WOD_STARTED:
-      return false
-    default:
+      return "started"
+    case actionTypes.ACTION_ADD_WOD_FAILED:
+      return action.errorMessage
+    default: 
       return state
   }
 }
@@ -116,6 +104,7 @@ const isRegistered = (state = false, action) => {
       return true
     case actionTypes.ACTION_REGISTRATION_FAILED:
     case actionTypes.ACTION_REGISTRATION_STARTED:
+    case actionTypes.ACTION_CLEAR_REGISTRATION:
       return false
     default:
       return state
@@ -145,7 +134,7 @@ const adminReducer = combineReducers({
   isWodOfWeekGot,
   wodList,
   isGettingAthletes,
-  isWodCreated,
+  creatingWod,
 });
 
 export default adminReducer;

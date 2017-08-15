@@ -1,23 +1,14 @@
 import React, { Component } from 'react'
-import RefreshIndicator from 'material-ui/RefreshIndicator';
-
-const style = {
-  display: 'inline-flex',
-  position: 'relative',
-  marginLeft: '50%',
-  marginTop: 10,
-  marginBottom: 20,
-};
+import CircularProgress from 'material-ui/CircularProgress';
 
 class Loader extends Component {
   render() {
     return (
-      <RefreshIndicator
-        size={40}
-        left={-20}
-        top={0}
-        status="loading"
-        style={style}/>
+      <CircularProgress 
+        size={this.props.size} 
+        thickness={this.props.thickness} 
+        min={100}
+      />
     )
   }
 }

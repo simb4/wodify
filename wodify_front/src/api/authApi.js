@@ -4,6 +4,7 @@ import qs from 'qs'
 
 const loginUrl = SERVER_URL + "main/login/";
 const loginCheckUrl = SERVER_URL + "main/login/check/";
+const resetPasswordUrl = SERVER_URL + "main/reset_password/"
 // const logOut = SERVER_URL + "main/logout"
 
 export const checkLogin = (data) => (
@@ -28,6 +29,16 @@ export const login = (data) => (
   )
 )
 
+export const resetPassword = (data) => (
+  fetch(
+    resetPasswordUrl,
+    {
+      method: 'POST',
+      headers: STD_HEADERS,
+      body: qs.stringify(data)
+    }
+  )
+)
 // export const logout = (token) => (
 //   fetch(
 //     logOut,

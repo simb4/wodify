@@ -1,6 +1,30 @@
 import { combineReducers } from 'redux';
 import * as actionTypes from '../constants/actionTypes';
 
+const isPasswordChanged = (state = false, action) => {
+    switch(action.type) {
+        case actionTypes.ACTION_CHANGE_PASSWORD_STARTED:
+        case actionTypes.ACTION_CHANGE_PASSWORD_FAILED:
+            return false
+        case actionTypes.ACTION_CHANGE_PASSWORD_SUCCESS:
+            return true
+        default:
+            return state 
+    }
+}
+
+const isPasswordChanging = (state = false, action) => {
+    switch(action.type) {
+        case actionTypes.ACTION_CHANGE_PASSWORD_STARTED:
+            return true
+        case actionTypes.ACTION_CHANGE_PASSWORD_SUCCESS:
+        case actionTypes.ACTION_CHANGE_PASSWORD_FAILED:
+            return false
+        default:
+            return state 
+    }
+}
+
 const isLoginExist = (state = false, action) => {
   switch (action.type) {
     case actionTypes.ACTION_CHECK_LOGIN_EXIST:
@@ -89,6 +113,8 @@ const authReducer = combineReducers({
     isLoggedIn,
     isLoggingIn,
     isAdmin,
+    isPasswordChanging,
+    isPasswordChanged,
     errorMessage,
 });
 

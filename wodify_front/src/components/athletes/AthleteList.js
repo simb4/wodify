@@ -29,6 +29,8 @@ const styles = {
 
 class _AthleteList extends Component {
   componentWillMount() {
+    this.props.clearFlags()
+    console.log("cleared")
     const callBack = (ok) => {  // нужно дописать лоадинг
       if (ok) {
 
@@ -118,7 +120,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  getAthletes: actions.getAthletes
+  getAthletes: actions.getAthletes,
+  clearFlags: actions.clearFlags
 }
 
 const AthleteList = connect(
