@@ -59,3 +59,29 @@
   margin-left: 10px;
   margin-right: 10px;
 }
+.table-td{
+  margin-top: 16px;
+}
+
+.section{
+  text-transform: uppercase;
+  margin-top: 16px;
+  font-size: 18px;
+  font-family: 'SF UI Display';
+  margin-left: 8px;
+}
+
+.component{
+  padding: 10px 2px;
+  border-bottom: 1px solid #8E8E93;
+}
+
+.component-title{
+  font-size: 14px;
+}
+
+.component-scoring{
+  font-size: 12px;
+  font-family: 'Roboto';
+  color: #8E8E93;
+}

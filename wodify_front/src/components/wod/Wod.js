@@ -84,26 +84,65 @@ class _Wod extends Component {
     }
     return <Loader size={20} thickness={2}/>
   }
+  renderComponents(component){
+    if(component !== null){
+      return component.map((comp) => {
+        return (
+          <div 
+            key={comp.id} 
+            style={{marginLeft: "10px"}}
+            className="component"
+          >
+            <p className="component-title">{comp.name}</p>
+            <p className="component-scoring">{comp.scoring.name}</p>
+          </div>
+        )
+      })
+    }
+  }
+  renderSections(wod){
+    if(wod !== null){
+      return wod.sections.map((s) => {
+        console.log(s)
+        return( 
+          <div key={s.id}>
+            <h4 className="section"> {s.name}</h4>
+            {this.renderComponents(s.components)}
+          </div>
+        )
+      })
+    }
+    return 
+  }
   renderWods(){
     let wods = this.props.wodOfWeek.wods
     var today = this.props.wodOfWeek.today_date
     if(typeof wods !== "undefined"){
       var style = {}
       return (
-        <TableRow>
+        <TableRow 
+          style={{
+          }}>
           {wods.map((wod) => {
            if(today === wod.date_of_wod){
             style = {
               backgroundColor: "#F2F2F2", 
-              borderTop: "2px solid #007AFF"
+              borderTop: "2px solid #007AFF",
+              padding: 0,
+              whiteSpace: "pre-line"
             }
            } else {
-            style = {}
+            style = {
+              padding: 0,
+              whiteSpace: "pre-line"
+              
+            }
            }
-           console.log(wod)
            return ( 
             <TableRowColumn key={wod.day_id} style={style}>
-              <h4>{wod.date_of_wod}</h4>
+              <div className="table-td">
+                {this.renderSections(wod.wod)}
+              </div>
             </TableRowColumn>)
           })}
         </TableRow>
@@ -152,7 +191,8 @@ class _Wod extends Component {
           <TableBody displayRowCheckbox={this.state.showCheckboxes}
             deselectOnClickaway={this.state.deselectOnClickaway}
             showRowHover={this.state.showRowHover}
-            stripedRows={this.state.stripedRows}>
+            stripedRows={this.state.stripedRows}
+          >
               {this.renderWods()}
           </TableBody>
         </Table>

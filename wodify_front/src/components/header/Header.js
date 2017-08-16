@@ -68,7 +68,7 @@ class _Header extends Component {
               labelStyle={ styles.labelStyle }
             />
           </Link>
-          <Link to="/admin">
+          <Link to="/admin/workouts">
             <FlatButton 
               className="auth-btn" 
               label="Классы" 

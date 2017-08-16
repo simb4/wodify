@@ -144,7 +144,49 @@ export const getWeeksWod = () => (dispatch, getState) => {
     )
 }
 
+export const getWeeksWorkout = (data) => (dispatch, getState) => {
+  dispatch({
+    type: actionTypes.ACTION_GET_WORKOUTS_STARTED,
+  })
 
+  adminApi
+    .getWorkoutsOfWeek(getState().user.token, data)
+    .then(
+      response => {
+        if(response.status !== 200) {
+          dispatch({
+            type: actionTypes.ACTION_GET_WORKOUTS_FAILED,
+            errorMessage: ERRORS.NUMBER + response.status
+          })
+        } else {
+          response
+            .text()
+            .then(
+              value => {
+                const responseObject = JSON.parse(value)
+                if(responseObject.code === 0){
+                  dispatch({
+                    type: actionTypes.ACTION_GET_WORKOUTS_SUCCESS,
+                    workouts: responseObject.workouts,
+                  })
+                } else {
+                  dispatch({
+                    type: actionTypes.ACTION_GET_WORKOUTS_FAILED,
+                    errorMessage: responseObject.message,
+                  })
+                }
+              }
+            )
+        }
+      },
+      error => {
+        dispatch({
+          type: actionTypes.ACTION_WORKOUTS_FAILED,
+          errorMessage: ERRORS.NO_INTERNET
+        })
+      }
+    )
+}
 
 export const addAthlete = (data) => (dispatch, getState) => {
 

@@ -1,6 +1,19 @@
 import { combineReducers } from 'redux';
 import * as actionTypes from '../constants/actionTypes';
 
+const getWorkouts = (state = [], action) => {
+  switch(action.type){
+    case actionTypes.ACTION_GET_WORKOUTS_SUCCESS:
+      return action.workouts
+    case actionTypes.ACTION_GET_WORKOUTS_STARTED:
+      return []
+    case actionTypes.ACTION_GET_WORKOUTS_FAILED:
+      return []
+    default: 
+      return state
+  }
+}
+
 const athleteList = (state = [], action) => {
   switch(action.type){
     case actionTypes.ACTION_GET_ATHLETES_SUCCESS:
@@ -135,6 +148,7 @@ const adminReducer = combineReducers({
   wodList,
   isGettingAthletes,
   creatingWod,
+  getWorkouts,
 });
 
 export default adminReducer;

@@ -15,6 +15,7 @@ import NewAthlete from "../components/athletes/NewAthlete"
 import Wod from "../components/wod/Wod"
 import CreateWod from "../components/wod/CreateWod"
 import AddSection from "../components/wod/AddSections"
+import Workouts from '../components/workouts/Workouts'
 
 import NoMatch from './NoMatch';
 
@@ -32,6 +33,7 @@ class _Main extends Component {
           <UserRoute exact path="/admin/wod" component={Wod} {...isLoggedIn}/>
           <UserRoute exact path="/admin/createwod" component={CreateWod} {...isLoggedIn}/>
           <UserRoute exact path="/admin/createwod/add_sections" component={AddSection} {...isLoggedIn}/>
+          <UserRoute exact path="/admin/workouts" component={Workouts} {...isLoggedIn}/>
 
           <HeaderRoute name="not-found" component={NoMatch} />
         </Switch>
