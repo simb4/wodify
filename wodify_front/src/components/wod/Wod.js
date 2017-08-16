@@ -82,16 +82,27 @@ class _Wod extends Component {
         <p className="week">{date}</p>
       )
     }
-    return <Loader size={30} thickness={2}/>
+    return <Loader size={20} thickness={2}/>
   }
   renderWods(){
     let wods = this.props.wodOfWeek.wods
+    var today = this.props.wodOfWeek.today_date
     if(typeof wods !== "undefined"){
+      var style = {}
       return (
         <TableRow>
           {wods.map((wod) => {
+           if(today === wod.date_of_wod){
+            style = {
+              backgroundColor: "#F2F2F2", 
+              borderTop: "2px solid #007AFF"
+            }
+           } else {
+            style = {}
+           }
+           console.log(wod)
            return ( 
-            <TableRowColumn key={wod.day_id}>
+            <TableRowColumn key={wod.day_id} style={style}>
               <h4>{wod.date_of_wod}</h4>
             </TableRowColumn>)
           })}

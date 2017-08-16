@@ -12,7 +12,7 @@ const listAthletesUrl = SERVER_URL + "main/list_athletes/"
 const listProgramsUrl = SERVER_URL + "main/list_programs/"
 const listSectionsUrl = SERVER_URL + "main/list_sections/"
 const registrationUrl = SERVER_URL + "main/register/"
-const getWodOfWeekUrl = SERVER_URL + "main/get_wod_of_week/"
+const getWodOfWeekUrl = SERVER_URL + "main/get_wods_of_week/"
 
 export const getWodOfWeek = (token) => (
   fetch(
