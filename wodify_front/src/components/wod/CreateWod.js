@@ -96,34 +96,38 @@ class _CreateWod extends Component {
 
   render() {
     return (
-     <div>
-      <div>
-        <div className="block">
-          <p className="label"> Выберите дату</p>
-            <DatePicker
-              selected={this.state.startDate}
-              onChange={this.handleChange}
-              showYearDropdown
-              dateFormatCalendar="MMMM"
-              minDate={moment()}
-              maxDate={moment().add(6, "days")}
-            />
-        </div>
-        <div className="block">
-          <p className="label"> Выберите программу</p>
-          <DropDownMenu value={this.state.program} onChange={this.handleProgramChange}>
-              <MenuItem value={0} label="----" primaryText="----"/>
-              {this.props.programs.map((program) => this.renderProgram(program))}
-          </DropDownMenu>
-        </div>
+      <div className="box-wrapper"> 
+        <div className="box">
+        <h1 className="box-title"> Создать WOD </h1>
+          <div className="box-fields">
+            <div className="block">
+              <p className="label"> Выберите дату</p>
+                <DatePicker
+                  selected={this.state.startDate}
+                  onChange={this.handleChange}
+                  showYearDropdown
+                  dateFormatCalendar="MMMM"
+                  minDate={moment()}
+                  maxDate={moment().add(6, "days")}
+                />
+            </div>
+            <div className="block">
+              <p className="label"> Выберите программу</p>
+              <DropDownMenu value={this.state.program} onChange={this.handleProgramChange}>
+                  <MenuItem value={0} label="----" primaryText="----"/>
+                  {this.props.programs.map((program) => this.renderProgram(program))}
+              </DropDownMenu>
+            </div>
+          </div>
+          <RaisedButton 
+            label="Создать WOD"
+            onClick={this.handleSubmit}
+            className="createwod"
+          />
+          {this.redirectToComponents()}
+          {this.renderLoader()}
+         </div>
       </div>
-      <RaisedButton 
-        label="Создать WOD"
-        onClick={this.handleSubmit}
-      />
-      {this.redirectToComponents()}
-      {this.renderLoader()}
-     </div>
     );
   }
 

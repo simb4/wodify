@@ -1,0 +1,15 @@
+.workout-wrapper{
+  width: 96%;
+  margin: 40px auto;
+}
+
+.pre-header{
+  text-align: center;
+}
+
+.header{
+  text-align: center;
+  color: black;
+  font-size: 14px;
+  
+}
