@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 import LinearProgress from 'material-ui/LinearProgress';
 import VTextField from '../elements/VTextField';
-import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 
 import * as actions from "../../actions/authActions"

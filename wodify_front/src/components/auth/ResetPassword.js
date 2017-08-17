@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import RaisedButton from 'material-ui/RaisedButton';
-
 class _ResetPassword extends Component {
   constructor(props){
     super(props)

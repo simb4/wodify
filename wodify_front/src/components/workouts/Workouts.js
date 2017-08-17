@@ -4,6 +4,15 @@ import { connect } from 'react-redux'
 import * as action from '../../actions/adminActions'
 import moment from 'moment'
 
+import { TIME } from '../../constants/schedule'
+import Dialog from 'material-ui/Dialog';
+import {List, ListItem} from 'material-ui/List';
+import RaisedButton from 'material-ui/RaisedButton';
+import Popover, {PopoverAnimationVertical} from 'material-ui/Popover';
+import Divider from 'material-ui/Divider';
+
+import FlatButton from 'material-ui/FlatButton';
+
 import './workouts.css'
 import {
   Table,
@@ -13,6 +22,17 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table'
+
+var styles = {
+  cellStyle: {
+    height: "20px",
+    border: "1px solid #BCBBC1",
+    padding: "2px 5px 2px 5px",
+  },
+  dialog: {
+  }
+
+}
 
 class _Workouts extends Component {
 
@@ -28,7 +48,10 @@ class _Workouts extends Component {
       showCheckboxes: false,
       abonement: 1,
       status: 1,
+      open: false,
     }
+    // this.handleOpen = this.handleOpen.bind(this)
+    // this.handleClose = this.handleClose.bind(this)
   }
   componentWillMount(){
     if(this.props.workouts.length === 0){
@@ -38,10 +61,42 @@ class _Workouts extends Component {
       this.props.getWorkouts(data)
     }
   }
+
+  handleRequestClose = () => {
+    this.setState({
+      open: false,
+    });
+  };
+
+
+  handleTouchTap = (event) => {
+    // This prevents ghost click.
+    event.preventDefault();
+
+    this.setState({
+      open: true,
+      anchorEl: event.currentTarget,
+    });
+  };
+
+  cellClicked = (row,column,event) => {
+    var works = this.props.workouts
+    if(works.length > 0){
+      for(var i=0; i<works.length; i++){
+        if(works[i].day_id === column){
+          for(var j=0; j<works[i-1].workouts.length; j++){
+            if(works[i-1].workouts[j].start_time === TIME[row]){
+              console.log(works[i-1].workouts[j])
+            }
+          }
+        }
+      }
+    }
+  }
+
   renderHeader(id){
     var wors = this.props.workouts
     if(wors.length !== 0){
-      console.log(wors)
       let days = ["Понедельник", "Вторник", "Среда", "Четверг",
       "Пятница", "Суббота", "Воскресенье"]
       return wors.map((w) => {
@@ -49,7 +104,9 @@ class _Workouts extends Component {
         var dd = date.substring(8,10)
         var mm = date.substring(5,7)
         return(
-          <TableHeaderColumn key={w.day_id} style={{border: "1px solid #BCBBC1"}}>
+          <TableHeaderColumn 
+            key={w.day_id} 
+            style={{border: "1px solid #BCBBC1"}}>
             <p className="pre-header">{dd}/{mm}</p> 
             <p className="header">{days[w.day_id]}</p>
           </TableHeaderColumn> 
@@ -57,31 +114,73 @@ class _Workouts extends Component {
       })
     }
   }
+  handleOpen(workout){
+    this.setState({open: true});
+  }
+  changeCoach(){
+    console.log("coach")
+  }
+  handleClose = () => {
+    this.setState({open: false});
+  };
+
+  renderWork(work, time){
+
+    const actions = [
+      <FlatButton
+        label="Отменить"
+        primary={true}
+        onClick={this.handleClose}
+      />,
+      <FlatButton
+        label="Сохранить"
+        primary={true}
+        keyboardFocused={true}
+        onClick={this.handleClose}
+      />,
+    ];
+
+    var w = work.workouts
+    if(w.length > 0){
+      return w.map((d) => {
+        if(d.start_time === time){
+          time = time.substring(0,5)
+          return(   
+            <div className="workout-box" key={d.id} 
+              onClick={this.handleTouchTap.bind(this)}>
+              <div className="workout-title">
+                <p className="bold"><b>{time + " " + d.name}</b></p>
+              </div>
+                <p className="workout-coach">{d.coach.first_name 
+                    + " " + d.coach.last_name}Балганым Тулебаева</p>
+              <p className="registered"><b>
+                {d.registered+"/"+d.max_people}</b></p>
+            </div>
+          )  
+        }
+        return ""
+      })
+    }
+  }
+  renderWorkouts(time){
+    var wors = this.props.workouts
+    if(wors.length > 0){
+      return wors.map((w)=>{
+        return (
+          <TableRowColumn 
+            key={w.day_id} 
+            style={styles.cellStyle}
+          >
+            {this.renderWork(w, time)}
+          </TableRowColumn>
+        )
+      })
+    }
+  }
   renderBody(){
-    var time = [1,2,3,4,5,6,7,8,20,9,10,11,12,13,14,15,16,17,18,19]
-    return time.map((r)=>{
-      return <TableRow key={r}>
-        <TableRowColumn>
-          1
-        </TableRowColumn>
-        <TableRowColumn>
-          2
-        </TableRowColumn>
-        <TableRowColumn>
-          3
-        </TableRowColumn>
-        <TableRowColumn>
-          4
-        </TableRowColumn>
-        <TableRowColumn>
-          5
-        </TableRowColumn>
-        <TableRowColumn>
-          6
-        </TableRowColumn>
-        <TableRowColumn>
-          7
-        </TableRowColumn>
+    return TIME.map((r)=>{
+      return <TableRow key={r} style={{height: "20px"}} >
+        {this.renderWorkouts(r)}
       </TableRow>
     })
   }
@@ -89,6 +188,7 @@ class _Workouts extends Component {
     return(
       <div className="workout-wrapper">
         <Table 
+          onCellClick={this.cellClicked}
           fixedHeader={this.state.fixedHeader}
           selectable={this.state.selectable}
           multiSelectable={this.state.multiSelectable}
