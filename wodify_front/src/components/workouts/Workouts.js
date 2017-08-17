@@ -5,13 +5,10 @@ import * as action from '../../actions/adminActions'
 import moment from 'moment'
 
 import { TIME } from '../../constants/schedule'
-import Dialog from 'material-ui/Dialog';
-import {List, ListItem} from 'material-ui/List';
-import RaisedButton from 'material-ui/RaisedButton';
-import Popover, {PopoverAnimationVertical} from 'material-ui/Popover';
+import Popover from 'material-ui/Popover';
 import Divider from 'material-ui/Divider';
-
-import FlatButton from 'material-ui/FlatButton';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
 
 import './workouts.css'
 import {
@@ -31,8 +28,12 @@ var styles = {
   },
   dialog: {
   }
-
 }
+
+var WORKOUT = {}
+var title = ""
+var coach = ""
+var registered = ""
 
 class _Workouts extends Component {
 
@@ -80,18 +81,32 @@ class _Workouts extends Component {
   };
 
   cellClicked = (row,column,event) => {
+    event.preventDefault();
+
+    this.setState({
+      open: true,
+      anchorEl: event.currentTarget,
+    });
+
     var works = this.props.workouts
+    WORKOUT = {}
+    title = ""
+    coach = ""
+    registered = ""
     if(works.length > 0){
       for(var i=0; i<works.length; i++){
         if(works[i].day_id === column){
           for(var j=0; j<works[i-1].workouts.length; j++){
             if(works[i-1].workouts[j].start_time === TIME[row]){
-              console.log(works[i-1].workouts[j])
+              WORKOUT = works[i-1].workouts[j]
+              title = WORKOUT.start_time + " " + WORKOUT.name
+              coach = WORKOUT.coach.first_name + " " + WORKOUT.coach.last_name
+              registered = WORKOUT.registered + "/" + WORKOUT.max_people
             }
           }
-        }
+        } 
       }
-    }
+    } 
   }
 
   renderHeader(id){
@@ -117,29 +132,11 @@ class _Workouts extends Component {
   handleOpen(workout){
     this.setState({open: true});
   }
-  changeCoach(){
-    console.log("coach")
-  }
   handleClose = () => {
     this.setState({open: false});
   };
 
   renderWork(work, time){
-
-    const actions = [
-      <FlatButton
-        label="Отменить"
-        primary={true}
-        onClick={this.handleClose}
-      />,
-      <FlatButton
-        label="Сохранить"
-        primary={true}
-        keyboardFocused={true}
-        onClick={this.handleClose}
-      />,
-    ];
-
     var w = work.workouts
     if(w.length > 0){
       return w.map((d) => {
@@ -188,6 +185,7 @@ class _Workouts extends Component {
     return(
       <div className="workout-wrapper">
         <Table 
+          style={{cursor: "pointer"}}
           onCellClick={this.cellClicked}
           fixedHeader={this.state.fixedHeader}
           selectable={this.state.selectable}
@@ -209,8 +207,24 @@ class _Workouts extends Component {
             stripedRows={this.state.stripedRows}
           >
             {this.renderBody()}
-          </TableBody>  
+          </TableBody> 
         </Table>
+        <Popover
+            open={this.state.open}
+            anchorEl={this.state.anchorEl}
+            anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+            targetOrigin={{horizontal: 'left', vertical: 'top'}}
+            onRequestClose={this.handleRequestClose}
+          >
+            <Menu>
+              <MenuItem primaryText={title} />
+              <Divider inset={true}/>
+              <MenuItem primaryText="Balganym Tulebayeva" />
+              <p>изменить</p>
+              <MenuItem primaryText={registered} />
+
+            </Menu>
+          </Popover> 
       </div>
     )
   }
