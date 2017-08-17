@@ -62,6 +62,9 @@ class Login extends Component {
   }
   handleResetPassword(){
     this.setState({step_id: STEP_RESET_PASSWORD});
+    if(!this.props.isPasswordChanging && !this.props.isPasswordChanged){
+      this.props.resetPassword({username: this.state.username})
+    }
   }
   renderProgress(){
     if(this.props.isLoading)
@@ -83,7 +86,7 @@ class Login extends Component {
       // this.props.resetPassword({username: this.state.username})
       // if(this.props.isPasswordChanged){
         return <ResetPasswordPage onSubmit={this.onResetPassword} 
-          token={this.state.token}/>
+          token={this.state.token} email={this.state.username}/>
       // }
     }
   }
@@ -115,6 +118,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   onLoginClick: actions.login,
   checkLogin: actions.checkLogin,
+  resetPassword: actions.resetPassword
 }
 
 export default connect(

@@ -118,12 +118,12 @@ class _CreateWod extends Component {
                   {this.props.programs.map((program) => this.renderProgram(program))}
               </DropDownMenu>
             </div>
+             <RaisedButton 
+                label="Создать WOD"
+                onClick={this.handleSubmit}
+                className="create-btn"
+              />
           </div>
-          <RaisedButton 
-            label="Создать WOD"
-            onClick={this.handleSubmit}
-            className="createwod"
-          />
           {this.redirectToComponents()}
           {this.renderLoader()}
          </div>

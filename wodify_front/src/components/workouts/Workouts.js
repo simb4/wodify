@@ -49,7 +49,7 @@ class _Workouts extends Component {
         var dd = date.substring(8,10)
         var mm = date.substring(5,7)
         return(
-          <TableHeaderColumn key={w.day_id} style={{border: "1px solid black"}}>
+          <TableHeaderColumn key={w.day_id} style={{border: "1px solid #BCBBC1"}}>
             <p className="pre-header">{dd}/{mm}</p> 
             <p className="header">{days[w.day_id]}</p>
           </TableHeaderColumn> 
@@ -58,19 +58,32 @@ class _Workouts extends Component {
     }
   }
   renderBody(){
-    var wors = this.props.workouts
-    if(wors.length !== 0) {
-      return wors.map((w) => {
-        console.log(w.workouts)
-        return(
-          <TableRow key={w.day_id}>
-            <TableRowColumn>
-              ok
-            </TableRowColumn>
-          </TableRow>
-        ) 
-      })
-    }
+    var time = [1,2,3,4,5,6,7,8,20,9,10,11,12,13,14,15,16,17,18,19]
+    return time.map((r)=>{
+      return <TableRow key={r}>
+        <TableRowColumn>
+          1
+        </TableRowColumn>
+        <TableRowColumn>
+          2
+        </TableRowColumn>
+        <TableRowColumn>
+          3
+        </TableRowColumn>
+        <TableRowColumn>
+          4
+        </TableRowColumn>
+        <TableRowColumn>
+          5
+        </TableRowColumn>
+        <TableRowColumn>
+          6
+        </TableRowColumn>
+        <TableRowColumn>
+          7
+        </TableRowColumn>
+      </TableRow>
+    })
   }
   render(){
     return(

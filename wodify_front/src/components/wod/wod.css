@@ -101,7 +101,7 @@
   min-width: 500px;
   max-width: 600px;
   background-color: #fff;
-  height: 300px;
+  height: 400px;
   justify-content: center !important;
   box-sizing: content-box;
   box-shadow: var(--cart-shadow); 
@@ -110,12 +110,12 @@
 
 .box-title{
   text-align: center;
-  padding: 16px 10px 10px 10px;
+  padding: 16% 10px 10px 10px;
 }
 
 .box-fields{
-  width: 340px;
-  margin: 10px auto;
+  width: 400px;
+  margin: 20px auto 5px auto;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -135,7 +135,8 @@
   border-bottom: 1px solid #dddde7;
 }
 
-.createwod{
-  margin-left: 70%;
-  margin-top: 10%;
+.create-btn{
+  margin-left: 60%;
+  margin-top: 18%;
+  z-index: 0;
 }

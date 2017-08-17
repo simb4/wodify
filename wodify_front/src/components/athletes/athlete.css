@@ -16,11 +16,6 @@
   justify-content: space-between;
 }
 
-.registration-wrapper{
-  width: 70%;
-  margin: 30px auto;
-}
-
 .name-ava{
   display: inline-flex;
   align-items: center;
@@ -35,5 +30,19 @@
   
 }
 
+.box-fields-athlete{
+  width: 400px;
+  margin-top: 20px;
+  margin-left: 20px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.create-btn-athlete{
+  margin-left: 60%;
+  margin-top: 6%;
+  z-index: 0;
+}
 
 

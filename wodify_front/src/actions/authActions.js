@@ -140,6 +140,49 @@ export const resetPassword = (data) => (dispatch, getState) => {
     )
 }
 
+export const setPassword = (data) => (dispatch, getState) => {
+  dispatch({
+    type: actionTypes.ACTION_SET_PASSWORD_STARTED,
+  }) 
+
+  authApi
+    .setPassword(data)
+    .then(
+      response => {
+        if(response.status !== 200){
+          dispatch({
+            type: actionTypes.ACTION_SET_PASSWORD_FAILED,
+            errorMessage: ERRORS.NUMBER + response.status
+          })
+        } else {
+          response
+          .text()
+          .then(
+            value => {
+              const responseObject = JSON.parse(value)
+              if(responseObject.code === 0){
+                dispatch({
+                  type: actionTypes.ACTION_SET_PASSWORD_SUCCESS
+                })
+              } else {
+                dispatch({
+                  type: actionTypes.ACTION_SET_PASSWORD_FAILED,
+                  errorMessage: responseObject.message
+                })
+              }
+            }
+          )
+        }
+      },
+      error => {
+        dispatch({
+          type: actionTypes.ACTION_SET_PASSWORD_FAILED,
+          errorMessage: ERRORS.NO_INTERNET
+        })
+      } 
+    )
+}
+
 export const logout = () => (dispatch, getState) => {
   dispatch({
     type: actionTypes.ACTION_LOGGED_OUT,

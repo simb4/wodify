@@ -11,18 +11,16 @@ class _ResetPassword extends Component {
       confirm: ""
     }
   }
-  handleResetPassword(){}
 
   render(){
     return(
       <div>
         <div className="auth-title">
-          На вашу почту было отправлено письмо с новым паролем
+          На вашу почту {this.props.email} было 
+            отправлено письмо cо ссылкой на сброс пароля 
         </div><br/><br/>
         <div className="auth-submit">
-          <div className="errors-block">{this.props.errorMessage}</div>
-          <RaisedButton label="Ok" className="orangeBtn" primary={true}
-            onClick={this.handleResetPassword} />
+          <div className="errors-block">{/*this.props.errorMessage*/}</div>
         </div>
       </div>
     )

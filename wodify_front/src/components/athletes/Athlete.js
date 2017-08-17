@@ -10,18 +10,15 @@ import Avatar from 'material-ui/Avatar';
 class Athlete extends Component {
 
   renderAvatar(){
-    var user = this.props.user
-    if(user.athlete !== null){
-      user = user.athlete
-    } else if(user.administrator !== null){
-      user = user.administrator
-    } else {
-      user = user.coach
-    }
+    var user = this.props.athlete;
     var avatar = ""
-    if(user.avatar_url !== ""){
-      avatar = SERVER_URL + user.avatar_url
-    }
+    if(typeof user !== "undefined"){
+      if(user.avatar_url !== ""){
+        avatar = SERVER_URL + user.avatar_url
+      } else {
+        avatar = ""
+      }
+    } 
     return (
       <Avatar 
         className="ava"

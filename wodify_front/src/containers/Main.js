@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } 
+  from 'react-router-dom';
 import MediaQuery from 'react-responsive';
 
 import * as constants from "../constants/constants";
@@ -9,13 +10,14 @@ import Login from '../components/auth/Login';
 import Header from '../components/header/Header'
 // import Profile from '../components/profile/Profile';
 // import HomePage from '../components/home/HomePage';
-import AdminMainPage from "../components/admin/AdminMain"
+// import AdminMainPage from "../components/admin/AdminMain"
 import AthleteList from "../components/athletes/AthleteList"
 import NewAthlete from "../components/athletes/NewAthlete"
 import Wod from "../components/wod/Wod"
 import CreateWod from "../components/wod/CreateWod"
 import AddSection from "../components/wod/AddSections"
 import Workouts from '../components/workouts/Workouts'
+import SetPassword from '../components/auth/SetPassword'
 
 import NoMatch from './NoMatch';
 
@@ -25,15 +27,25 @@ class _Main extends Component {
     return (
       <Router>
         <Switch>
-          <AuthRoute path="/login" component={Login} {...isLoggedIn}/>
+          <AuthRoute path="/login" component={Login} 
+            {...isLoggedIn}/>
+          <AuthRoute path="/main/reset" component={SetPassword} 
+            {...isLoggedIn}/>
           
-          <UserRoute exact path="/admin" component={AdminMainPage} {...isLoggedIn}/>
-          <UserRoute exact path="/admin/athletes" component={AthleteList} {...isLoggedIn}/>
-          <UserRoute exact path="/admin/addathlete" component={NewAthlete} {...isLoggedIn}/>
-          <UserRoute exact path="/admin/wod" component={Wod} {...isLoggedIn}/>
-          <UserRoute exact path="/admin/createwod" component={CreateWod} {...isLoggedIn}/>
-          <UserRoute exact path="/admin/createwod/add_sections" component={AddSection} {...isLoggedIn}/>
-          <UserRoute exact path="/admin/workouts" component={Workouts} {...isLoggedIn}/>
+          {/*<UserRoute exact path="/admin" 
+            component={AdminMainPage} {...isLoggedIn}/>*/}
+          <UserRoute exact path="/admin/athletes" 
+            component={AthleteList} {...isLoggedIn}/>
+          <UserRoute exact path="/admin/addathlete" 
+            component={NewAthlete} {...isLoggedIn}/>
+          <UserRoute exact path="/admin" component={Wod} 
+            {...isLoggedIn}/>
+          <UserRoute exact path="/admin/createwod" 
+            component={CreateWod} {...isLoggedIn}/>
+          <UserRoute exact path="/admin/createwod/add_sections" 
+            component={AddSection} {...isLoggedIn}/>
+          <UserRoute exact path="/admin/workouts" 
+            component={Workouts} {...isLoggedIn}/>
 
           <HeaderRoute name="not-found" component={NoMatch} />
         </Switch>
@@ -68,7 +80,8 @@ export const AuthRoute = (props) => {
       !isLoggedIn ? (
         <Component {...props} />
       ) : (
-        <Redirect to={props.location.from ? props.location.from : "/admin"}/>
+        <Redirect to={props.location.from ? 
+          props.location.from : "/admin"}/>
       )
   )} />
 )}

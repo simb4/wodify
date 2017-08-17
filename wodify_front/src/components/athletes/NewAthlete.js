@@ -34,19 +34,22 @@ class _NewAthlete extends Component {
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleChangeEmail = this.handleChangeEmail.bind(this)
-    this.handleChangePassword = this.handleChangePassword.bind(this)
+    this.handleChangePassword = 
+      this.handleChangePassword.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleEnter=this.handleEnter.bind(this)
   }
 
   componentWillReceiveProps(nextProps){
  
-    if(nextProps.errorMessage !== constants.ERRORS.ACCOUNT_NOT_FOUND){
+    if(nextProps.errorMessage !== 
+        constants.ERRORS.ACCOUNT_NOT_FOUND){
       this.setState({errorText: nextProps.errorMessage});
     }
  
     if(nextProps.isLoginExist){
-      this.setState({errorText: constants.ERRORS.ACCOUNT_ALREADY_EXISTS});
+      this.setState({errorText: 
+          constants.ERRORS.ACCOUNT_ALREADY_EXISTS});
     }
 
     if(nextProps.isAccountNotExist && !nextProps.isLoading && 
@@ -82,7 +85,8 @@ class _NewAthlete extends Component {
       } 
       else {
         if(!this.props.isAccountNotExist){
-          this.setState({errorText: constants.ERRORS.ACCOUNT_ALREADY_EXISTS})
+          this.setState({errorText: 
+            constants.ERRORS.ACCOUNT_ALREADY_EXISTS})
         } else {
           this.setState({ errorText: ""});
         }
@@ -127,43 +131,54 @@ class _NewAthlete extends Component {
   }
   render(){
     var isDisabled = true
-    if(this.state.username !== "" && this.state.password !== ""){
+    if(this.state.username !== "" && 
+      this.state.password !== ""){
       isDisabled = false
     }
     return(
-      <div className="registration-wrapper">
-        <TextField
-          hintText="Email"
-          errorText={this.state.errorText}
-          onChange={this.handleChangeEmail}
-          value={this.state.username}
-          onKeyPress={this.handleEnter}
-        /><br/>
-        <TextField
-          hintText="Password"
-          errorText={this.state.errorPass}
-          onChange={this.handleChangePassword}
-          value={this.state.password}
-          onKeyPress={this.handleEnter}
-        /><br/>
-        <SelectField
-          floatingLabelText="Frequency"
-          value={this.state.value}
-          onChange={this.handleChange}
-          onKeyPress={this.handleEnter}
-        >
-          <MenuItem value={1} primaryText="Атлет" />
-          <MenuItem value={2} primaryText="Тренер" />
-          <MenuItem value={0} primaryText="Администратор" />
-        </SelectField><br/>
-        <RaisedButton 
-          label="Создать атлета" 
-          style={styles.sendBtn}
-          onClick={this.handleSubmit}
-          disabled={isDisabled} 
-        /><br/>
-        {this.renderLoader()}
-        {this.redirectToMain()}
+      <div className="box-wrapper">
+        <div className="registration-wrapper box">
+          <h2 className="box-title">Добавить атлета</h2>
+          <div className="box-fields-athlete">
+            <TextField
+              style={{width: "300px", textAlign: "left"}}
+              hintText="Email"
+              errorText={this.state.errorText}
+              onChange={this.handleChangeEmail}
+              value={this.state.username}
+              onKeyPress={this.handleEnter}
+            /><br/>
+            <TextField
+              style={{width: "300px"}}
+              hintText="Password"
+              errorText={this.state.errorPass}
+              onChange={this.handleChangePassword}
+              value={this.state.password}
+              onKeyPress={this.handleEnter}
+            /><br/>
+            <SelectField
+              style={{width: "300px"}}
+              floatingLabelText="Роль"
+              value={this.state.value}
+              onChange={this.handleChange}
+              onKeyPress={this.handleEnter}
+            >
+              <MenuItem value={2} primaryText="Атлет" />
+              <MenuItem value={1} primaryText="Тренер" />
+              <MenuItem value={0} primaryText="Администратор" />
+            </SelectField><br/>
+          </div>
+          <RaisedButton 
+            label="Создать атлета" 
+            style={styles.sendBtn}
+            onClick={this.handleSubmit}
+            disabled={isDisabled} 
+            className="create-btn-athlete"
+
+          /><br/>
+          {this.renderLoader()}
+          {this.redirectToMain()}
+        </div>
       </div>
     )
   }

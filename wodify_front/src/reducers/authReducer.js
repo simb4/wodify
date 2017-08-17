@@ -1,6 +1,30 @@
 import { combineReducers } from 'redux';
 import * as actionTypes from '../constants/actionTypes';
 
+const isPasswordSet = (state = false, action) => {
+    switch(action.type) {
+        case actionTypes.ACTION_SET_PASSWORD_STARTED:
+        case actionTypes.ACTION_SET_PASSWORD_FAILED:
+            return false
+        case actionTypes.ACTION_SET_PASSWORD_SUCCESS:
+            return true
+        default:
+            return state 
+    }
+}
+
+const isPasswordSetting = (state = false, action) => {
+    switch(action.type) {
+        case actionTypes.ACTION_SET_PASSWORD_STARTED:
+            return true
+        case actionTypes.ACTION_SET_PASSWORD_SUCCESS:
+        case actionTypes.ACTION_SET_PASSWORD_FAILED:
+            return false
+        default:
+            return state 
+    }
+}
+
 const isPasswordChanged = (state = false, action) => {
     switch(action.type) {
         case actionTypes.ACTION_CHANGE_PASSWORD_STARTED:
@@ -116,6 +140,8 @@ const authReducer = combineReducers({
     isPasswordChanging,
     isPasswordChanged,
     errorMessage,
+    isPasswordSetting,
+    isPasswordSet
 });
 
 export default authReducer;
