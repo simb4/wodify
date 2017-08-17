@@ -84,11 +84,6 @@ class _AthleteList extends Component {
       <div className="athlete-list">
         <div className="table-menu">
           <p className="page-title"><b>Атлеты</b></p>
-          <Link to="/admin/addathlete">
-            <FlatButton 
-              label="добавить атлета"
-            />
-          </Link>
         </div>
         {this.renderLoader()}
         <div className="filter">

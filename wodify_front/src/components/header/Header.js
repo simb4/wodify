@@ -128,6 +128,11 @@ class _Header extends Component {
                 <Link to="/admin/profile" className="link">
                   <MenuItem primaryText={user.first_name} />
                 </Link>
+                <Link to="/admin/addathlete" className="link">
+                  <MenuItem 
+                    primaryText="Добавить пользователя"
+                  />
+                </Link>
                 <Link to="/login" className="link">
                   <MenuItem 
                     primaryText="Выйти" 

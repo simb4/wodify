@@ -7,8 +7,7 @@ import moment from 'moment'
 import { TIME } from '../../constants/schedule'
 import Popover from 'material-ui/Popover';
 import Divider from 'material-ui/Divider';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
+import {List, ListItem} from 'material-ui/List';
 
 import './workouts.css'
 import {
@@ -99,7 +98,8 @@ class _Workouts extends Component {
           for(var j=0; j<works[i-1].workouts.length; j++){
             if(works[i-1].workouts[j].start_time === TIME[row]){
               WORKOUT = works[i-1].workouts[j]
-              title = WORKOUT.start_time + " " + WORKOUT.name
+              var stTime = WORKOUT.start_time.substring(0,5)
+              title = stTime + " " + WORKOUT.name
               coach = WORKOUT.coach.first_name + " " + WORKOUT.coach.last_name
               registered = WORKOUT.registered + "/" + WORKOUT.max_people
             }
@@ -134,7 +134,11 @@ class _Workouts extends Component {
   }
   handleClose = () => {
     this.setState({open: false});
-  };
+  }
+
+  changeCoach(){
+    console.log("COACH")
+  }
 
   renderWork(work, time){
     var w = work.workouts
@@ -181,9 +185,57 @@ class _Workouts extends Component {
       </TableRow>
     })
   }
+  addWorkout(){
+    console.log("CREATE")
+  }
+  editRegistered(){
+    console.log("EDIT")
+  }
+  renderPopover(){
+    if(title !== "")
+      return (
+        <Popover
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          onRequestClose={this.handleRequestClose}
+        >
+          <List>
+            <ListItem primaryText={title} />
+            <Divider inset={true}/>
+            <ListItem primaryText="Balganym Tulebayeva" />
+            <p className="change-coach" onClick={this.changeCoach.bind(this)}>Поменять тренера</p>
+            <div className="view-registered">
+              <ListItem primaryText={registered} />
+              <p className="edit-registered" onClick={this.editRegistered.bind(this)}>Посмотреть</p>
+            </div>
+          </List>
+        </Popover> 
+      )
+    return (
+      <Popover
+        open={this.state.open}
+        anchorEl={this.state.anchorEl}
+        anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+        targetOrigin={{horizontal: 'left', vertical: 'top'}}
+        onRequestClose={this.handleRequestClose}
+      >
+        <List>
+            <ListItem primaryText={title} />
+            <p 
+              className="add-workout" 
+              onClick={this.addWorkout.bind(this)}>
+                Создать класс
+            </p>
+        </List>
+      </Popover> 
+    )
+  }
   render(){
     return(
       <div className="workout-wrapper">
+        <p className="page-title">Классы</p>
         <Table 
           style={{cursor: "pointer"}}
           onCellClick={this.cellClicked}
@@ -209,22 +261,7 @@ class _Workouts extends Component {
             {this.renderBody()}
           </TableBody> 
         </Table>
-        <Popover
-            open={this.state.open}
-            anchorEl={this.state.anchorEl}
-            anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-            targetOrigin={{horizontal: 'left', vertical: 'top'}}
-            onRequestClose={this.handleRequestClose}
-          >
-            <Menu>
-              <MenuItem primaryText={title} />
-              <Divider inset={true}/>
-              <MenuItem primaryText="Balganym Tulebayeva" />
-              <p>изменить</p>
-              <MenuItem primaryText={registered} />
-
-            </Menu>
-          </Popover> 
+        {this.renderPopover()}
       </div>
     )
   }

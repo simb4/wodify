@@ -138,7 +138,7 @@ class _NewAthlete extends Component {
     return(
       <div className="box-wrapper">
         <div className="registration-wrapper box">
-          <h2 className="box-title">Добавить атлета</h2>
+          <h2 className="box-title">Добавить пользователя</h2>
           <div className="box-fields-athlete">
             <TextField
               style={{width: "300px", textAlign: "left"}}
@@ -155,6 +155,7 @@ class _NewAthlete extends Component {
               onChange={this.handleChangePassword}
               value={this.state.password}
               onKeyPress={this.handleEnter}
+              type="password"
             /><br/>
             <SelectField
               style={{width: "300px"}}
