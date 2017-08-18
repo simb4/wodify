@@ -147,7 +147,7 @@ export const getGyms = (token) => (
       method: "GET",
       headers: {
         ...STD_HEADERS,
-        'auth-token': token
+        'Auth-token': token
       }
     }
   )

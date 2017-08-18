@@ -10,6 +10,12 @@ export const clearFlags = () => (dispatch, getState) => {
   })
 }
 
+export const clearAthleteList = () => (dispatch, getState) => {
+  dispatch({
+    type: actionTypes.ACTION_CLEAR_ATHLETE_LIST
+  })
+}
+
 export const getAthletes = () => (dispatch, getState) => {
 
 	dispatch({
@@ -94,7 +100,7 @@ export const getGyms = () => (dispatch, getState) => {
       },
       error => {
         dispatch({
-          type: actionTypes.ACTION_GET_ATHLETES_FAILED,
+          type: actionTypes.ACTION_GET_GYMS_FAILED,
           errorMessage: ERRORS.NO_INTERNET
         })
       }

@@ -20,13 +20,14 @@ const athleteList = (state = [], action) => {
       return action.athletes
     case actionTypes.ACTION_GET_ATHLETES_STARTED:
     case actionTypes.ACTION_GET_ATHLETES_FAILED:
+    case actionTypes.ACTION_CLEAR_ATHLETE_LIST:
       return []
     default:
       return state
   }
 }
 
-const gettingGyms = (state = false, action) => {
+const isGettingGyms = (state = false, action) => {
   switch(action.type){
     case actionTypes.ACTION_GET_GYMS_SUCCESS:
     case actionTypes.ACTION_GET_GYMS_FAILED:
@@ -174,7 +175,7 @@ const adminReducer = combineReducers({
   creatingWod,
   getWorkouts,
   gymsList,
-  gettingGyms,
+  isGettingGyms,
 });
 
 export default adminReducer;

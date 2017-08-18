@@ -9,6 +9,8 @@ import Popover from 'material-ui/Popover';
 import Divider from 'material-ui/Divider';
 import {List, ListItem} from 'material-ui/List';
 import TextField from 'material-ui/TextField';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 import './workouts.css'
 import {
@@ -52,7 +54,8 @@ class _Workouts extends Component {
       status: 1,
       open: false,
       openDialog: false,
-      create:false
+      create:false,
+      gym: 1,
     }
   }
   componentWillMount(){
@@ -64,9 +67,11 @@ class _Workouts extends Component {
     }
 
     if(this.props.gyms.length === 0){
-      // this.props.getGymList()
+      this.props.getGymList()
     }
   }
+
+  handleGym = (event, index, gym) => this.setState({gym});
 
   handleRequestClose = () => {
     this.setState({
@@ -193,6 +198,13 @@ class _Workouts extends Component {
   editRegistered(){
     console.log("EDIT")
   }
+  getGyms(){
+    return this.props.gyms.map((g) => {
+      return(
+        <MenuItem key={g.id} value={g.id} primaryText={g.name} />
+      )
+    })
+  }
   renderPopover(){
     if(title !== ""){
       return (
@@ -215,26 +227,28 @@ class _Workouts extends Component {
           </List>
         </Popover> 
       )
-    } else if(!this.state.create){
-      return (
-        <Popover
-          open={this.state.open}
-          anchorEl={this.state.anchorEl}
-          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-          targetOrigin={{horizontal: 'left', vertical: 'top'}}
-          onRequestClose={this.handleRequestClose}
-        >
-          <List>
-              <ListItem primaryText={title} />
-              <p 
-                className="add-workout" 
-                onClick={this.addWorkout.bind(this)}>
-                  Создать класс
-              </p>
-          </List>
-        </Popover> 
-      )
-    } else {
+    } 
+    // else if(!this.state.create){
+    //   return (
+    //     <Popover
+    //       open={this.state.open}
+    //       anchorEl={this.state.anchorEl}
+    //       anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+    //       targetOrigin={{horizontal: 'left', vertical: 'top'}}
+    //       onRequestClose={this.handleRequestClose}
+    //     >
+    //       <List>
+    //           <ListItem primaryText={title} />
+    //           <p 
+    //             className="add-workout" 
+    //             onClick={this.addWorkout.bind(this)}>
+    //               Создать класс
+    //           </p>
+    //       </List>
+    //     </Popover> 
+    //   )
+    // } 
+    else {
       return (
         <Popover
           open={this.state.open}
@@ -256,6 +270,13 @@ class _Workouts extends Component {
             <TextField
               floatingLabelText="Максимальное кол-во атлетов"
             /><br/>
+            <SelectField
+              floatingLabelText="Выберите зал"
+              value={this.state.gym}
+              onChange={this.handleGym}
+            >
+              {this.getGyms()}
+            </SelectField>
             {console.log(this.props.gyms)}
           </div>
 
@@ -301,7 +322,8 @@ class _Workouts extends Component {
 
 const mapStateToProps=(state) => ({
   workouts: state.admin.getWorkouts,
-  gyms: state.admin.gymsList
+  gyms: state.admin.gymsList,
+  gettingGyms: state.admin.isGettingGyms
 })
 
 const mapDispatchToProps={

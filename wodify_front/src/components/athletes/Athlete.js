@@ -13,7 +13,7 @@ class Athlete extends Component {
     var user = this.props.athlete;
     var avatar = ""
     if(typeof user !== "undefined"){
-      if(user.avatar_url !== ""){
+      if(user.avatar_url !== null){
         avatar = SERVER_URL + user.avatar_url
       } else {
         avatar = ""
