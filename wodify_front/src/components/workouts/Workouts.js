@@ -11,6 +11,8 @@ import {List, ListItem} from 'material-ui/List';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import FlatButton from 'material-ui/FlatButton'
+
 
 import './workouts.css'
 import {
@@ -37,6 +39,8 @@ var title = ""
 var coach = ""
 var registered = ""
 var start = ""
+var end = ""
+var day = 0
 
 class _Workouts extends Component {
 
@@ -56,6 +60,9 @@ class _Workouts extends Component {
       openDialog: false,
       create:false,
       gym: 1,
+      coach: 0,
+      name: "",
+      maxCount: 0,
     }
   }
   componentWillMount(){
@@ -69,9 +76,15 @@ class _Workouts extends Component {
     if(this.props.gyms.length === 0){
       this.props.getGymList()
     }
+
+    if(this.props.coaches.length === 0){
+      this.props.getCoaches()
+    }
   }
 
   handleGym = (event, index, gym) => this.setState({gym});
+  handleCoach = (event, index, coach) => this.setState({coach});
+
 
   handleRequestClose = () => {
     this.setState({
@@ -93,12 +106,20 @@ class _Workouts extends Component {
 
   cellClicked = (row,column,event) => {
     event.preventDefault();
+    console.log(column)
+    day = column - 1
 
     this.setState({
       open: true,
       anchorEl: event.currentTarget,
     });
     start = TIME[row]
+    end = ""
+    if(typeof TIME[row + 1] === "undefined"){
+      end = "24:00:00"
+    } else {
+      end = TIME[row+1]
+    }
     var works = this.props.workouts
     WORKOUT = {}
     title = ""
@@ -159,7 +180,7 @@ class _Workouts extends Component {
                 <p className="bold"><b>{time + " " + d.name}</b></p>
               </div>
                 <p className="workout-coach">{d.coach.first_name 
-                    + " " + d.coach.last_name}Балганым Тулебаева</p>
+                    + " " + d.coach.last_name}</p>
               <p className="registered"><b>
                 {d.registered+"/"+d.max_people}</b></p>
             </div>
@@ -204,6 +225,32 @@ class _Workouts extends Component {
         <MenuItem key={g.id} value={g.id} primaryText={g.name} />
       )
     })
+  }
+  getCoaches(){
+    return this.props.coaches.map((c) => {
+      return(
+        <MenuItem key={c.id} value={c.id} 
+          primaryText={c.first_name + " " + c.last_name} />
+      )
+    })
+  }
+  handleChangeName = (event) => {
+    this.setState({name: event.target.value})
+  }
+  handleChangeCount = (event) => {
+    this.setState({maxCount: event.target.value})
+  }
+  handleSubmit=()=>{
+    let data = {
+      day_id: day,
+      start_time: start,
+      end_time: end,
+      coach_id: this.state.coach,
+      gym_id: this.state.gym,
+      name: this.state.name,
+      max_people: this.state.maxCount
+    }
+    this.props.addWorkout(data)
   }
   renderPopover(){
     if(title !== ""){
@@ -263,12 +310,17 @@ class _Workouts extends Component {
               defaultValue={start}
               floatingLabelText="Время начала урока"
               fullWidth={false}
+              disabled={true}
             /><br/>
             <TextField
               floatingLabelText="Название класса"
+              value={this.state.name}
+              onChange={this.handleChangeName.bind(this)}
             /><br/>
             <TextField
               floatingLabelText="Максимальное кол-во атлетов"
+              value={this.state.maxCount}
+              onChange={this.handleChangeCount.bind(this)}
             /><br/>
             <SelectField
               floatingLabelText="Выберите зал"
@@ -276,14 +328,23 @@ class _Workouts extends Component {
               onChange={this.handleGym}
             >
               {this.getGyms()}
-            </SelectField>
-            {console.log(this.props.gyms)}
+            </SelectField><br/>
+            <SelectField
+              floatingLabelText="Выберите тренера"
+              value={this.state.coach}
+              onChange={this.handleCoach}
+            >
+              {this.getCoaches()}
+            </SelectField><br/>
+            <FlatButton 
+              className="create-workout-btn" 
+              label="Создать" 
+              onClick={this.handleSubmit.bind(this)}
+            />
           </div>
-
         </Popover> 
       )
     }
-    
   }
   render(){
     return(
@@ -323,12 +384,16 @@ class _Workouts extends Component {
 const mapStateToProps=(state) => ({
   workouts: state.admin.getWorkouts,
   gyms: state.admin.gymsList,
-  gettingGyms: state.admin.isGettingGyms
+  gettingGyms: state.admin.isGettingGyms,
+  coaches: state.admin.coachList,
+  isWorkoutCreated: state.admin.isWorkoutCreated
 })
 
 const mapDispatchToProps={
   getWorkouts: action.getWeeksWorkout,
-  getGymList: action.getGyms
+  getGymList: action.getGyms,
+  getCoaches: action.getCoaches,
+  addWorkout: action.addWorkout
 }
 
 const Workouts=connect(

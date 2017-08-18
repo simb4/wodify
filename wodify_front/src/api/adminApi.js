@@ -7,6 +7,7 @@ const addAthleteUrl = SERVER_URL + "main/add_athlete/"
 const addComponentUrl = SERVER_URL + "main/add_component/"
 const addProgramUrl = SERVER_URL + "main/add_program/"
 const addSectionUrl = SERVER_URL + "main/add_section/"
+const addWorkoutUrl = SERVER_URL + "/main/add_workout/"
 const addWodUrl = SERVER_URL + "main/add_wod/"
 const listAthletesUrl = SERVER_URL + "main/list_athletes/"
 const listProgramsUrl = SERVER_URL + "main/list_programs/"
@@ -15,6 +16,7 @@ const listGymsUrl = SERVER_URL + "/main/list_gyms/"
 const registrationUrl = SERVER_URL + "main/register/"
 const getWodOfWeekUrl = SERVER_URL + "main/get_wods_of_week/"
 const getWorkoutsOfWeekUrl = SERVER_URL + "main/get_workouts_of_week/"
+const listCoachesUrl = SERVER_URL + "/main/list_coaches/"
 
 export const getWorkoutsOfWeek = (token, data) => (
   fetch(
@@ -33,6 +35,19 @@ export const getWorkoutsOfWeek = (token, data) => (
 export const getWodOfWeek = (token) => (
   fetch(
     getWodOfWeekUrl,
+     {
+      method: 'GET',
+      headers: {
+        ...STD_HEADERS,
+        "auth-token": token,
+     }
+   }
+  )
+)
+
+export const getCoaches = (token) => (
+  fetch(
+    listCoachesUrl,
      {
       method: 'GET',
       headers: {
@@ -69,6 +84,20 @@ export const addAthlete = (token, data) => (
       body: qs.stringify(data)
     }
 	)
+)
+
+export const addWorkout = (token, data) => (
+  fetch(
+    addWorkoutUrl,
+    {
+      method: 'POST',
+      headers: {
+        ...STD_HEADERS,
+        'auth-token': token,
+      },
+      body: qs.stringify(data)
+    }
+  )
 )
 
 export const addComponent = (token, data) => (

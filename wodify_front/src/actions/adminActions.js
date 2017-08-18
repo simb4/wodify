@@ -61,6 +61,50 @@ export const getAthletes = () => (dispatch, getState) => {
 		)
 }
 
+export const getCoaches = () => (dispatch, getState) => {
+
+  dispatch({
+    type: actionTypes.ACTION_GET_COACHES_STARTED,
+  })
+
+  adminApi
+    .getCoaches(getState().user.token)
+    .then(
+      response => {
+        if(response.status !== 200) {
+          dispatch({
+            type: actionTypes.ACTION_GET_COACHES_FAILED,
+            errorMessage: ERRORS.NUMBER + response.status,
+          })
+        } else {
+          response
+          .text()
+          .then(
+            value => {
+              const responseObject = JSON.parse(value)
+              if(responseObject.code === 0){
+                dispatch({
+                  type: actionTypes.ACTION_GET_COACHES_SUCCESS,
+                  coaches: responseObject.coaches
+                })
+              } else{
+                dispatch({
+                  type: actionTypes.ACTION_GET_COACHES_FAILED,
+                  errorMessage: responseObject.message
+                })
+              }
+            }
+          )
+        }
+      },
+      error => {
+        dispatch({
+          type: actionTypes.ACTION_GET_COACHES_FAILED,
+          errorMessage: ERRORS.NO_INTERNET
+        })
+      }
+    )
+}
 
 export const getGyms = () => (dispatch, getState) => {
 
@@ -283,6 +327,52 @@ export const addAthlete = (data) => (dispatch, getState) => {
 				})
 			}
 		)
+}
+
+export const addWorkout = (data) => (dispatch, getState) => {
+
+  dispatch({
+    type: actionTypes.ACTION_ADD_WORKOUT_STARTED,
+  })
+
+  adminApi
+    .addWorkout(getState().user.token, data)
+    .then(
+      response => {
+        if(response.status !== 200) {
+          dispatch({
+            type: actionTypes.ACTION_ADD_WORKOUT_FAILED,
+            errorMessage: ERRORS.NUMBER + response.status,
+          })
+        } else {
+          response
+            .text()
+            .then(
+              value => {
+                const responseObject = JSON.parse(value)
+                if(responseObject.code === 0){
+                  console.log(responseObject)
+                  dispatch({
+                    type: actionTypes.ACTION_ADD_WORKOUT_SUCCESS,
+                    workout: responseObject,
+                  })
+                } else {
+                  dispatch({
+                    type: actionTypes.ACTION_ADD_WORKOUT_FAILED,
+                    errorMessage: responseObject.message,
+                  })
+                }
+              }
+            )
+        }
+      },
+      error => {
+        dispatch({
+          type: actionTypes.ACTION_ADD_WORKOUT_FAILED,
+          errorMessage: ERRORS.NO_INTERNET,
+        })
+      }
+    )
 }
 
 export const registerUser = (data) => (dispatch, getState) => {

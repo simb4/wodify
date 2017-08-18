@@ -27,6 +27,18 @@ const athleteList = (state = [], action) => {
   }
 }
 
+const coachList = (state = [], action) => {
+  switch(action.type){
+    case actionTypes.ACTION_GET_COACHES_SUCCESS:
+      return action.coaches
+    case actionTypes.ACTION_GET_COACHES_STARTED:
+    case actionTypes.ACTION_GET_COACHES_FAILED:
+      return []
+    default:
+      return state
+  }
+}
+
 const isGettingGyms = (state = false, action) => {
   switch(action.type){
     case actionTypes.ACTION_GET_GYMS_SUCCESS:
@@ -162,6 +174,18 @@ const isRegisteringLoginExist = (state = false, action) => {
   }
 }
 
+const isWorkoutCreated = (state = false, action) => {
+  switch(action.type) {
+    case actionTypes.ACTION_ADD_WORKOUT_SUCCESS:
+      return true
+    case actionTypes.ACTION_ADD_WORKOUT_FAILED:
+    case actionTypes.ACTION_ADD_WORKOUT_STARTED:
+      return false
+    default:
+      return state
+  }
+}
+
 const adminReducer = combineReducers({
   athleteList,
   isRegistering,
@@ -176,6 +200,8 @@ const adminReducer = combineReducers({
   getWorkouts,
   gymsList,
   isGettingGyms,
+  coachList,
+  isWorkoutCreated
 });
 
 export default adminReducer;
