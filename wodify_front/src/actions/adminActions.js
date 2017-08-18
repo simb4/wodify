@@ -55,6 +55,52 @@ export const getAthletes = () => (dispatch, getState) => {
 		)
 }
 
+
+export const getGyms = () => (dispatch, getState) => {
+
+  dispatch({
+    type: actionTypes.ACTION_GET_GYMS_STARTED,
+  })
+
+  adminApi
+    .getGyms(getState().user.token)
+    .then(
+      response => {
+        if(response.status !== 200) {
+          dispatch({
+            type: actionTypes.ACTION_GET_GYMS_FAILED,
+            errorMessage: ERRORS.NUMBER + response.status,
+          })
+        } else {
+          response
+          .text()
+          .then(
+            value => {
+              const responseObject = JSON.parse(value)
+              if(responseObject.code === 0){
+                dispatch({
+                  type: actionTypes.ACTION_GET_GYMS_SUCCESS,
+                  gyms: responseObject.gyms
+                })
+              } else{
+                dispatch({
+                  type: actionTypes.ACTION_GET_GYMS_FAILED,
+                  errorMessage: responseObject.message
+                })
+              }
+            }
+          )
+        }
+      },
+      error => {
+        dispatch({
+          type: actionTypes.ACTION_GET_ATHLETES_FAILED,
+          errorMessage: ERRORS.NO_INTERNET
+        })
+      }
+    )
+}
+
 export const createWod = (data) => (dispatch, getState) => {
 	dispatch({
 		type: actionTypes.ACTION_ADD_WOD_STARTED,

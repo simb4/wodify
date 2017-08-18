@@ -92,3 +92,8 @@ td div div div{
   color: #007AFF;
   cursor: pointer;
 }
+
+.create-box{
+  width: 90%;
+  margin: 10px auto;
+}

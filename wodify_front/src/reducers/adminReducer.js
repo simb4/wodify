@@ -26,6 +26,30 @@ const athleteList = (state = [], action) => {
   }
 }
 
+const gettingGyms = (state = false, action) => {
+  switch(action.type){
+    case actionTypes.ACTION_GET_GYMS_SUCCESS:
+    case actionTypes.ACTION_GET_GYMS_FAILED:
+      return false
+    case actionTypes.ACTION_GET_GYMS_STARTED:
+      return true
+    default:
+      return state
+  }
+}
+
+const gymsList = (state = [], action) => {
+  switch(action.type){
+    case actionTypes.ACTION_GET_GYMS_SUCCESS:
+      return action.gyms
+    case actionTypes.ACTION_GET_GYMS_STARTED:
+    case actionTypes.ACTION_GET_GYMS_FAILED:
+      return []
+    default:
+      return state
+  }
+}
+
 const isGettingAthletes = (state = false, action) => {
   switch(action.type){
     case actionTypes.ACTION_GET_ATHLETES_STARTED:
@@ -149,6 +173,8 @@ const adminReducer = combineReducers({
   isGettingAthletes,
   creatingWod,
   getWorkouts,
+  gymsList,
+  gettingGyms,
 });
 
 export default adminReducer;

@@ -8,6 +8,7 @@ import { TIME } from '../../constants/schedule'
 import Popover from 'material-ui/Popover';
 import Divider from 'material-ui/Divider';
 import {List, ListItem} from 'material-ui/List';
+import TextField from 'material-ui/TextField';
 
 import './workouts.css'
 import {
@@ -33,6 +34,7 @@ var WORKOUT = {}
 var title = ""
 var coach = ""
 var registered = ""
+var start = ""
 
 class _Workouts extends Component {
 
@@ -49,9 +51,9 @@ class _Workouts extends Component {
       abonement: 1,
       status: 1,
       open: false,
+      openDialog: false,
+      create:false
     }
-    // this.handleOpen = this.handleOpen.bind(this)
-    // this.handleClose = this.handleClose.bind(this)
   }
   componentWillMount(){
     if(this.props.workouts.length === 0){
@@ -60,11 +62,16 @@ class _Workouts extends Component {
       }
       this.props.getWorkouts(data)
     }
+
+    if(this.props.gyms.length === 0){
+      // this.props.getGymList()
+    }
   }
 
   handleRequestClose = () => {
     this.setState({
       open: false,
+      create: true
     });
   };
 
@@ -86,7 +93,7 @@ class _Workouts extends Component {
       open: true,
       anchorEl: event.currentTarget,
     });
-
+    start = TIME[row]
     var works = this.props.workouts
     WORKOUT = {}
     title = ""
@@ -128,12 +135,6 @@ class _Workouts extends Component {
         )
       })
     }
-  }
-  handleOpen(workout){
-    this.setState({open: true});
-  }
-  handleClose = () => {
-    this.setState({open: false});
   }
 
   changeCoach(){
@@ -186,13 +187,14 @@ class _Workouts extends Component {
     })
   }
   addWorkout(){
-    console.log("CREATE")
+    console.log("ADDDDD")
+    this.setState({create: true})
   }
   editRegistered(){
     console.log("EDIT")
   }
   renderPopover(){
-    if(title !== "")
+    if(title !== ""){
       return (
         <Popover
           open={this.state.open}
@@ -213,24 +215,54 @@ class _Workouts extends Component {
           </List>
         </Popover> 
       )
-    return (
-      <Popover
-        open={this.state.open}
-        anchorEl={this.state.anchorEl}
-        anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-        targetOrigin={{horizontal: 'left', vertical: 'top'}}
-        onRequestClose={this.handleRequestClose}
-      >
-        <List>
-            <ListItem primaryText={title} />
-            <p 
-              className="add-workout" 
-              onClick={this.addWorkout.bind(this)}>
-                Создать класс
-            </p>
-        </List>
-      </Popover> 
-    )
+    } else if(!this.state.create){
+      return (
+        <Popover
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          onRequestClose={this.handleRequestClose}
+        >
+          <List>
+              <ListItem primaryText={title} />
+              <p 
+                className="add-workout" 
+                onClick={this.addWorkout.bind(this)}>
+                  Создать класс
+              </p>
+          </List>
+        </Popover> 
+      )
+    } else {
+      return (
+        <Popover
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          onRequestClose={this.handleRequestClose}
+        >
+          <div className="create-box">
+            <h3>Создать класс</h3>
+            <TextField
+              defaultValue={start}
+              floatingLabelText="Время начала урока"
+              fullWidth={false}
+            /><br/>
+            <TextField
+              floatingLabelText="Название класса"
+            /><br/>
+            <TextField
+              floatingLabelText="Максимальное кол-во атлетов"
+            /><br/>
+            {console.log(this.props.gyms)}
+          </div>
+
+        </Popover> 
+      )
+    }
+    
   }
   render(){
     return(
@@ -269,10 +301,12 @@ class _Workouts extends Component {
 
 const mapStateToProps=(state) => ({
   workouts: state.admin.getWorkouts,
+  gyms: state.admin.gymsList
 })
 
 const mapDispatchToProps={
   getWorkouts: action.getWeeksWorkout,
+  getGymList: action.getGyms
 }
 
 const Workouts=connect(
