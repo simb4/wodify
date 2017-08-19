@@ -24,7 +24,6 @@ export const updatingProfile = (data) => (dispatch, getState) => {
               value => {
                 const responseObject = JSON.parse(value)
                 if(responseObject.code === 0){
-                  console.log(responseObject, "234567890")
                   dispatch({
                     type: actionTypes.ACTION_UPDATE_PROFILE_SUCCESS,
                     user: responseObject.user

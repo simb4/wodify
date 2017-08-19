@@ -72,17 +72,24 @@ export const login = (data) => (dispatch, getState) => {
             .then(
               value => {
                 const responseObject = JSON.parse(value);
-                if(responseObject.code === 0){
+                if(responseObject.code === 0 && responseObject.user.administrator){
                   dispatch({
                     type: actionTypes.ACTION_LOGIN_SUCCESS,
                     token: responseObject.token,
                     user: responseObject.user
                   });
                 }else{
-                  dispatch({
-                    type: actionTypes.ACTION_LOGIN_FAILED,
-                    errorMessage: ERRORS.INCORRECT_PASSWORD
-                  });
+                  if(!responseObject.user.administrator){
+                    dispatch({
+                      type: actionTypes.ACTION_LOGIN_FAILED,
+                      errorMessage: "Войти могут только пользователи со статусом администратора"
+                    });
+                  } else {
+                    dispatch({
+                      type: actionTypes.ACTION_LOGIN_FAILED,
+                      errorMessage: ERRORS.INCORRECT_PASSWORD
+                    });
+                  }
                 }
               }
             );

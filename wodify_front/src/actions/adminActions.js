@@ -351,7 +351,6 @@ export const addWorkout = (data) => (dispatch, getState) => {
               value => {
                 const responseObject = JSON.parse(value)
                 if(responseObject.code === 0){
-                  console.log(responseObject)
                   dispatch({
                     type: actionTypes.ACTION_ADD_WORKOUT_SUCCESS,
                     workout: responseObject,

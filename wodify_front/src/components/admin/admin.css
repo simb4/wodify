@@ -24,6 +24,7 @@
 .profile-wrapper{
   width: 90%;
   margin: 10px auto;
+  margin-bottom: 50px;
 }
 
 .gym-info{
@@ -33,3 +34,24 @@
 .white-space{
   width: 20px;
 }
+
+img{
+  max-width: 200px;
+}
+
+.upload {
+  height: 400px;
+}
+
+.buttons{
+  width: 100%;
+  display: inline-flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.change-btn{
+  margin-right: 10px;
+}
+
+

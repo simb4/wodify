@@ -96,8 +96,8 @@ class _Header extends Component {
       } else if(this.props.user.administrator !== null){
         user = this.props.user.administrator
       }
-      var avatar = user.avatar_url
-      if(avatar !== null){
+      var avatar = null
+      if(user.avatar_url){
         avatar = SERVER_URL + avatar
       }
       return(
