@@ -29,6 +29,10 @@ class _NewAthlete extends Component {
       password: "",
       errorText: "",
       errorPass: "",
+      errorName: "",
+      errorSurname: "",
+      name: "",
+      surname: "",
       value: 1,
       isValidPassword: false,
     }
@@ -38,6 +42,8 @@ class _NewAthlete extends Component {
       this.handleChangePassword.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleEnter=this.handleEnter.bind(this)
+    this.handleChangeName = this.handleChangeName.bind(this)
+    this.handleChangeSurname=this.handleChangeSurname.bind(this)
   }
 
   componentWillReceiveProps(nextProps){
@@ -57,13 +63,27 @@ class _NewAthlete extends Component {
         let data = {
           username: this.state.username, 
           password: this.state.password, 
-          user_type: this.state.value
+          user_type: this.state.value,
+          first_name: this.state.name,
+          last_name: this.state.surname
         }
         this.props.register(data)
     }
   }
   
   handleChange = (event, index, value) => this.setState({value})
+  handleChangeName(e){
+    var n = e.target.value
+    this.setState({
+      name: n,
+    })
+  }
+  handleChangeSurname(e){
+    var s = e.target.value
+    this.setState({
+      surname: s,
+    })
+  }
   handleChangeEmail(e){
     var email = e.target.value
     this.setState({
@@ -77,6 +97,17 @@ class _NewAthlete extends Component {
     })
   }
   handleSubmit(){
+
+    if(this.state.name === ""){
+      this.setState({errorName: "Введите имя пользователя"})
+      return
+    }
+
+    if(this.state.surname === ""){
+      this.setState({errorSurname: "Введите фамилию пользователя"})
+      return
+    }
+
     let username = this.state.username
     if(username.includes("@")){
       if(!emailValidation(username)){
@@ -140,6 +171,22 @@ class _NewAthlete extends Component {
         <div className="registration-wrapper box">
           <h2 className="box-title">Добавить пользователя</h2>
           <div className="box-fields-athlete">
+            <TextField
+              style={{width: "300px", textAlign: "left"}}
+              hintText="Имя"
+              errorText={this.state.errorName}
+              onChange={this.handleChangeName}
+              value={this.state.name}
+              onKeyPress={this.handleEnter}
+            /><br/>
+            <TextField
+              style={{width: "300px", textAlign: "left"}}
+              hintText="Фамилия"
+              errorText={this.state.errorSurname}
+              onChange={this.handleChangeSurname}
+              value={this.state.surname}
+              onKeyPress={this.handleEnter}
+            /><br/>
             <TextField
               style={{width: "300px", textAlign: "left"}}
               hintText="Email"

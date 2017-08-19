@@ -36,7 +36,7 @@ var styles = {
 
 var WORKOUT = {}
 var title = ""
-var coach = ""
+// var coach = ""
 var registered = ""
 var start = ""
 var end = ""
@@ -106,7 +106,6 @@ class _Workouts extends Component {
 
   cellClicked = (row,column,event) => {
     event.preventDefault();
-    console.log(column)
     day = column - 1
 
     this.setState({
@@ -123,7 +122,7 @@ class _Workouts extends Component {
     var works = this.props.workouts
     WORKOUT = {}
     title = ""
-    coach = ""
+    // coach = ""
     registered = ""
     if(works.length > 0){
       for(var i=0; i<works.length; i++){
@@ -133,7 +132,7 @@ class _Workouts extends Component {
               WORKOUT = works[i-1].workouts[j]
               var stTime = WORKOUT.start_time.substring(0,5)
               title = stTime + " " + WORKOUT.name
-              coach = WORKOUT.coach.first_name + " " + WORKOUT.coach.last_name
+              // coach = WORKOUT.coach.first_name + " " + WORKOUT.coach.last_name
               registered = WORKOUT.registered + "/" + WORKOUT.max_people
             }
           }
@@ -213,7 +212,6 @@ class _Workouts extends Component {
     })
   }
   addWorkout(){
-    console.log("ADDDDD")
     this.setState({create: true})
   }
   editRegistered(){

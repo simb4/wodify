@@ -57,6 +57,9 @@ class _AthleteList extends Component {
       this.props.getAthletes({ }, callBack);
     }
   }
+  cellClicked = (row,column,event) => {
+    console.log(row)
+  }
   renderAthlete(athlete) {
     return (
       <Athlete
@@ -77,6 +80,7 @@ class _AthleteList extends Component {
     this.setState({abonement});
   handleChangeStatus = (event, index, status) => 
     this.setState({status});
+
   render() {
     return (
       <div className="athlete-list">
@@ -111,6 +115,8 @@ class _AthleteList extends Component {
           </Toolbar>
         </div>
         <Table 
+          style={{cursor: "pointer"}}
+          onCellClick={this.cellClicked}
           fixedHeader={this.state.fixedHeader}
           selectable={this.state.selectable}
           multiSelectable={this.state.multiSelectable}

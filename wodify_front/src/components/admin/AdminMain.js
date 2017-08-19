@@ -22,7 +22,7 @@ class _AdminMainPage extends Component{
       birth: this.getUser().date_of_birth,
       phone: this.getUser().phone_number,
       email: this.getUser().username,
-      city:  this.getUser().city.name,
+      city:  this.getUser().gym.city.name,
     }
   }
   getUser(){
@@ -34,6 +34,7 @@ class _AdminMainPage extends Component{
     } else {
       user = user.administrator
     }
+
     return user
   }
   getStatus(){
@@ -42,12 +43,18 @@ class _AdminMainPage extends Component{
   renderProfilePhoto(){
     var user = this.getUser()
     var photo = ""
-    if(user.avatar_url !== ""){
+    console.log(user)
+    if(user.avatar_url !== null){
       photo = SERVER_URL + user.avatar_url
     } else {
       photo = ""
     }
-    return <img src={photo} alt="avatar" className="photo"/>
+    return (
+      <div className="change-ava">
+        <img src={photo} alt="avatar" className="photo"/>
+
+      </div>
+    )
   }
 
   handleChangeName = (event) => {
@@ -76,10 +83,11 @@ class _AdminMainPage extends Component{
       first_name: this.state.name,
       last_name: this.state.surname,
       phone_number: this.state.phone,
-      gym_id: this.getUser().gym.id,
+      gym_id: this.getUser(),
       gender: this.getUser().gender,
-      city_id: this.getUser().city.id,
-      date_of_birth: this.state.birth
+      city_id: this.getUser(),
+      date_of_birth: this.state.birth,
+      avatar: this.getUser().avatar_url
     }
 
     this.props.updateProfile(data)
@@ -143,18 +151,18 @@ class _AdminMainPage extends Component{
                 onChange={this.handleChangeDateOfBirth.bind(this)}
             /><br/>
           </div>
-        </div>
-        <FlatButton 
-            label="Изменить" 
-            onClick={this.handleUpdate.bind(this)}
-            className="create-btn-athlete"
-        />
-        <FlatButton 
-            label="Сохранить" 
-            onClick={this.handleSubmit.bind(this)}
-            disabled={this.state.save} 
-            className="create-btn-athlete"
+          <FlatButton 
+              label="Изменить" 
+              onClick={this.handleUpdate.bind(this)}
+              className="create-btn-athlete"
           />
+          <FlatButton 
+              label="Сохранить" 
+              onClick={this.handleSubmit.bind(this)}
+              disabled={this.state.save} 
+              className="create-btn-athlete"
+            />
+        </div>
       </div>
     )
   }

@@ -97,7 +97,7 @@ class _Header extends Component {
         user = this.props.user.administrator
       }
       var avatar = user.avatar_url
-      if(avatar !== ""){
+      if(avatar !== null){
         avatar = SERVER_URL + avatar
       }
       return(
