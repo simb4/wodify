@@ -25,9 +25,35 @@ const getComponents = (state = [], action) => {
   }
 }
 
+const sections = (state = [], action) => {
+  switch(action.type) {
+    case actionTypes.ACTION_CREATE_SECTION_STARTED:
+    case actionTypes.ACTION_CREATE_SECTION_FAILED:
+      return []
+    case actionTypes.ACTION_CREATE_SECTION_SUCCESS:
+      return action.sections
+    default:
+      return state
+  }
+}
+
+const components = (state = [], action) => {
+  switch(action.type) {
+    case actionTypes.ACTION_ADD_COMPONENT_STARTED:
+    case actionTypes.ACTION_ADD_COMPONENT_FAILED:
+      return []
+    case actionTypes.ACTION_ADD_COMPONENT_SUCCESS:
+      return action.components
+    default:
+      return state
+  }
+}
+
 const wodReducer = combineReducers({
     getSections,
     getComponents,
+    sections,
+    components
 });
 
 export default wodReducer

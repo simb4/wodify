@@ -47,6 +47,48 @@ export const getSections = () => (dispatch, getState) => {
     )
 }
 
+export const createSection = (sections) => (dispatch, getState) => {
+  dispatch({
+    type: actionTypes.ACTION_CREATE_SECTION_STARTED,
+    sections: sections
+  })
+
+  try {
+      const serializedSections = JSON.stringify(sections);
+      localStorage.setItem('sections', serializedSections);
+      dispatch({
+        type: actionTypes.ACTION_CREATE_SECTION_SUCCESS,
+        sections: sections
+      })
+    } catch (err) {
+      dispatch({
+        type: actionTypes.ACTION_CREATE_SECTION_FAILED,
+        sections: sections
+      })
+    }
+}
+
+export const createComponent = (components) => (dispatch, getState) => {
+  dispatch({
+    type: actionTypes.ACTION_ADD_COMPONENT_STARTED,
+    components: components
+  })
+
+  try {
+      const serializedComponents = JSON.stringify(components);
+      localStorage.setItem('components', serializedComponents);
+      dispatch({
+        type: actionTypes.ACTION_ADD_COMPONENT_SUCCESS,
+        components: components
+      })
+    } catch (err) {
+      dispatch({
+        type: actionTypes.ACTION_ADD_COMPONENT_FAILED,
+        components: components
+      })
+    }
+}
+
 export const getComponents = (data) => (dispatch, getState) => {
 
   dispatch({

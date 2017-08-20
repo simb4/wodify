@@ -140,3 +140,25 @@
   margin-top: 18%;
   z-index: 0;
 }
+
+.section-wrapper{
+  width: 96%;
+  margin: 10px auto;
+  display: inline-flex;
+}
+
+.section-list{
+  padding: 10px;
+  width: 30%;
+}
+
+.components{
+  width: 70%;
+  height: 100px;
+}
+
+
+
+
+
+

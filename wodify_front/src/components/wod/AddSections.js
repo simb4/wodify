@@ -15,9 +15,10 @@ class _AddSection extends Component {
     super(props)
     this.state = {
       value: 0,
-      component: 0,
+      componentValue: 0,
       wod: [],
-      section: ""
+      section: "",
+      components: {}
     }
   }
   componentWillMount(){
@@ -60,22 +61,51 @@ class _AddSection extends Component {
     this.setState({
       section: sections[value]
     })
+    var allSections = this.props.newSections.slice()
+    allSections.push(sections[value])
+
+    this.props.createSection(allSections)
   }
-  handleChangeComponent = (event, index,component) => {
-    this.setState({component})
+  handleChangeComponent = (event, index,componentValue) => {
+    this.setState({componentValue})
+
     const wod = this.state.wod.slice()
     wod.push({
       section: this.state.section,
-      component: components[component]
+      component: components[componentValue]
     })
     this.setState({
       wod: wod
     })
+    console.log(this.props.newSection)
+
+  }
+
+  renderWod(){
+    var storage = localStorage.getItem('sections');
+    storage = JSON.parse(storage)
+    console.log(storage)
+    // localStorage.removeItem('sections')
+    // return this.state.wod.map((w)=>{
+    //   return (
+    //     <div className="wods" key={w.component.id}>
+    //       {console.log(w)}
+    //       <h3>{w.section}</h3>
+    //       <pre>    {w.component.name} ({w.component.description ? 
+    //         w.component.description : "нет описания"})</pre>
+    //     </div>
+    //   )
+    // })
+    if(storage)
+      return storage.map((s, i) => {
+        return <p key={i}>{s}</p>
+      })
+    return
   }
 
   render(){
     return(
-      <div>
+      <div className="section-wrapper">
         <div className="section-list">
           <SelectField
             floatingLabelText="Выберите Секцию"
@@ -83,17 +113,17 @@ class _AddSection extends Component {
             onChange={this.handleChange}
           >
             {this.renderSectionList()}
-          </SelectField>
+          </SelectField><br/>
           <SelectField
               floatingLabelText="Выберите компоненту"
-              value={this.state.component}
+              value={this.state.componentValue}
               onChange={this.handleChangeComponent}
             >
             {this.renderComponentList()}
           </SelectField>
         </div>
-        <div>
-          
+        <div className="components">
+          {this.renderWod()}
         </div>
       </div>
     )
@@ -102,12 +132,14 @@ class _AddSection extends Component {
 
 const mapStateToProps = (state) => ({
   sections: state.wod.getSections,
-  components: state.wod.getComponents
+  components: state.wod.getComponents,
+  newSections: state.wod.sections
 })
 
 const mapDispatchToProps = {
   getSections: actions.getSections,
   getComponents: actions.getComponents,
+  createSection: actions.createSection,
 }
 
 const AddSection = connect(
