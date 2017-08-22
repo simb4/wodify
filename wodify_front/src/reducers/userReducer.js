@@ -30,6 +30,7 @@ const isProfileUpdating = (state = false, action) => {
 			return true
 		case actionTypes.ACTION_UPDATE_PROFILE_SUCCESS:
 		case actionTypes.ACTION_UPDATE_PROFILE_FAILED:
+		case actionTypes.ACTION_LOGGED_OUT:
 			return false
 		default:
 			return state

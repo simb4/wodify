@@ -56,7 +56,8 @@ class _CreateWod extends Component {
     />
   }
 
-  handleProgramChange = (event, index, program) => this.setState({program});
+  handleProgramChange = (event, index, program) => 
+    this.setState({program});
 
   handleSubmit(){
 
@@ -66,6 +67,10 @@ class _CreateWod extends Component {
     }
     if(this.state.date !== ""){
       this.props.onCreateWod(data)
+      localStorage.removeItem('components')
+      localStorage.removeItem('sections')
+      localStorage.removeItem('wod_created')
+      localStorage.removeItem('wod_id')
     }
   }
 
@@ -137,7 +142,7 @@ const mapStateToProps = (state) => ({
   programs: state.admin.programList,
   isLoggedIn: state.auth.isLoggedIn,
   isLoading: state.admin.creatingWod,
-  // wodCreated: state.admin.isWodCreated,
+  wodCreated: state.admin.isWodCreated,
 })
 
 const mapDispatchToProps = {

@@ -47,6 +47,12 @@ export const getSections = () => (dispatch, getState) => {
     )
 }
 
+export const clearWodCreated = () => (dispatch, getState) => {
+  dispatch({
+    type: actionTypes.ACTION_CLEAR_WOD_CREATED,
+  })
+}
+
 export const createSection = (sections) => (dispatch, getState) => {
   dispatch({
     type: actionTypes.ACTION_CREATE_SECTION_STARTED,
@@ -134,6 +140,50 @@ export const getComponents = (data) => (dispatch, getState) => {
     )
 }
 
+export const fillWod = (data) => (dispatch, getState) => {
+
+  dispatch({
+    type: actionTypes.ACTION_FILL_WOD_STARTED,
+  })
+
+  adminApi
+    .fillWod(getState().user.token, data)
+    .then(
+      response => {
+        if(response.status !== 200) {
+          dispatch({
+            type: actionTypes.ACTION_FILL_WOD_FAILED,
+            errorMessage: ERRORS.NUMBER + response.status,
+          })
+        } else {
+          response
+          .text()
+          .then(
+            value => {
+              const responseObject = JSON.parse(value)
+              if(responseObject.code === 0){
+                dispatch({
+                  type: actionTypes.ACTION_FILL_WOD_SUCCESS,
+                  wods: responseObject.wods
+                })
+              } else{
+                dispatch({
+                  type: actionTypes.ACTION_FILL_WOD_FAILED,
+                  errorMessage: responseObject.message
+                })
+              }
+            }
+          )
+        }
+      },
+      error => {
+        dispatch({
+          type: actionTypes.ACTION_FILL_WOD_FAILED,
+          errorMessage: ERRORS.NO_INTERNET
+        })
+      }
+    )
+}
 
 
 

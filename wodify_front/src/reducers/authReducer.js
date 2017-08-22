@@ -5,6 +5,7 @@ const isPasswordSet = (state = false, action) => {
     switch(action.type) {
         case actionTypes.ACTION_SET_PASSWORD_STARTED:
         case actionTypes.ACTION_SET_PASSWORD_FAILED:
+        case actionTypes.ACTION_LOGGED_OUT:
             return false
         case actionTypes.ACTION_SET_PASSWORD_SUCCESS:
             return true
@@ -19,6 +20,7 @@ const isPasswordSetting = (state = false, action) => {
             return true
         case actionTypes.ACTION_SET_PASSWORD_SUCCESS:
         case actionTypes.ACTION_SET_PASSWORD_FAILED:
+        case actionTypes.ACTION_LOGGED_OUT:
             return false
         default:
             return state 
@@ -29,6 +31,7 @@ const isPasswordChanged = (state = false, action) => {
     switch(action.type) {
         case actionTypes.ACTION_CHANGE_PASSWORD_STARTED:
         case actionTypes.ACTION_CHANGE_PASSWORD_FAILED:
+        case actionTypes.ACTION_LOGGED_OUT:
             return false
         case actionTypes.ACTION_CHANGE_PASSWORD_SUCCESS:
             return true
@@ -43,6 +46,7 @@ const isPasswordChanging = (state = false, action) => {
             return true
         case actionTypes.ACTION_CHANGE_PASSWORD_SUCCESS:
         case actionTypes.ACTION_CHANGE_PASSWORD_FAILED:
+        case actionTypes.ACTION_LOGGED_OUT:
             return false
         default:
             return state 
@@ -56,6 +60,7 @@ const isLoginExist = (state = false, action) => {
     case actionTypes.ACTION_CHECK_LOGIN_NOTEXIST:
     case actionTypes.ACTION_CHECK_LOGIN_FAILED:
     case actionTypes.ACTION_CHECK_LOGIN_STARTED:
+    case actionTypes.ACTION_LOGGED_OUT:
         return false;
     default:
         return state;

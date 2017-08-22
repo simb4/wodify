@@ -23,7 +23,7 @@ class _AdminMainPage extends Component{
       birth: this.getUser().date_of_birth,
       phone: this.getUser().phone_number,
       email: this.getUser().username,
-      city:  this.getUser().city.name,
+      city:  this.getUser().gym.city.name,
       showModal: false,
       avatar: this.getUser().avatar_url
     }
@@ -103,7 +103,6 @@ class _AdminMainPage extends Component{
       )
   }
 
-
   getUser(){
     var user = this.props.user
     if(user.athlete !== null){
@@ -178,7 +177,7 @@ class _AdminMainPage extends Component{
       phone_number: this.state.phone,
       gym_id: this.getUser().gym.id,
       gender: this.getUser().gender,
-      city_id: this.getUser().city.id,
+      city_id: this.getUser().gym.city.id,
       avatar_url: this.getUser().avatar_url,
       date_of_birth: this.state.birth
     }

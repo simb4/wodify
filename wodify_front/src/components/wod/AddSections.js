@@ -4,6 +4,7 @@ import * as actions from "../../actions/wodActions"
 
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import RaisedButton from 'material-ui/RaisedButton'
 
 import "./wod.css"
 
@@ -18,21 +19,24 @@ class _AddSection extends Component {
       componentValue: 0,
       wod: [],
       section: "",
-      components: {}
+      components: {},
+      weight: false,
+      sets: 0,
+      reps: 0,
     }
   }
   componentWillMount(){
     if(this.props.sections.length === 0){
       this.props.getSections()
     }
+    
+    var id = this.props.wodCreated.id
+    if(typeof id !== "undefined"){
+      localStorage.setItem('wod_id', this.props.wodCreated.id);
+    }
+
   }
 
-  componentWillUpdate(){
-    // this.props.getComponents({section_id: this.state.value})
-  }
-  // componentWillReceiveProps(nextProps){
-  //   this.props.getComponents({section_id: this.state.value})
-  // }
   renderSectionList(){
     if(this.props.sections){
       return this.props.sections.map((s) => {
@@ -59,9 +63,17 @@ class _AddSection extends Component {
       this.props.getComponents({section_id: value})
     }
     this.setState({
-      section: sections[value]
+      section: sections[value],
+      sets: 0,
+      reps: 0,
+      weight: false,
     })
-    var allSections = this.props.newSections.slice()
+    var allSections = localStorage.getItem('sections');
+    allSections = JSON.parse(allSections)
+    if(!allSections){
+      allSections = this.props.newSections.slice()
+    }
+
     allSections.push(sections[value])
 
     this.props.createSection(allSections)
@@ -69,62 +81,168 @@ class _AddSection extends Component {
   handleChangeComponent = (event, index,componentValue) => {
     this.setState({componentValue})
 
-    const wod = this.state.wod.slice()
-    wod.push({
-      section: this.state.section,
-      component: components[componentValue]
-    })
-    this.setState({
-      wod: wod
-    })
-    console.log(this.props.newSection)
+    var allComponents = localStorage.getItem('components')
+    allComponents = JSON.parse(allComponents)
+
+    if(!allComponents){
+      allComponents = this.props.newComponents
+    }
+
+    var newComponent = components[componentValue]
+
+    if(this.state.weight){
+      newComponent = {...newComponent, sets: this.state.sets, 
+      reps: this.state.reps}
+    }
+
+    allComponents.push(newComponent)
+
+    this.props.createComponent(allComponents)
 
   }
 
+  handleSets = (event) => {
+    this.setState({sets: event.target.value, weight: true})
+  }
+
+  handleReps= (event) => {
+    this.setState({reps: event.target.value, weight: true})
+  }
+
+  handleSubmit = () => {
+
+    var submitSections = localStorage.getItem('sections');
+    var submitComponents = localStorage.getItem('components');
+
+    submitSections = JSON.parse(submitSections)
+    submitComponents = JSON.parse(submitComponents)
+
+
+    var submitting = []
+    submitSections.map((m, i)=>{
+      var r = {
+        section: m,
+        components: submitComponents[i]
+      }
+      submitting.push(r)
+      return 
+    })
+
+    var submitting2 = []
+
+    submitting.map((m, i) => {
+      var r = {
+        component_id: m.components.id,
+        description: m
+      }
+      submitting2.push(r)
+      return 
+    })
+
+    var id = localStorage.getItem('wod_id')
+    id = JSON.parse(id)
+
+    let data = {
+      wod_id: id,
+      components: submitting2
+    }
+
+    this.props.fillWod(data)
+
+    // this.props.clearWodCreated()
+
+  }
+
+  renderScoringType(type){
+    if(type === 3){
+      return (  
+        <div className="weight-scoring">
+          <input 
+            placeholder="sets" 
+            className="weight-input"
+            onChange={this.handleSets.bind(this)}
+          ></input>
+          <pre> X </pre>
+          <input 
+            placeholder="reps" 
+            className="weight-input"
+            onChange={this.handleReps.bind(this)}
+          ></input>
+        </div>
+      )
+    }
+  }
   renderWod(){
-    var storage = localStorage.getItem('sections');
-    storage = JSON.parse(storage)
-    console.log(storage)
-    // localStorage.removeItem('sections')
-    // return this.state.wod.map((w)=>{
-    //   return (
-    //     <div className="wods" key={w.component.id}>
-    //       {console.log(w)}
-    //       <h3>{w.section}</h3>
-    //       <pre>    {w.component.name} ({w.component.description ? 
-    //         w.component.description : "нет описания"})</pre>
-    //     </div>
-    //   )
-    // })
-    if(storage)
-      return storage.map((s, i) => {
-        return <p key={i}>{s}</p>
+    var sectionsFromStorage = localStorage.getItem('sections');
+    var componentsFromStorage = localStorage.getItem('components');
+
+    sectionsFromStorage = JSON.parse(sectionsFromStorage)
+    componentsFromStorage = JSON.parse(componentsFromStorage)
+
+    if(sectionsFromStorage)
+      return sectionsFromStorage.map((s, i) => {
+        if(componentsFromStorage && typeof componentsFromStorage[i] !== "undefined"){
+          return (
+            <div key={i} className="section-box">
+              <h3>{s}</h3>
+              <div className="component-box">
+                <div className="component-name">
+                  <p>{componentsFromStorage[i].name}</p>
+                </div>
+                <div className="component-scoring">
+                  <h3>Метод оценки</h3>
+                  <p>{componentsFromStorage[i].scoring.name}</p>
+                  {this.renderScoringType(componentsFromStorage[i].scoring.id)}
+                </div>
+              </div>
+            </div>
+          )
+        }
+        return (
+          <div key={i} className="section-box">
+            <h3 key={i}>{s}</h3>
+          </div>
+        )
       })
     return
   }
 
-  render(){
-    return(
+  renderPage(){
+    return (
       <div className="section-wrapper">
         <div className="section-list">
-          <SelectField
-            floatingLabelText="Выберите Секцию"
-            value={this.state.value}
-            onChange={this.handleChange}
+        <SelectField
+          floatingLabelText="Выберите Секцию"
+          value={this.state.value}
+          onChange={this.handleChange}
+        >
+          {this.renderSectionList()}
+        </SelectField><br/>
+        <SelectField
+            floatingLabelText="Выберите компоненту"
+            value={this.state.componentValue}
+            onChange={this.handleChangeComponent}
           >
-            {this.renderSectionList()}
-          </SelectField><br/>
-          <SelectField
-              floatingLabelText="Выберите компоненту"
-              value={this.state.componentValue}
-              onChange={this.handleChangeComponent}
-            >
-            {this.renderComponentList()}
-          </SelectField>
-        </div>
-        <div className="components">
-          {this.renderWod()}
-        </div>
+          {this.renderComponentList()}
+        </SelectField>
+      </div>
+      <div className="components">
+        <h3 className="sectionbox-title">Секции</h3>
+        {this.renderWod()}
+      </div>
+      <RaisedButton 
+        className="fillWod-btn"
+        label="Создать" 
+        onClick={this.handleSubmit.bind(this)}
+      />
+    </div>
+    )
+  }
+
+  render(){
+    return(
+      <div className="renderWod-page">
+        {this.renderPage()}
       </div>
     )
   }
@@ -133,13 +251,18 @@ class _AddSection extends Component {
 const mapStateToProps = (state) => ({
   sections: state.wod.getSections,
   components: state.wod.getComponents,
-  newSections: state.wod.sections
+  newSections: state.wod.sections,
+  newComponents: state.wod.components,
+  wodCreated: state.admin.isWodCreated,
 })
 
 const mapDispatchToProps = {
   getSections: actions.getSections,
   getComponents: actions.getComponents,
   createSection: actions.createSection,
+  createComponent: actions.createComponent,
+  fillWod: actions.fillWod,
+  clearWodCreated: actions.clearWodCreated
 }
 
 const AddSection = connect(

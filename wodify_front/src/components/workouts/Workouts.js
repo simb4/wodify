@@ -206,7 +206,7 @@ class _Workouts extends Component {
   }
   renderBody(){
     return TIME.map((r)=>{
-      return <TableRow key={r} style={{height: "20px"}} >
+      return <TableRow key={r} style={{minHeight: "44px"}} >
         {this.renderWorkouts(r)}
       </TableRow>
     })
@@ -249,6 +249,7 @@ class _Workouts extends Component {
       max_people: this.state.maxCount
     }
     this.props.addWorkout(data)
+    this.setState({open: false})
   }
   renderPopover(){
     if(title !== ""){
@@ -272,28 +273,7 @@ class _Workouts extends Component {
           </List>
         </Popover> 
       )
-    } 
-    // else if(!this.state.create){
-    //   return (
-    //     <Popover
-    //       open={this.state.open}
-    //       anchorEl={this.state.anchorEl}
-    //       anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-    //       targetOrigin={{horizontal: 'left', vertical: 'top'}}
-    //       onRequestClose={this.handleRequestClose}
-    //     >
-    //       <List>
-    //           <ListItem primaryText={title} />
-    //           <p 
-    //             className="add-workout" 
-    //             onClick={this.addWorkout.bind(this)}>
-    //               Создать класс
-    //           </p>
-    //       </List>
-    //     </Popover> 
-    //   )
-    // } 
-    else {
+    } else {
       return (
         <Popover
           open={this.state.open}
@@ -344,35 +324,73 @@ class _Workouts extends Component {
       )
     }
   }
+  renderHours(){
+    return TIME.map((t) => {
+      return (
+        <TableRow key={t} style={{minHeight: "44px"}}>
+          <TableRowColumn >{t}</TableRowColumn>
+        </TableRow>
+      )
+    })
+  }
   render(){
     return(
       <div className="workout-wrapper">
         <p className="page-title">Классы</p>
-        <Table 
-          style={{cursor: "pointer"}}
-          onCellClick={this.cellClicked}
-          fixedHeader={this.state.fixedHeader}
-          selectable={this.state.selectable}
-          multiSelectable={this.state.multiSelectable}
-        >
-          <TableHeader
-            displaySelectAll={this.state.showCheckboxes}
-            adjustForCheckbox={this.state.showCheckboxes}
-            enableSelectAll={this.state.enableSelectAll}
-          >
-            <TableRow>
-              {this.renderHeader()}
-            </TableRow>
-          </TableHeader>
-          <TableBody 
-            displayRowCheckbox={this.state.showCheckboxes}
-            deselectOnClickaway={this.state.deselectOnClickaway}
-            showRowHover={this.state.showRowHover}
-            stripedRows={this.state.stripedRows}
-          >
-            {this.renderBody()}
-          </TableBody> 
-        </Table>
+        <div className="tables">
+          <div className="workout-hours">
+            <Table 
+              fixedHeader={this.state.fixedHeader}
+              selectable={this.state.selectable}
+              multiSelectable={this.state.multiSelectable}
+            >
+              <TableHeader
+                displaySelectAll={this.state.showCheckboxes}
+                adjustForCheckbox={this.state.showCheckboxes}
+                enableSelectAll={this.state.enableSelectAll}
+              >
+                <TableRow>
+                  <TableHeaderColumn>
+                  </TableHeaderColumn>
+                </TableRow>
+              </TableHeader>
+              <TableBody 
+                displayRowCheckbox={this.state.showCheckboxes}
+                deselectOnClickaway={this.state.deselectOnClickaway}
+                showRowHover={this.state.showRowHover}
+                stripedRows={this.state.stripedRows}>
+                    {this.renderHours()}
+                  </TableBody>
+            </Table>
+          </div>
+          <div className="workout-table">
+            <Table 
+              style={{cursor: "pointer"}}
+              onCellClick={this.cellClicked}
+              fixedHeader={this.state.fixedHeader}
+              selectable={this.state.selectable}
+              multiSelectable={this.state.multiSelectable}
+            >
+              <TableHeader
+                displaySelectAll={this.state.showCheckboxes}
+                adjustForCheckbox={this.state.showCheckboxes}
+                enableSelectAll={this.state.enableSelectAll}
+              >
+                <TableRow>
+                  {this.renderHeader()}
+                </TableRow>
+              </TableHeader>
+              <TableBody 
+                displayRowCheckbox={this.state.showCheckboxes}
+                deselectOnClickaway={this.state.deselectOnClickaway}
+                showRowHover={this.state.showRowHover}
+                stripedRows={this.state.stripedRows}
+              >
+                {this.renderBody()}
+              </TableBody> 
+            </Table>
+          </div>
+        </div>
         {this.renderPopover()}
       </div>
     )

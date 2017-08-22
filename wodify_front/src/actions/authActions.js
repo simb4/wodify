@@ -195,6 +195,8 @@ export const logout = () => (dispatch, getState) => {
     type: actionTypes.ACTION_LOGGED_OUT,
     user: getState().user,
   });
+
+  localStorage.clear()
 }
 
 // export const logout = () => (dispatch, getState) => {

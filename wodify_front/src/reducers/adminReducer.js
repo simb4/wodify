@@ -5,9 +5,12 @@ const getWorkouts = (state = [], action) => {
   switch(action.type){
     case actionTypes.ACTION_GET_WORKOUTS_SUCCESS:
       return action.workouts
+    // case actionTypes.ACTION_ADD_WORKOUT_SUCCESS:
+    //   return [...state[action.day_id], {date: action.date, ...action.workout}]
     case actionTypes.ACTION_GET_WORKOUTS_STARTED:
-      return []
     case actionTypes.ACTION_GET_WORKOUTS_FAILED:
+    // case actionTypes.ACTION_ADD_WORKOUTS_SUCCESS:
+    case actionTypes.ACTION_LOGGED_OUT:
       return []
     default: 
       return state
@@ -21,6 +24,7 @@ const athleteList = (state = [], action) => {
     case actionTypes.ACTION_GET_ATHLETES_STARTED:
     case actionTypes.ACTION_GET_ATHLETES_FAILED:
     case actionTypes.ACTION_CLEAR_ATHLETE_LIST:
+    case actionTypes.ACTION_LOGGED_OUT:
       return []
     default:
       return state
@@ -33,6 +37,7 @@ const coachList = (state = [], action) => {
       return action.coaches
     case actionTypes.ACTION_GET_COACHES_STARTED:
     case actionTypes.ACTION_GET_COACHES_FAILED:
+    case actionTypes.ACTION_LOGGED_OUT:
       return []
     default:
       return state
@@ -43,6 +48,7 @@ const isGettingGyms = (state = false, action) => {
   switch(action.type){
     case actionTypes.ACTION_GET_GYMS_SUCCESS:
     case actionTypes.ACTION_GET_GYMS_FAILED:
+    case actionTypes.ACTION_LOGGED_OUT:
       return false
     case actionTypes.ACTION_GET_GYMS_STARTED:
       return true
@@ -57,6 +63,7 @@ const gymsList = (state = [], action) => {
       return action.gyms
     case actionTypes.ACTION_GET_GYMS_STARTED:
     case actionTypes.ACTION_GET_GYMS_FAILED:
+    case actionTypes.ACTION_LOGGED_OUT:
       return []
     default:
       return state
@@ -69,6 +76,7 @@ const isGettingAthletes = (state = false, action) => {
       return true
     case actionTypes.ACTION_GET_ATHLETES_FAILED:
     case actionTypes.ACTION_GET_ATHLETES_SUCCESS:
+    case actionTypes.ACTION_LOGGED_OUT:
       return false
     default:
       return state
@@ -81,6 +89,7 @@ const programList = (state = [], action) => {
       return action.programs
     case actionTypes.ACTION_GET_PROGRAMS_FAILED:
     case actionTypes.ACTION_GET_PROGRAMS_STARTED:
+    case actionTypes.ACTION_LOGGED_OUT:
       return []
     default:
       return state
@@ -93,6 +102,7 @@ const wodList = (state = [], action) => {
       return action.wodList
     case actionTypes.ACTION_GET_WOD_FAILED:
     case actionTypes.ACTION_GET_WOD_STARTED:
+    case actionTypes.ACTION_LOGGED_OUT:
       return []
     default: 
       return state
@@ -107,6 +117,23 @@ const creatingWod = (state = "", action) => {
       return "started"
     case actionTypes.ACTION_ADD_WOD_FAILED:
       return action.errorMessage
+    case actionTypes.ACTION_LOGGED_OUT:
+    case actionTypes.ACTION_CLEAR_WOD_CREATED:
+      return ""
+    default: 
+      return state
+  }
+}
+
+const isWodCreated = (state = {}, action) => {
+  switch (action.type){
+    case actionTypes.ACTION_ADD_WOD_SUCCESS:
+      return action.wod
+    case actionTypes.ACTION_ADD_WOD_STARTED:
+    case actionTypes.ACTION_ADD_WOD_FAILED:
+    case actionTypes.ACTION_CLEAR_WOD_CREATED:
+    case actionTypes.ACTION_LOGGED_OUT:
+      return {}
     default: 
       return state
   }
@@ -118,6 +145,7 @@ const gettingWodOfWeek = (state = false, action) => {
       return true
     case actionTypes.ACTION_GET_WEEK_WOD_FAILED:
     case actionTypes.ACTION_GET_WEEK_WOD_SUCCESS:
+    case actionTypes.ACTION_LOGGED_OUT:
       return false
     default:
       return state
@@ -128,6 +156,7 @@ const isWodOfWeekGot = (state = [], action) => {
   switch(action.type){
     case actionTypes.ACTION_GET_WEEK_WOD_STARTED:
     case actionTypes.ACTION_GET_WEEK_WOD_FAILED: 
+    case actionTypes.ACTION_LOGGED_OUT:
       return []
     case actionTypes.ACTION_GET_WEEK_WOD_SUCCESS:
       return action.wodOfWeek
@@ -142,6 +171,7 @@ const isRegistering = (state = false, action) => {
         return true 
       case actionTypes.ACTION_REGISTRATION_SUCCESS:
       case actionTypes.ACTION_REGISTRATION_FAILED:
+      case actionTypes.ACTION_LOGGED_OUT:
         return false
       default:
         return state
@@ -155,6 +185,7 @@ const isRegistered = (state = false, action) => {
     case actionTypes.ACTION_REGISTRATION_FAILED:
     case actionTypes.ACTION_REGISTRATION_STARTED:
     case actionTypes.ACTION_CLEAR_REGISTRATION:
+    case actionTypes.ACTION_LOGGED_OUT:
       return false
     default:
       return state
@@ -168,6 +199,7 @@ const isRegisteringLoginExist = (state = false, action) => {
     case actionTypes.ACTION_CHECK_ACCOUNT_EXISTS:
     case actionTypes.ACTION_CHECK_ACCOUNT_STARTED:
     case actionTypes.ACTION_CHECK_ACCOUNT_FAILED:
+    case actionTypes.ACTION_LOGGED_OUT:
       return false
     default:
       return state
@@ -180,6 +212,7 @@ const isWorkoutCreated = (state = false, action) => {
       return true
     case actionTypes.ACTION_ADD_WORKOUT_FAILED:
     case actionTypes.ACTION_ADD_WORKOUT_STARTED:
+    case actionTypes.ACTION_LOGGED_OUT:
       return false
     default:
       return state
@@ -201,7 +234,8 @@ const adminReducer = combineReducers({
   gymsList,
   isGettingGyms,
   coachList,
-  isWorkoutCreated
+  isWorkoutCreated,
+  isWodCreated
 });
 
 export default adminReducer;

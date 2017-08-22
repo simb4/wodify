@@ -1,5 +1,6 @@
 import { SERVER_URL } from "../constants/server"
 import { STD_HEADERS } from "../constants/constants"
+import { transformRequest } from '../constants/transform'
 
 import qs from "qs"
 
@@ -9,6 +10,7 @@ const addProgramUrl = SERVER_URL + "main/add_program/"
 const addSectionUrl = SERVER_URL + "main/add_section/"
 const addWorkoutUrl = SERVER_URL + "/main/add_workout/"
 const addWodUrl = SERVER_URL + "main/add_wod/"
+const fillWodUrl = SERVER_URL + "/main/fill_wod/"
 const listAthletesUrl = SERVER_URL + "main/list_athletes/"
 const listProgramsUrl = SERVER_URL + "main/list_programs/"
 const listSectionsUrl = SERVER_URL + "main/list_sections/"
@@ -29,6 +31,20 @@ export const getWorkoutsOfWeek = (token, data) => (
         "auth-token": token,
       },
       body: qs.stringify(data)
+    }
+  )
+)
+
+export const fillWod = (token, data) => (
+  fetch(
+    fillWodUrl,
+    {
+      method: 'POST', 
+      headers: {
+        ...STD_HEADERS,
+        "auth-token": token,
+      },
+      body: transformRequest(data)
     }
   )
 )

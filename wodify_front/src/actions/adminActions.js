@@ -174,7 +174,7 @@ export const createWod = (data) => (dispatch, getState) => {
 								if(responseObject.code === 0){
 									dispatch({
 										type: actionTypes.ACTION_ADD_WOD_SUCCESS,
-										wod: responseObject.result,
+										wod: responseObject,
 									})
 								} else {
 									dispatch({
@@ -354,6 +354,7 @@ export const addWorkout = (data) => (dispatch, getState) => {
                   dispatch({
                     type: actionTypes.ACTION_ADD_WORKOUT_SUCCESS,
                     workout: responseObject,
+                    // date: date,
                   })
                 } else {
                   dispatch({

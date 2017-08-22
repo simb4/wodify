@@ -75,11 +75,12 @@
 
 .component{
   padding: 10px 2px;
-  border-bottom: 1px solid #8E8E93;
 }
 
 .component-title{
   font-size: 14px;
+  margin-bottom: 5px;
+  padding-left: 10px;
 }
 
 .component-scoring{
@@ -141,10 +142,16 @@
   z-index: 0;
 }
 
+.renderWod-page{
+  width: 100%;
+  height: auto;
+}
+
 .section-wrapper{
   width: 96%;
-  margin: 10px auto;
+  margin: 10px 10px;
   display: inline-flex;
+  flex-wrap: wrap;
 }
 
 .section-list{
@@ -154,10 +161,59 @@
 
 .components{
   width: 70%;
-  height: 100px;
+  height: auto;
+  border: 1px solid black;
 }
 
+.section-box{
+  width: 98%;
+  margin: 10px auto;
+  border: 1px solid gray;
+  padding: 10px;
+}
 
+.component-box{
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 10px;
+}
+
+.component-name{
+  width: 68%;
+  border: 1px solid gray;
+  padding: 10px;
+  padding-left: 10px;
+}
+
+.component-scoring{
+  width: 30%;
+  border: 1px solid gray;
+  padding: 4px;
+}
+
+.weight-scoring{
+  display: inline-flex;
+  align-items: center;
+}
+
+.weight-input{
+  width: 50px;
+  height: 30px;
+  border: none;
+  text-align: center;
+}
+
+.fillWod-btn{
+  margin-top: 10px;
+  margin-left: 91%;
+  height: 16px;
+}
+
+.sectionbox-title{
+  padding: 10px;
+}
 
 
 

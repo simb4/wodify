@@ -8,6 +8,8 @@ import FlatButton from 'material-ui/FlatButton'
 
 import "./wod.css"
 import ScrollToTop from 'react-scroll-up'
+import Divider from 'material-ui/Divider';
+
 import {
   Table,
   TableHeader,
@@ -93,8 +95,9 @@ class _Wod extends Component {
             style={{marginLeft: "10px"}}
             className="component"
           >
-            <p className="component-title">{comp.name}</p>
-            <p className="component-scoring">{comp.scoring.name}</p>
+            <p className="component-title">{comp.name}({comp.description ?
+             comp.description : "нет описания"})</p>
+            <Divider />
           </div>
         )
       })
@@ -102,6 +105,7 @@ class _Wod extends Component {
   }
   renderSections(wod){
     if(wod !== null){
+      console.log(wod, 888)
       return wod.sections.map((s) => {
         console.log(s)
         return( 
@@ -179,13 +183,20 @@ class _Wod extends Component {
             adjustForCheckbox={this.state.showCheckboxes}
             enableSelectAll={this.state.enableSelectAll} >
             <TableRow style={styles.TableRow}>
-              <TableHeaderColumn style={styles.TableHeaderColumn}>Понедельник</TableHeaderColumn>
-              <TableHeaderColumn style={styles.TableHeaderColumn}>Вторник</TableHeaderColumn>
-              <TableHeaderColumn style={styles.TableHeaderColumn}>Среда</TableHeaderColumn>
-              <TableHeaderColumn style={styles.TableHeaderColumn}>Четверг</TableHeaderColumn>
-              <TableHeaderColumn style={styles.TableHeaderColumn}>Пятница</TableHeaderColumn>
-              <TableHeaderColumn style={styles.TableHeaderColumn}>Суббота</TableHeaderColumn>
-              <TableHeaderColumn style={styles.TableHeaderColumn}>Воскресенье</TableHeaderColumn>
+              <TableHeaderColumn style={styles.TableHeaderColumn}>Понедельник
+                </TableHeaderColumn>
+              <TableHeaderColumn style={styles.TableHeaderColumn}>Вторник
+                </TableHeaderColumn>
+              <TableHeaderColumn style={styles.TableHeaderColumn}>Среда
+                </TableHeaderColumn>
+              <TableHeaderColumn style={styles.TableHeaderColumn}>Четверг
+                </TableHeaderColumn>
+              <TableHeaderColumn style={styles.TableHeaderColumn}>Пятница
+                </TableHeaderColumn>
+              <TableHeaderColumn style={styles.TableHeaderColumn}>Суббота
+                </TableHeaderColumn>
+              <TableHeaderColumn style={styles.TableHeaderColumn}>Воскресенье
+                </TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={this.state.showCheckboxes}
