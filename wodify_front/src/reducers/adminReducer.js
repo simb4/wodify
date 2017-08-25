@@ -219,6 +219,19 @@ const isWorkoutCreated = (state = false, action) => {
   }
 }
 
+const updatedWorkout = (state = [], action) => {
+  switch(action.type) {
+    case actionTypes.ACTION_UPDATE_WORKOUT_SUCCESS:
+      return action.workouts
+    case actionTypes.ACTION_UPDATE_WORKOUT_FAILED:
+    case actionTypes.ACTION_UPDATE_WORKOUT_STARTED:
+    case actionTypes.ACTION_LOGGED_OUT:
+      return []
+    default:
+      return state
+  }
+}
+
 const adminReducer = combineReducers({
   athleteList,
   isRegistering,
@@ -235,7 +248,8 @@ const adminReducer = combineReducers({
   isGettingGyms,
   coachList,
   isWorkoutCreated,
-  isWodCreated
+  isWodCreated,
+  updatedWorkout
 });
 
 export default adminReducer;

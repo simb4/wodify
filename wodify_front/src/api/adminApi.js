@@ -20,6 +20,7 @@ const getWodOfWeekUrl = SERVER_URL + "main/get_wods_of_week/"
 const getWorkoutsOfWeekUrl = SERVER_URL + "main/get_workouts_of_week/"
 const listCoachesUrl = SERVER_URL + "/main/list_coaches/"
 const listComponentsUrl = SERVER_URL + "/main/get_components_of_section/"
+const updateWorkoutUrl = SERVER_URL + "/main/update_workout/"
 
 export const getWorkoutsOfWeek = (token, data) => (
   fetch(
@@ -31,6 +32,20 @@ export const getWorkoutsOfWeek = (token, data) => (
         "auth-token": token,
       },
       body: qs.stringify(data)
+    }
+  )
+)
+
+export const updateWorkout = (token, data) => (
+  fetch(
+    updateWorkoutUrl,
+    {
+      method: 'POST', 
+      headers: {
+        ...STD_HEADERS,
+        "auth-token": token,
+      },
+      body: qs.stringify(data, {skipNulls: true})
     }
   )
 )

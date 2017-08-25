@@ -36,12 +36,15 @@ var styles = {
 
 var WORKOUT = {}
 var title = ""
-// var coach = ""
+var subtitle = ""
+var coach = ""
 var registered = ""
 var start = ""
 var end = ""
 var day = 0
-
+var people = 0
+var work_id = 0
+var coach_value = 0
 class _Workouts extends Component {
 
   constructor(props){
@@ -63,6 +66,7 @@ class _Workouts extends Component {
       coach: 0,
       name: "",
       maxCount: 0,
+      change: false,
     }
   }
   componentWillMount(){
@@ -89,7 +93,8 @@ class _Workouts extends Component {
   handleRequestClose = () => {
     this.setState({
       open: false,
-      create: true
+      create: true,
+      change: false
     });
   };
 
@@ -120,10 +125,14 @@ class _Workouts extends Component {
       end = TIME[row+1]
     }
     var works = this.props.workouts
+    console.log(WORKOUT, 123)
     WORKOUT = {}
+    subtitle = ""
     title = ""
-    // coach = ""
+    coach = ""
     registered = ""
+    work_id = 0
+    people = 0
     if(works.length > 0){
       for(var i=0; i<works.length; i++){
         if(works[i].day_id === column){
@@ -132,8 +141,12 @@ class _Workouts extends Component {
               WORKOUT = works[i-1].workouts[j]
               var stTime = WORKOUT.start_time.substring(0,5)
               title = stTime + " " + WORKOUT.name
-              // coach = WORKOUT.coach.first_name + " " + WORKOUT.coach.last_name
+              coach = WORKOUT.coach.first_name + " " + WORKOUT.coach.last_name
+              coach_value = WORKOUT.coach.id
               registered = WORKOUT.registered + "/" + WORKOUT.max_people
+              work_id = WORKOUT.id
+              people = WORKOUT.max_people
+              subtitle = WORKOUT.name
             }
           }
         } 
@@ -163,7 +176,7 @@ class _Workouts extends Component {
   }
 
   changeCoach(){
-    console.log("COACH")
+    this.setState({change: true})
   }
 
   renderWork(work, time){
@@ -234,10 +247,40 @@ class _Workouts extends Component {
   }
   handleChangeName = (event) => {
     this.setState({name: event.target.value})
+    subtitle = ""
   }
   handleChangeCount = (event) => {
     this.setState({maxCount: event.target.value})
   }
+
+  handleSave=()=>{
+    let data = {
+      workout_id: work_id,
+      name: subtitle!=="" ? subtitle : this.state.name,
+      coach_id: this.state.coach ? this.state.coach : null,
+      max_people: this.state.maxCount!==0 ? this.state.maxCount : people
+    }
+
+    console.log(data)
+
+    this.props.updateWorkout(data)
+    this.setState({
+      open: false,
+      openDialog: false,
+      create:false,
+      gym: 1,
+      coach: 0,
+      name: "",
+      maxCount: 0,
+      change: false,
+    })
+
+    data = {
+      date_of_workout: moment().format('YYYY-MM-DD')
+    }
+    this.props.getWorkouts(data)
+  }
+
   handleSubmit=()=>{
     let data = {
       day_id: day,
@@ -249,9 +292,61 @@ class _Workouts extends Component {
       max_people: this.state.maxCount
     }
     this.props.addWorkout(data)
-    this.setState({open: false})
+    this.setState({
+      open: false,
+      openDialog: false,
+      create:false,
+      gym: 1,
+      coach: 0,
+      name: "",
+      maxCount: 0,
+      change: false,
+    })
   }
   renderPopover(){
+    if(this.state.change){
+      return (
+        <Popover
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          onRequestClose={this.handleRequestClose}
+        >
+          <div className="create-box">
+            <h3>Редактирование класса</h3>
+            <TextField
+              defaultValue={start}
+              floatingLabelText="Время начала урока"
+              fullWidth={false}
+              disabled={true}
+            /><br/>
+            <TextField
+              floatingLabelText="Название класса"
+              value={subtitle!=="" ? subtitle : this.state.name}
+              onChange={this.handleChangeName.bind(this)}
+            /><br/>
+            <TextField
+              floatingLabelText="Максимальное кол-во атлетов"
+              value={this.state.maxCount !== 0 ? this.state.maxCount : people}
+              onChange={this.handleChangeCount.bind(this)}
+            /><br/>
+            <SelectField
+              floatingLabelText="Выберите тренера"
+              value={this.state.coach ? this.state.coach : coach_value}
+              onChange={this.handleCoach}
+            >
+              {this.getCoaches()}
+            </SelectField><br/>
+            <FlatButton 
+              className="create-workout-btn" 
+              label="Сохранить" 
+              onClick={this.handleSave.bind(this)}
+            />
+          </div>
+        </Popover> 
+      )
+    }
     if(title !== ""){
       return (
         <Popover
@@ -264,12 +359,15 @@ class _Workouts extends Component {
           <List>
             <ListItem primaryText={title} />
             <Divider inset={true}/>
-            <ListItem primaryText="Balganym Tulebayeva" />
-            <p className="change-coach" onClick={this.changeCoach.bind(this)}>Поменять тренера</p>
+            <ListItem primaryText={coach} />
+            <Divider inset={true}/>
             <div className="view-registered">
               <ListItem primaryText={registered} />
-              <p className="edit-registered" onClick={this.editRegistered.bind(this)}>Посмотреть</p>
+              <p className="edit-registered" 
+                onClick={this.editRegistered.bind(this)}>Посмотреть</p>
             </div>
+            <p className="change-coach" 
+              onClick={this.changeCoach.bind(this)}>Редактировать</p>
           </List>
         </Popover> 
       )
@@ -327,7 +425,7 @@ class _Workouts extends Component {
   renderHours(){
     return TIME.map((t) => {
       return (
-        <TableRow key={t} style={{minHeight: "44px"}}>
+        <TableRow key={t}>
           <TableRowColumn >{t}</TableRowColumn>
         </TableRow>
       )
@@ -343,14 +441,20 @@ class _Workouts extends Component {
               fixedHeader={this.state.fixedHeader}
               selectable={this.state.selectable}
               multiSelectable={this.state.multiSelectable}
+              style = {{backgroundColor: "whitesmoke", border: "none"}}
             >
               <TableHeader
                 displaySelectAll={this.state.showCheckboxes}
                 adjustForCheckbox={this.state.showCheckboxes}
                 enableSelectAll={this.state.enableSelectAll}
+                style={{border: "none"}}
               >
-                <TableRow>
-                  <TableHeaderColumn>
+                <TableRow 
+                  style={{border: "none", height: "24px"}}
+                >
+                  <TableHeaderColumn 
+                    style={{border: "none", height: "64px"}}
+                  >
                   </TableHeaderColumn>
                 </TableRow>
               </TableHeader>
@@ -358,7 +462,9 @@ class _Workouts extends Component {
                 displayRowCheckbox={this.state.showCheckboxes}
                 deselectOnClickaway={this.state.deselectOnClickaway}
                 showRowHover={this.state.showRowHover}
-                stripedRows={this.state.stripedRows}>
+                stripedRows={this.state.stripedRows}
+                style={{border: "none", height: "40px"}}
+                >
                     {this.renderHours()}
                   </TableBody>
             </Table>
@@ -409,7 +515,8 @@ const mapDispatchToProps={
   getWorkouts: action.getWeeksWorkout,
   getGymList: action.getGyms,
   getCoaches: action.getCoaches,
-  addWorkout: action.addWorkout
+  addWorkout: action.addWorkout,
+  updateWorkout: action.updateWorkout
 }
 
 const Workouts=connect(

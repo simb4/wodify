@@ -510,6 +510,49 @@ export const getPrograms = () => (dispatch, getState) => {
     )
 }
 
+export const updateWorkout = (data) => (dispatch, getState) => {
+  dispatch({
+    type: actionTypes.ACTION_UPDATE_WORKOUT_STARTED,
+  })
+
+  adminApi
+    .updateWorkout(getState().user.token, data)
+    .then(
+      response => {
+        if(response.status !== 200) {
+          dispatch({
+            type: actionTypes.ACTION_UPDATE_WORKOUT_FAILED,
+            errorMessage: ERRORS.NUMBER + response.status
+          })
+        } else {
+          response
+            .text()
+            .then(
+              value => {
+                const responseObject = JSON.parse(value)
+                if(responseObject.code === 0){
+                  dispatch({
+                    type: actionTypes.ACTION_UPDATE_WORKOUT_SUCCESS,
+                    workouts: responseObject,
+                  })
+                } else {
+                  dispatch({
+                    type: actionTypes.ACTION_UPDATE_WORKOUT_FAILED,
+                    errorMessage: responseObject.message,
+                  })
+                }
+              }
+            )
+        }
+      },
+      error => {
+        dispatch({
+          type: actionTypes.ACTION_UPDATE_WORKOUT_FAILED,
+          errorMessage: ERRORS.NO_INTERNET
+        })
+      }
+    )
+}
 
 
 
