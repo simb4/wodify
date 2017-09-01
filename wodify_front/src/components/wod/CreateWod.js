@@ -77,7 +77,7 @@ class _CreateWod extends Component {
   redirectToComponents(){
     if(this.state.created){
       return <Redirect to={{
-        pathname: '/admin/createwod/add_sections',
+        pathname: '/admin/createwod/constructor',
         from: '/admin/createwod'}}/>
     }
     return

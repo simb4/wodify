@@ -34,7 +34,6 @@ class _AddSection extends Component {
     if(typeof id !== "undefined"){
       localStorage.setItem('wod_id', this.props.wodCreated.id);
     }
-
   }
 
   renderSectionList(){
@@ -148,7 +147,7 @@ class _AddSection extends Component {
     }
 
     this.props.fillWod(data)
-
+    return 
     // this.props.clearWodCreated()
 
   }

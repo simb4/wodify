@@ -7,7 +7,6 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  /*background-color: #fff;*/
 }
 
 .wod-list{
@@ -162,7 +161,7 @@
 .components{
   width: 70%;
   height: auto;
-  border: 1px solid black;
+  /*border: 1px solid black;*/
 }
 
 .section-box{
@@ -183,7 +182,6 @@
 .component-name{
   width: 68%;
   border: 1px solid gray;
-  padding: 10px;
   padding-left: 10px;
 }
 
@@ -215,6 +213,50 @@
   padding: 10px;
 }
 
+.component-item{
+  width: 70%;
+  border: 1px solid gray;
+  min-height: 20px;
+  margin: 4px;
+  padding: 10px;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
+.description{
+  width: 50%;
+  border: 1px solid black;
+  margin: 2px;
+}
+
+.scoring{
+  width: 46%;
+  border: 1px solid black;
+  margin: 2px;
+}
+
+.textarea{
+  margin: 4px;
+  width: 86%;
+  min-height: 30px;
+  background-color: white;
+  padding: 6px;
+  border-color: gray;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+}
+
+.wod-name{
+  border: 1px solid gray;
+  margin: 4px;
+  width: 86%;
+  height: 24px;
+  background-color: white;
+  padding-left: 8px;
+}
 
 

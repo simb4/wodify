@@ -16,6 +16,7 @@ import NewAthlete from "../components/athletes/NewAthlete"
 import Wod from "../components/wod/Wod"
 import CreateWod from "../components/wod/CreateWod"
 import AddSection from "../components/wod/AddSections"
+import Constructor from "../components/wod/Constructor"
 import Workouts from '../components/workouts/Workouts'
 import SetPassword from '../components/auth/SetPassword'
 
@@ -46,6 +47,8 @@ class _Main extends Component {
             component={CreateWod} {...isLoggedIn}/>
           <UserRoute exact path="/admin/createwod/add_sections" 
             component={AddSection} {...isLoggedIn}/>
+          <UserRoute exact path="/admin/createwod/constructor" 
+            component={Constructor} {...isLoggedIn}/>
           <UserRoute exact path="/admin/workouts" 
             component={Workouts} {...isLoggedIn}/>
 
