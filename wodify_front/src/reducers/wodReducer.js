@@ -64,12 +64,39 @@ const isWodFilling = (state = [], action) => {
   }
 }
 
+const scoring = (state = [], action) => {
+  switch(action.type) {
+    case actionTypes.ACTION_GET_SCORING_TYPES_STARTED:
+    case actionTypes.ACTION_GET_SCORING_TYPES_FAILED:
+    case actionTypes.ACTION_LOGGED_OUT:
+      return []
+    case actionTypes.ACTION_GET_SCORING_TYPES_SUCCESS:
+      return action.scoring
+    default:
+      return state
+  }
+}
+
+const constructors = (state = [], action) => {
+  switch(action.type) {
+    case actionTypes.ACTION_LIST_CONSTRUCTORS_STARTED:
+    case actionTypes.ACTION_LIST_CONSTRUCTORS_FAILED:
+    case actionTypes.ACTION_LOGGED_OUT:
+      return []
+    case actionTypes.ACTION_LIST_CONSTRUCTORS_SUCCESS:
+      return action.constructors
+    default:
+      return state
+  }
+}
+
 const wodReducer = combineReducers({
     getSections,
     getComponents,
     sections,
     components,
     isWodFilling,
+    scoring,
 });
 
 export default wodReducer

@@ -29,17 +29,22 @@ class _Constructor extends Component {
   }
 
   componentWillMount(){
+    id = localStorage.getItem('id')
     if(!id){
       localStorage.setItem("id", "-1");
     }
-    var id = this.props.wodCreated.id
-    if(typeof id !== "undefined"){
-      localStorage.setItem('wod_id', this.props.wodCreated.id);
+    var wod_id = this.props.wodCreated.id
+    if(typeof wod_id !== "undefined"){
+      localStorage.setItem('wod_id', wod_id);
+    }
+    if(!this.props.constructors){
+      this.props.listConstructor()
     }
   }
 
   handleChange=(index, row, value) => {
     this.setState({value})
+    this.props.getScoring()
     component = {
       id: id,
       constructor_id: value,
@@ -48,6 +53,7 @@ class _Constructor extends Component {
     }
 
     localStorage.setItem(id, JSON.stringify(component))
+
     id+=1;
     localStorage.setItem("id", id)
   }
@@ -144,6 +150,7 @@ class _Constructor extends Component {
           <MenuItem value={4} 
           primaryText="Разминка" />
         </SelectField><br/>
+        {console.log(this.props.constructors, 6766)}
       </div>
       <div className="components">
         {this.renderComponents()}
@@ -171,6 +178,8 @@ const mapStateToProps = (state) => ({
   newSections: state.wod.sections,
   newComponents: state.wod.components,
   wodCreated: state.admin.isWodCreated,
+  scoring: state.wod.scoring,
+  constructors: state.wod.constructors
 })
 
 const mapDispatchToProps = {
@@ -179,7 +188,9 @@ const mapDispatchToProps = {
   createSection: actions.createSection,
   createComponent: actions.createComponent,
   fillWod: actions.fillWod,
-  clearWodCreated: actions.clearWodCreated
+  clearWodCreated: actions.clearWodCreated,
+  getScoring: actions.getScoresById,
+  listConstructor: actions.listConstructor
 }
 
 const Constructor = connect(

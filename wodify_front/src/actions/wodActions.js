@@ -47,6 +47,51 @@ export const getSections = () => (dispatch, getState) => {
     )
 }
 
+export const getScoreTypes = (data) => (dispatch, getState) => {
+
+  dispatch({
+    type: actionTypes.ACTION_GET_SCORE_TYPES_STARTED,
+  })
+
+  adminApi
+    .getScoresById(getState().user.token, data)
+    .then(
+      response => {
+        if(response.status !== 200) {
+          dispatch({
+            type: actionTypes.ACTION_GET_SCORE_TYPES_FAILED,
+            errorMessage: ERRORS.NUMBER + response.status,
+          })
+        } else {
+          response
+          .text()
+          .then(
+            value => {
+              const responseObject = JSON.parse(value)
+              if(responseObject.code === 0){
+                dispatch({
+                  type: actionTypes.ACTION_GET_SCORE_TYPES_SUCCESS,
+                  scoring: responseObject.scoring
+                })
+              } else{
+                dispatch({
+                  type: actionTypes.ACTION_GET_SCORE_TYPES_FAILED,
+                  errorMessage: responseObject.message
+                })
+              }
+            }
+          )
+        }
+      },
+      error => {
+        dispatch({
+          type: actionTypes.ACTION_GET_SCORE_TYPES_FAILED,
+          errorMessage: ERRORS.NO_INTERNET
+        })
+      }
+    )
+}
+
 export const clearWodCreated = () => (dispatch, getState) => {
   dispatch({
     type: actionTypes.ACTION_CLEAR_WOD_CREATED,
@@ -134,6 +179,51 @@ export const getComponents = (data) => (dispatch, getState) => {
       error => {
         dispatch({
           type: actionTypes.ACTION_GET_COMPONENTS_FAILED,
+          errorMessage: ERRORS.NO_INTERNET
+        })
+      }
+    )
+}
+
+export const listConstructor = () => (dispatch, getState) => {
+
+  dispatch({
+    type: actionTypes.ACTION_LIST_CONSTRUCTORS_STARTED,
+  })
+
+  adminApi
+    .listConstructor(getState().user.token)
+    .then(
+      response => {
+        if(response.status !== 200) {
+          dispatch({
+            type: actionTypes.ACTION_LIST_CONSTRUCTORS_FAILED,
+            errorMessage: ERRORS.NUMBER + response.status,
+          })
+        } else {
+          response
+          .text()
+          .then(
+            value => {
+              const responseObject = JSON.parse(value)
+              if(responseObject.code === 0){
+                dispatch({
+                  type: actionTypes.ACTION_LIST_CONSTRUCTORS_SUCCESS,
+                  constructors: responseObject.constructorsß
+                })
+              } else{
+                dispatch({
+                  type: actionTypes.ACTION_LIST_CONSTRUCTORS_FAILED,
+                  errorMessage: responseObject.message
+                })
+              }
+            }
+          )
+        }
+      },
+      error => {
+        dispatch({
+          type: actionTypes.ACTION_LIST_CONSTRUCTORS_FAILED,
           errorMessage: ERRORS.NO_INTERNET
         })
       }
