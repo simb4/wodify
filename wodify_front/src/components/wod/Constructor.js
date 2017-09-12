@@ -14,6 +14,7 @@ var id = localStorage.getItem("id")
 id=JSON.parse(id)
 var component = {}
 var cmp_id = 0
+var score = 0
 
 class _Constructor extends Component {
 
@@ -23,13 +24,15 @@ class _Constructor extends Component {
       value: 0,
       id: 0,
       name: "",
-      description: ""
+      description: "",
+      scoring: [],
     }
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   componentWillMount(){
     id = localStorage.getItem('id')
+    id=JSON.parse(id)
     if(!id){
       localStorage.setItem("id", "-1");
     }
@@ -37,21 +40,32 @@ class _Constructor extends Component {
     if(typeof wod_id !== "undefined"){
       localStorage.setItem('wod_id', wod_id);
     }
-    if(!this.props.constructors){
+    
+    if(this.props.constructors.length === 0){
       this.props.listConstructor()
     }
+    
   }
 
   handleChange=(index, row, value) => {
+    console.log(index, row, "here")
     this.setState({value})
-    this.props.getScoring()
-    component = {
+    this.props.getScoring({constructor_id: score})
+    console.log(this.props.scoring)
+
+    this.setState({id: id, 
+      constructor_id: value,
+      scorings: this.props.scoring
+    })
+   
+     component = {
       id: id,
       constructor_id: value,
       name: "",
-      description: ""
+      description: "",
+      scorings: this.props.scoring
     }
-
+   
     localStorage.setItem(id, JSON.stringify(component))
 
     id+=1;
@@ -131,6 +145,19 @@ class _Constructor extends Component {
     console.log(components)
   }
 
+  renderConstructor(){
+    console.log(this.props.constructors, 6767)
+    if(this.props.constructors)
+      return this.props.constructors.map((c) => {
+        return <MenuItem 
+          value={c.id} 
+          key={c.id} 
+          primaryText= {c.name}
+          onClick = { () => {score = c.id}}
+          />
+      })
+  }
+
   renderPage(){
     return (
       <div className="section-wrapper">
@@ -141,16 +168,8 @@ class _Constructor extends Component {
           onChange={this.handleChange}
         >
           <MenuItem value={0} primaryText="---------" />
-          <MenuItem value={1} 
-          primaryText="Тяжелая атлетика" />
-          <MenuItem value={3} 
-          primaryText="Гимнастика" />
-          <MenuItem value={2} 
-          primaryText="Меткон" />
-          <MenuItem value={4} 
-          primaryText="Разминка" />
+          {this.renderConstructor()}
         </SelectField><br/>
-        {console.log(this.props.constructors, 6766)}
       </div>
       <div className="components">
         {this.renderComponents()}
@@ -189,7 +208,7 @@ const mapDispatchToProps = {
   createComponent: actions.createComponent,
   fillWod: actions.fillWod,
   clearWodCreated: actions.clearWodCreated,
-  getScoring: actions.getScoresById,
+  getScoring: actions.getScoreTypes,
   listConstructor: actions.listConstructor
 }
 

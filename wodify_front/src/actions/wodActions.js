@@ -209,7 +209,7 @@ export const listConstructor = () => (dispatch, getState) => {
               if(responseObject.code === 0){
                 dispatch({
                   type: actionTypes.ACTION_LIST_CONSTRUCTORS_SUCCESS,
-                  constructors: responseObject.constructorsß
+                  constructors: responseObject.constructors
                 })
               } else{
                 dispatch({

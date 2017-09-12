@@ -97,6 +97,7 @@ const wodReducer = combineReducers({
     components,
     isWodFilling,
     scoring,
+    constructors
 });
 
 export default wodReducer
