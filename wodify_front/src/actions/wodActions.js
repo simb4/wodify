@@ -140,14 +140,14 @@ export const createComponent = (components) => (dispatch, getState) => {
     }
 }
 
-export const getComponents = (data) => (dispatch, getState) => {
+export const getComponents = () => (dispatch, getState) => {
 
   dispatch({
     type: actionTypes.ACTION_GET_COMPONENTS_STARTED,
   })
 
   adminApi
-    .getComponents(getState().user.token, data)
+    .getComponents(getState().user.token)
     .then(
       response => {
         if(response.status !== 200) {

@@ -64,7 +64,23 @@ const isWodFilling = (state = [], action) => {
   }
 }
 
+const isWodFilled = (state = false, action) => {
+  switch(action.type) {
+    case actionTypes.ACTION_FILL_WOD_STARTED:
+    case actionTypes.ACTION_FILL_WOD_FAILED:
+    case actionTypes.ACTION_LOGGED_OUT:
+    case actionTypes.ACTION_CLEAR_WOD_CREATED:
+      return false
+    case actionTypes.ACTION_FILL_WOD_SUCCESS:
+      return true
+    default:
+      return state
+  }
+}
+
 const scoring = (state = [], action) => {
+  if(action.scoring)
+    localStorage.setItem('scores', JSON.stringify(action.scoring))
   switch(action.type) {
     case actionTypes.ACTION_GET_SCORING_TYPES_STARTED:
     case actionTypes.ACTION_GET_SCORING_TYPES_FAILED:
@@ -97,7 +113,8 @@ const wodReducer = combineReducers({
     components,
     isWodFilling,
     scoring,
-    constructors
+    constructors,
+    isWodFilled
 });
 
 export default wodReducer

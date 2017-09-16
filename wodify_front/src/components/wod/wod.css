@@ -221,7 +221,7 @@
   padding: 10px;
   display: inline-flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 .description{
@@ -231,9 +231,14 @@
 }
 
 .scoring{
-  width: 46%;
+  width: 48%;
   border: 1px solid black;
   margin: 2px;
+  padding-left: 10px;
+}
+
+.delete-cmp-btn{
+
 }
 
 .textarea{
@@ -259,4 +264,7 @@
   padding-left: 8px;
 }
 
+.add-constructor-btn{
+  margin-left: 80%;
+}
 

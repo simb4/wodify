@@ -8,21 +8,21 @@ const addAthleteUrl = SERVER_URL + "main/add_athlete/"
 const addComponentUrl = SERVER_URL + "main/add_component/"
 const addProgramUrl = SERVER_URL + "main/add_program/"
 const addSectionUrl = SERVER_URL + "main/add_section/"
-const addWorkoutUrl = SERVER_URL + "/main/add_workout/"
+const addWorkoutUrl = SERVER_URL + "main/add_workout/"
 const addWodUrl = SERVER_URL + "main/add_wod/"
-const fillWodUrl = SERVER_URL + "/main/fill_wod/"
+const fillWodUrl = SERVER_URL + "main/fill_wod/"
 const listAthletesUrl = SERVER_URL + "main/list_athletes/"
 const listProgramsUrl = SERVER_URL + "main/list_programs/"
-const listConstructorUrl = SERVER_URL + "/main/list_constructors/"
+const listConstructorUrl = SERVER_URL + "main/list_constructors/"
 const listSectionsUrl = SERVER_URL + "main/list_sections/"
-const listGymsUrl = SERVER_URL + "/main/list_gyms/"
+const listGymsUrl = SERVER_URL + "main/list_gyms/"
 const registrationUrl = SERVER_URL + "main/register/"
 const getWodOfWeekUrl = SERVER_URL + "main/get_wods_of_week/"
 const getWorkoutsOfWeekUrl = SERVER_URL + "main/get_workouts_of_week/"
-const listCoachesUrl = SERVER_URL + "/main/list_coaches/"
-const listComponentsUrl = SERVER_URL + "/main/get_components_of_section/"
-const updateWorkoutUrl = SERVER_URL + "/main/update_workout/"
-const getScoresByConstructorUrl = SERVER_URL + "/main/get_scores_by_constructor/"
+const listCoachesUrl = SERVER_URL + "main/list_coaches/"
+const listComponentsUrl = SERVER_URL + "main/list_components/"
+const updateWorkoutUrl = SERVER_URL + "main/update_workout/"
+const getScoresByConstructorUrl = SERVER_URL + "main/get_scores_by_constructor/"
 
 export const listConstructor = (token) => (
   fetch(
@@ -270,16 +270,15 @@ export const getSections = (token) => (
 	)
 )
 
-export const getComponents = (token, data) => (
+export const getComponents = (token) => (
   fetch(
     listComponentsUrl,
     {
-      method: "POST",
+      method: "GET",
       headers: {
         ...STD_HEADERS,
         'auth-token': token
       },
-      body: qs.stringify(data)
     }
   )
 )

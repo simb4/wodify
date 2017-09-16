@@ -1,15 +1,15 @@
 import { combineReducers } from 'redux';
 import * as actionTypes from '../constants/actionTypes';
 
+// case actionTypes.ACTION_ADD_WORKOUT_SUCCESS:
+//   return [...state[action.day_id], {date: action.date, ...action.workout}]
+
 const getWorkouts = (state = [], action) => {
   switch(action.type){
     case actionTypes.ACTION_GET_WORKOUTS_SUCCESS:
       return action.workouts
-    // case actionTypes.ACTION_ADD_WORKOUT_SUCCESS:
-    //   return [...state[action.day_id], {date: action.date, ...action.workout}]
     case actionTypes.ACTION_GET_WORKOUTS_STARTED:
     case actionTypes.ACTION_GET_WORKOUTS_FAILED:
-    // case actionTypes.ACTION_ADD_WORKOUTS_SUCCESS:
     case actionTypes.ACTION_LOGGED_OUT:
       return []
     default: 

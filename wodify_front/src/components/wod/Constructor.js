@@ -1,159 +1,319 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux"
 import * as actions from "../../actions/wodActions"
-import qs from "qs"
+import { Redirect } from 'react-router-dom'
 
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton'
-import TextField from 'material-ui/TextField'
+import FlatButton from 'material-ui/FlatButton'
 
 import "./wod.css"
 
-var id = localStorage.getItem("id")
-id=JSON.parse(id)
-var component = {}
-var cmp_id = 0
-var score = 0
+var cur_id = 0
 
 class _Constructor extends Component {
 
   constructor(props){
     super(props)
+
     this.state={
+      e_cmp_value: 0,
       value: 0,
       id: 0,
       name: "",
       description: "",
-      scoring: [],
+      componentItem: {},
+      deleteAll: false,
+      score_id: 0,
     }
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   componentWillMount(){
-    id = localStorage.getItem('id')
-    id=JSON.parse(id)
-    if(!id){
-      localStorage.setItem("id", "-1");
+    if(this.props.wodCreated){
+      this.props.clearWodCreated()
     }
-    var wod_id = this.props.wodCreated.id
-    if(typeof wod_id !== "undefined"){
-      localStorage.setItem('wod_id', wod_id);
+    var id = this.props.wodCreated.id
+    if(id){
+      localStorage.setItem('wod_id', id);
     }
-    
+    if(!this.props.components){
+      this.props.getComponents()
+    }
+    if(!localStorage.getItem('id')){
+      localStorage.setItem('id', "0")
+    }
+    var components = JSON.stringify([])
+    if(!localStorage.getItem('components'))
+      localStorage.setItem('components', components)
     if(this.props.constructors.length === 0){
       this.props.listConstructor()
     }
-    
+  }
+
+  handleCmp=(index, row, value) => {
+    this.setState({value})
+    var component = {}
+    var all_cmp = this.props.components
+    var key_id = JSON.parse(localStorage.getItem('id'))
+    localStorage.setItem('id', key_id + 1)
+    for(var i=0; i<all_cmp.length; i++){
+      if(all_cmp[i].id === value){
+        component = {
+          id: key_id,
+          comp_id: all_cmp[i].comp_id,
+          constructor_id: all_cmp[i].constructor_id,
+          name: all_cmp[i].name,
+          description: all_cmp[i].description,
+          scorings: all_cmp[i].scorings,
+          scoring: all_cmp[i].scoring,
+          rx: all_cmp[i].rx,
+        }
+      }
+    }
+
+    this.setState({componentItem: component})
   }
 
   handleChange=(index, row, value) => {
-    console.log(index, row, "here")
+
+    this.props.getScoring({constructor_id: value})
     this.setState({value})
-    this.props.getScoring({constructor_id: score})
-    console.log(this.props.scoring)
-
-    this.setState({id: id, 
-      constructor_id: value,
-      scorings: this.props.scoring
-    })
-   
-     component = {
-      id: id,
-      constructor_id: value,
-      name: "",
-      description: "",
-      scorings: this.props.scoring
+    var component = {}
+    var key_id = JSON.parse(localStorage.getItem('id'))
+    localStorage.setItem('id', key_id + 1)
+    var sc = JSON.parse(localStorage.getItem('scores'))
+    console.log(sc, 'scores')
+    for(var i=0; i<this.props.constructors.length; i++){
+      if(this.props.constructors[i].id === value){
+        component = {
+          id: key_id,
+          check: true,
+          comp_id: null,
+          constructor_id: value,
+          name: this.props.constructors[i].name,
+          description: "",
+          scorings: sc,
+          scoring: "",
+          rx: false,
+        }
+      }
     }
-   
-    localStorage.setItem(id, JSON.stringify(component))
-
-    id+=1;
-    localStorage.setItem("id", id)
+    this.setState({componentItem: component})
   }
 
   handleDescription(e){
+    console.log(cur_id)
     var desc = e.target.value
-    var wod = localStorage.getItem(cmp_id)
-    wod = JSON.parse(wod)
-    wod.description = desc
-    wod = JSON.stringify(wod)
-    localStorage.setItem(cmp_id, wod)
+    var cmp = localStorage.getItem('components')
+    cmp = JSON.parse(cmp)
+
+    for(var i=0; i<cmp.length; i++){
+      if(cmp[i].id === cur_id){
+        cmp[i].description = desc;
+      }
+    }
+
+    localStorage.setItem('components', JSON.stringify(cmp))
     this.setState({description: desc})
   }
 
-  handleWodName(event){
+  handleWodName(event){                 
+    var cmp = localStorage.getItem('components')
+    cmp = JSON.parse(cmp)
     var name = event.target.value
-    var wod = localStorage.getItem(cmp_id)
-    wod = JSON.parse(wod)
-    wod.name = name
-    wod = JSON.stringify(wod)
-    localStorage.setItem(cmp_id, wod)
+
+    for(var i=0; i<cmp.length; i++){
+      if(cmp[i].id === cur_id){
+        cmp[i].name = name;
+      }
+    }
+
+    localStorage.setItem('components', JSON.stringify(cmp))
     this.setState({name: name})
   }
 
-  renderComponent(cmp){
-    return(
-      <div key={cmp.id} className="component-item">
-        <div className="description">
-          <input 
-            value = {cmp.name}
-            className="wod-name" 
-            placeholder="название компоненты"
-            onChange={this.handleWodName.bind(this)}
-            onClick={() => { cmp_id = cmp.id}}/>
-          <textarea 
-            className="textarea"
-            onChange={
-              this.handleDescription.bind(this)
-            }
-            value = {cmp.description}
-            onClick={() => { cmp_id = cmp.id}}
-            placeholder="описание компоненты"
-          />
-        </div>
-        <div className="scoring">
-          <p>Scoring</p>
-          {console.log(cmp)}
-        </div>
-      </div>
-    )
+  renderComponent=() => {
+    if(this.state.componentItem.name){
+      var components = localStorage.getItem('components')
+      components = JSON.parse(components)
+      var cmp = this.state.componentItem
+      cmp.scorings = JSON.parse(localStorage.getItem('scores'))
+      this.setState({componentItem: cmp})
+      // this.state.componentItem.scorings = 
+      //   JSON.parse(localStorage.getItem('scores'))
+      components.push( this.state.componentItem )
+      components = JSON.stringify(components)
+      localStorage.setItem('components', components)
+      this.setState({
+        componentItem: {},
+        id: 0,
+        value: 0,
+        name: "",
+        description: "" 
+      })
+    }
+  }
+
+  renderScoring(s){
+    if(s){
+      return s.map(scr => {
+        return <MenuItem 
+          value={scr.id} 
+          key={scr.id} 
+          primaryText={scr.name}
+        />
+      })
+    }
+  }
+
+  handleScoring=(index, row, value) => {
+    var cmp = 
+      JSON.parse(localStorage.getItem('components'))
+
+    for(var i = 0; i<cmp.length; i++){
+      if(cmp[i].id === cur_id){
+         cmp[i].scoring = value
+         break;
+      }
+    }
+
+    localStorage.setItem('components', JSON.stringify(cmp))
+    this.setState({score_id: value})
+  }
+
+  removeCmp(id){
+    var cmp = JSON.parse(localStorage.getItem('components'))
+    var new_cmp = []
+
+    cmp.map(c => {
+      if(c.id !== id){
+        new_cmp.push(c)
+      }
+      return 0
+    })
+
+    localStorage.setItem('components', JSON.stringify(new_cmp))
+    this.setState({check: true})
   }
 
   renderComponents(){
-    if(localStorage.getItem("id"))
-    var components = []
-    for(var i=0; i<id; i++){
-      var cur = localStorage.getItem(i)
-      if(cur){
-        components.push(JSON.parse(cur))
-      }
+    var components = localStorage.getItem('components')
+    var cur_score = 0
+    if(components){
+      components = JSON.parse(components)
+      return components.map((cmp, i) => {
+        if(cmp.scoring){
+          cur_score = cmp.scoring
+        }
+        return(
+          <div key={i} className="component-item">
+            <div className="description">
+              <input 
+                value={cmp.name}
+                className="wod-name" 
+                placeholder="название компоненты"
+                onClick={()=> {cur_id = cmp.id}}
+                onChange={this.handleWodName.bind(this)}/>
+              <textarea 
+                className="textarea"
+                onClick={()=> cur_id = cmp.id}
+                onChange={
+                  this.handleDescription.bind(this)
+                }
+                value={cmp.description}
+                placeholder="описание компоненты"
+              />
+            </div>
+            <div className="scoring">
+              <SelectField
+                floatingLabelText="Scoring"
+                value={cur_score}
+                onChange={this.handleScoring}
+                onClick={() => cur_id = cmp.id}
+                // labelStyle={{paddingLeft: '8px'}}
+                >
+                {this.renderScoring(cmp.scorings)}
+              </SelectField>
+            </div>
+            <FlatButton 
+              label="Удалить"
+              className="delete-cmp-btn"
+              onClick={() => {
+                this.removeCmp(cmp.id)
+              }}
+            />
+          </div>
+        )
+      })
+    } else {
+      return
     }
-    return components.map((cmp) => {
-      return this.renderComponent(cmp)
-    })
+  }
+
+  redirectToMain() {
+    if(this.props.wodFilled){
+
+      localStorage.removeItem('wod_id')
+      localStorage.removeItem('components')
+      localStorage.removeItem('scores')
+      localStorage.removeItem('id')
+
+      return  <Redirect to={{
+                pathname: '/admin',
+                from: '/admin/createwod/constructor'}}/>
+    }
   }
 
   handleSubmit(){
-    var components = []
-    for(var i=1; i<id; i++){
-      var cur = localStorage.getItem(i)
-      if(cur){
-        components.push(JSON.parse(cur))
+    var cmp = JSON.parse(localStorage.getItem('components'))
+    var submitting = []
+    cmp.map(c => {
+      var r = {
+        component_id: c.comp_id,
+        description: c,
       }
+      submitting.push(r)
+      return 0
+    })
+
+    var id = localStorage.getItem('wod_id')
+    id = JSON.parse(id)
+
+    let data = {
+      wod_id: id,
+      components: submitting
     }
-    console.log(components)
+
+    console.log(data)
+
+    this.props.fillWod(data)
+
+  }
+
+  handleClear=() => {
+    localStorage.setItem('components', JSON.stringify([]))
+    localStorage.setItem('id', "0")
+    this.setState({deleteAll: true})
+  }
+
+  renderExCmp(){
+    return this.props.components.map((cmp) => {
+      return <MenuItem 
+      value={cmp.id} 
+      key={cmp.id} 
+      primaryText={cmp.name} />
+    })
   }
 
   renderConstructor(){
-    console.log(this.props.constructors, 6767)
     if(this.props.constructors)
       return this.props.constructors.map((c) => {
-        return <MenuItem 
+        return <MenuItem
           value={c.id} 
           key={c.id} 
-          primaryText= {c.name}
-          onClick = { () => {score = c.id}}
+          primaryText={c.name}
           />
       })
   }
@@ -163,6 +323,13 @@ class _Constructor extends Component {
       <div className="section-wrapper">
         <div className="section-list">
         <SelectField
+          floatingLabelText="Выбрать компоненту"
+          value={this.state.e_cmp_value}
+          onChange={this.handleCmp}
+        ><MenuItem value={0} primaryText="---------" />
+          {this.renderExCmp()}
+        </SelectField><br/>
+        <SelectField
           floatingLabelText="Создать новую компоненту"
           value={this.state.value}
           onChange={this.handleChange}
@@ -170,6 +337,12 @@ class _Constructor extends Component {
           <MenuItem value={0} primaryText="---------" />
           {this.renderConstructor()}
         </SelectField><br/>
+        <FlatButton 
+          label="Добавить"
+          className="add-constructor-btn"
+          style={{marginLeft: "40%"}}
+          onClick={this.renderComponent}
+        />
       </div>
       <div className="components">
         {this.renderComponents()}
@@ -177,6 +350,10 @@ class _Constructor extends Component {
       <RaisedButton 
         label="Создать"
         onClick={this.handleSubmit}
+      />
+      <RaisedButton 
+        label="Удалить все"
+        onClick={this.handleClear}
       />
     </div>
     )
@@ -186,6 +363,8 @@ class _Constructor extends Component {
     return (
       <div className="renderWod-page">
         {this.renderPage()}
+        {this.r}
+        {this.redirectToMain()}
       </div>
     )
   }
@@ -197,6 +376,7 @@ const mapStateToProps = (state) => ({
   newSections: state.wod.sections,
   newComponents: state.wod.components,
   wodCreated: state.admin.isWodCreated,
+  wodFilled: state.wod.isWodFilled,
   scoring: state.wod.scoring,
   constructors: state.wod.constructors
 })

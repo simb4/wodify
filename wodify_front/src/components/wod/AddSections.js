@@ -124,7 +124,7 @@ class _AddSection extends Component {
         components: submitComponents[i]
       }
       submitting.push(r)
-      return 
+      return 0
     })
 
     var submitting2 = []
@@ -135,7 +135,7 @@ class _AddSection extends Component {
         description: m
       }
       submitting2.push(r)
-      return 
+      return 0
     })
 
     var id = localStorage.getItem('wod_id')
@@ -147,7 +147,7 @@ class _AddSection extends Component {
     }
 
     this.props.fillWod(data)
-    return 
+    return 0
     // this.props.clearWodCreated()
 
   }

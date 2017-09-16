@@ -45,6 +45,7 @@ var day = 0
 var people = 0
 var work_id = 0
 var coach_value = 0
+var dates = []
 class _Workouts extends Component {
 
   constructor(props){
@@ -159,7 +160,8 @@ class _Workouts extends Component {
     if(wors.length !== 0){
       let days = ["Понедельник", "Вторник", "Среда", "Четверг",
       "Пятница", "Суббота", "Воскресенье"]
-      return wors.map((w) => {
+      return wors.map((w, i) => {
+        dates[i] = w.date_of_workout
         var date = w.date_of_workout
         var dd = date.substring(8,10)
         var mm = date.substring(5,7)
@@ -283,11 +285,11 @@ class _Workouts extends Component {
 
   handleSubmit=()=>{
     let data = {
-      day_id: day,
+      date_of_workout: dates[day], // надо поменять
       start_time: start,
       end_time: end,
       coach_id: this.state.coach,
-      gym_id: this.state.gym,
+      // gym_id: this.state.gym,
       name: this.state.name,
       max_people: this.state.maxCount
     }
@@ -441,7 +443,7 @@ class _Workouts extends Component {
               fixedHeader={this.state.fixedHeader}
               selectable={this.state.selectable}
               multiSelectable={this.state.multiSelectable}
-              style = {{backgroundColor: "whitesmoke", border: "none"}}
+              style={{backgroundColor: "whitesmoke", border: "none"}}
             >
               <TableHeader
                 displaySelectAll={this.state.showCheckboxes}
