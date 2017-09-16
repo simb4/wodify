@@ -19,6 +19,7 @@ const listGymsUrl = SERVER_URL + "main/list_gyms/"
 const registrationUrl = SERVER_URL + "main/register/"
 const getWodOfWeekUrl = SERVER_URL + "main/get_wods_of_week/"
 const getWorkoutsOfWeekUrl = SERVER_URL + "main/get_workouts_of_week/"
+const workoutsFromDictUrl = SERVER_URL + "main/get_workouts_from_dict/"
 const listCoachesUrl = SERVER_URL + "main/list_coaches/"
 const listComponentsUrl = SERVER_URL + "main/list_components/"
 const updateWorkoutUrl = SERVER_URL + "main/update_workout/"
@@ -61,6 +62,19 @@ export const getWorkoutsOfWeek = (token, data) => (
         "auth-token": token,
       },
       body: qs.stringify(data)
+    }
+  )
+)
+
+export const getWorkoutsFromDict = (token) => (
+  fetch(
+    workoutsFromDictUrl,
+    {
+      method: 'GET', 
+      headers: {
+        ...STD_HEADERS,
+        "auth-token": token,
+      },
     }
   )
 )

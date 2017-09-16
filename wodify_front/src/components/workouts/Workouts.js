@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import * as action from '../../actions/adminActions'
+import * as workActions from '../../actions/workoutActions'
 import moment from 'moment'
 
 import { TIME } from '../../constants/schedule'
@@ -12,7 +13,7 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton'
-
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
 import './workouts.css'
 import {
@@ -46,6 +47,8 @@ var people = 0
 var work_id = 0
 var coach_value = 0
 var dates = []
+var athletes = []
+
 class _Workouts extends Component {
 
   constructor(props){
@@ -68,6 +71,9 @@ class _Workouts extends Component {
       name: "",
       maxCount: 0,
       change: false,
+      cur_week: true,
+      value: 0,
+      list_athletes: false,
     }
   }
   componentWillMount(){
@@ -76,6 +82,10 @@ class _Workouts extends Component {
         date_of_workout: moment().format('YYYY-MM-DD')
       }
       this.props.getWorkouts(data)
+    }
+
+    if(this.props.workoutsFromDict.length === 0){
+      this.props.getWorkoutsFromDict()
     }
 
     if(this.props.gyms.length === 0){
@@ -90,7 +100,6 @@ class _Workouts extends Component {
   handleGym = (event, index, gym) => this.setState({gym});
   handleCoach = (event, index, coach) => this.setState({coach});
 
-
   handleRequestClose = () => {
     this.setState({
       open: false,
@@ -99,9 +108,7 @@ class _Workouts extends Component {
     });
   };
 
-
   handleTouchTap = (event) => {
-    // This prevents ghost click.
     event.preventDefault();
 
     this.setState({
@@ -125,55 +132,105 @@ class _Workouts extends Component {
     } else {
       end = TIME[row+1]
     }
-    var works = this.props.workouts
-    console.log(WORKOUT, 123)
-    WORKOUT = {}
-    subtitle = ""
-    title = ""
-    coach = ""
-    registered = ""
-    work_id = 0
-    people = 0
-    if(works.length > 0){
-      for(var i=0; i<works.length; i++){
-        if(works[i].day_id === column){
-          for(var j=0; j<works[i-1].workouts.length; j++){
-            if(works[i-1].workouts[j].start_time === TIME[row]){
-              WORKOUT = works[i-1].workouts[j]
-              var stTime = WORKOUT.start_time.substring(0,5)
-              title = stTime + " " + WORKOUT.name
-              coach = WORKOUT.coach.first_name + " " + WORKOUT.coach.last_name
-              coach_value = WORKOUT.coach.id
-              registered = WORKOUT.registered + "/" + WORKOUT.max_people
-              work_id = WORKOUT.id
-              people = WORKOUT.max_people
-              subtitle = WORKOUT.name
+    if(this.state.value === 0){
+      var works = this.props.workouts
+      console.log(WORKOUT, 123)
+      WORKOUT = {}
+      athletes = []
+      subtitle = ""
+      title = ""
+      coach = ""
+      registered = ""
+      work_id = 0
+      people = 0
+      if(works.length > 0){
+        for(var i=0; i<works.length; i++){
+          if(works[i].day_id === column){
+            for(var j=0; j<works[i-1].workouts.length; j++){
+              if(works[i-1].workouts[j].start_time === TIME[row]){
+                WORKOUT = works[i-1].workouts[j]
+                var stTime = WORKOUT.start_time.substring(0,5)
+                title = stTime + " " + WORKOUT.name
+                coach = WORKOUT.coach.first_name + " " + WORKOUT.coach.last_name
+                coach_value = WORKOUT.coach.id
+                registered = WORKOUT.registered + "/" + WORKOUT.max_people
+                work_id = WORKOUT.id
+                people = WORKOUT.max_people
+                subtitle = WORKOUT.name
+                athletes = WORKOUT.athletes
+              }
             }
-          }
-        } 
-      }
-    } 
+          } 
+        }
+      } 
+    } else {
+      works = this.props.workoutsFromDict
+      console.log(WORKOUT, 123)
+      WORKOUT = {}
+      subtitle = ""
+      title = ""
+      coach = ""
+      registered = ""
+      athletes = []
+      work_id = 0
+      people = 0
+      if(works.length > 0){
+        for(var i=0; i<works.length; i++){
+          if(works[i].day_id === column){
+            for(var j=0; j<works[i-1].workouts.length; j++){
+              if(works[i-1].workouts[j].start_time === TIME[row]){
+                WORKOUT = works[i-1].workouts[j]
+                var stTime = WORKOUT.start_time.substring(0,5)
+                title = stTime + " " + WORKOUT.name
+                coach = WORKOUT.coach.first_name + " " + WORKOUT.coach.last_name
+                coach_value = WORKOUT.coach.id
+                registered = "0" + "/" + WORKOUT.max_people
+                work_id = WORKOUT.id
+                people = WORKOUT.max_people
+                subtitle = WORKOUT.name
+                athletes = WORKOUT.athletes
+              }
+            }
+          } 
+        }
+      } 
+    }
   }
 
-  renderHeader(id){
-    var wors = this.props.workouts
-    if(wors.length !== 0){
-      let days = ["Понедельник", "Вторник", "Среда", "Четверг",
-      "Пятница", "Суббота", "Воскресенье"]
-      return wors.map((w, i) => {
-        dates[i] = w.date_of_workout
-        var date = w.date_of_workout
-        var dd = date.substring(8,10)
-        var mm = date.substring(5,7)
-        return(
-          <TableHeaderColumn 
-            key={w.day_id} 
-            style={{border: "1px solid #BCBBC1"}}>
-            <p className="pre-header">{dd}/{mm}</p> 
-            <p className="header">{days[w.day_id]}</p>
-          </TableHeaderColumn> 
-        )
-      })
+  renderHeader(){
+    let days = ["Понедельник", "Вторник", "Среда", "Четверг",
+        "Пятница", "Суббота", "Воскресенье"]
+    if(this.state.value === 0){
+      var wors = this.props.workouts
+      if(wors.length !== 0){
+        return wors.map((w, i) => {
+          dates[i] = w.date_of_workout
+          var date = w.date_of_workout
+          var dd = date.substring(8,10)
+          var mm = date.substring(5,7)
+          return(
+            <TableHeaderColumn 
+              key={w.day_id} 
+              style={{border: "1px solid #BCBBC1"}}>
+              <p className="pre-header">{dd}/{mm}</p> 
+              <p className="header">{days[w.day_id]}</p>
+            </TableHeaderColumn> 
+          )
+        })
+      }
+    } else {
+      var wors = this.props.workoutsFromDict
+      if(wors.length !== 0){
+        return wors.map((w, i) => {
+          return(
+            <TableHeaderColumn 
+              key={w.day_id} 
+              style={{border: "1px solid #BCBBC1"}}> 
+              <p className="header">{days[w.day_id]}</p>
+            </TableHeaderColumn> 
+          )
+        })
+      }
     }
   }
 
@@ -196,7 +253,7 @@ class _Workouts extends Component {
                 <p className="workout-coach">{d.coach.first_name 
                     + " " + d.coach.last_name}</p>
               <p className="registered"><b>
-                {d.registered+"/"+d.max_people}</b></p>
+                {"0/"+d.max_people}</b></p>
             </div>
           )  
         }
@@ -205,18 +262,34 @@ class _Workouts extends Component {
     }
   }
   renderWorkouts(time){
-    var wors = this.props.workouts
-    if(wors.length > 0){
-      return wors.map((w)=>{
-        return (
-          <TableRowColumn 
-            key={w.day_id} 
-            style={styles.cellStyle}
-          >
-            {this.renderWork(w, time)}
-          </TableRowColumn>
-        )
-      })
+    if(this.state.value === 0){
+      var wors = this.props.workouts
+      if(wors.length > 0){
+        return wors.map((w)=>{
+          return (
+            <TableRowColumn 
+              key={w.day_id} 
+              style={styles.cellStyle}
+            >
+              {this.renderWork(w, time)}
+            </TableRowColumn>
+          )
+        })
+      }
+    } else {
+      var wors = this.props.workoutsFromDict
+      if(wors.length > 0){
+        return wors.map((w)=>{
+          return (
+            <TableRowColumn 
+              key={w.day_id} 
+              style={styles.cellStyle}
+            >
+              {this.renderWork(w, time)}
+            </TableRowColumn>
+          )
+        })
+      }
     }
   }
   renderBody(){
@@ -230,7 +303,7 @@ class _Workouts extends Component {
     this.setState({create: true})
   }
   editRegistered(){
-    console.log("EDIT")
+    this.setState({list_athletes: true})
   }
   getGyms(){
     return this.props.gyms.map((g) => {
@@ -349,6 +422,26 @@ class _Workouts extends Component {
         </Popover> 
       )
     }
+    if(this.state.list_athletes){
+      return (
+        <Popover
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          onRequestClose={this.handleRequestClose}
+        >
+          <div className="create-box">
+            <h3>Редактирование класса</h3>
+            {athletes.map(m => {
+              return (
+                <p>{m.name}</p>
+              )
+            })}
+          </div>
+        </Popover> 
+      )
+    }
     if(title !== ""){
       return (
         <Popover
@@ -433,10 +526,27 @@ class _Workouts extends Component {
       )
     })
   }
+
+  changeWorkout = (event, value) => {
+    this.setState({value: value})
+  }
   render(){
     return(
       <div className="workout-wrapper">
         <p className="page-title">Классы</p>
+        <RadioButtonGroup 
+          name="current" 
+          defaultSelected={0}
+          onChange={this.changeWorkout}>
+          <RadioButton
+            value={0}
+            label="Текущая неделя"
+          />
+          <RadioButton
+            value={1}
+            label="Все недели"
+          />
+        </RadioButtonGroup><br/>
         <div className="tables">
           <div className="workout-hours">
             <Table 
@@ -506,6 +616,7 @@ class _Workouts extends Component {
 }
 
 const mapStateToProps=(state) => ({
+  workoutsFromDict: state.work.workoutsFromDict,
   workouts: state.admin.getWorkouts,
   gyms: state.admin.gymsList,
   gettingGyms: state.admin.isGettingGyms,
@@ -514,6 +625,7 @@ const mapStateToProps=(state) => ({
 })
 
 const mapDispatchToProps={
+  getWorkoutsFromDict: workActions.getWorkoutsFromDict,
   getWorkouts: action.getWeeksWorkout,
   getGymList: action.getGyms,
   getCoaches: action.getCoaches,

@@ -62,12 +62,13 @@ class _Constructor extends Component {
       if(all_cmp[i].id === value){
         component = {
           id: key_id,
-          comp_id: all_cmp[i].comp_id,
+          comp_id: all_cmp[i].comp_id, 
           constructor_id: all_cmp[i].constructor_id,
           name: all_cmp[i].name,
+          header: all_cmp[i].header,
           description: all_cmp[i].description,
           scorings: all_cmp[i].scorings,
-          scoring: all_cmp[i].scoring,
+          scoring_id: all_cmp[i].scoring_id,
           rx: all_cmp[i].rx,
         }
       }
@@ -93,9 +94,10 @@ class _Constructor extends Component {
           comp_id: null,
           constructor_id: value,
           name: this.props.constructors[i].name,
+          header: this.props.constructors[i].name,
           description: "",
           scorings: sc,
-          scoring: "",
+          scoring_id: "",
           rx: false,
         }
       }
@@ -174,7 +176,7 @@ class _Constructor extends Component {
 
     for(var i = 0; i<cmp.length; i++){
       if(cmp[i].id === cur_id){
-         cmp[i].scoring = value
+         cmp[i].scoring_id = value
          break;
       }
     }
@@ -204,8 +206,8 @@ class _Constructor extends Component {
     if(components){
       components = JSON.parse(components)
       return components.map((cmp, i) => {
-        if(cmp.scoring){
-          cur_score = cmp.scoring
+        if(cmp.scoring_id){
+          cur_score = cmp.scoring_id
         }
         return(
           <div key={i} className="component-item">
@@ -268,11 +270,21 @@ class _Constructor extends Component {
 
   handleSubmit(){
     var cmp = JSON.parse(localStorage.getItem('components'))
+
     var submitting = []
     cmp.map(c => {
       var r = {
         component_id: c.comp_id,
-        description: c,
+        description: {
+          name: c.name,
+          constructor_id: c.constructor_id,
+          info: {
+            rx: c.rx,
+            description: c.description,
+            header: c.header,
+          },
+          scoring_id: c.scoring_id,
+        },
       }
       submitting.push(r)
       return 0

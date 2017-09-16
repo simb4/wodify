@@ -8,6 +8,8 @@ const getWorkouts = (state = [], action) => {
   switch(action.type){
     case actionTypes.ACTION_GET_WORKOUTS_SUCCESS:
       return action.workouts
+    case actionTypes.ACTION_ADD_WORKOUT_SUCCESS:
+      return [...state, action.workout];
     case actionTypes.ACTION_GET_WORKOUTS_STARTED:
     case actionTypes.ACTION_GET_WORKOUTS_FAILED:
     case actionTypes.ACTION_LOGGED_OUT:

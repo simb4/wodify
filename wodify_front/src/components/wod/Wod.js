@@ -106,15 +106,12 @@ class _Wod extends Component {
   renderSections(wod){
     if(wod !== null){
       console.log(wod, 888)
-      return wod.sections.map((s) => {
-        console.log(s)
-        return( 
-          <div key={s.id}>
-            <h4 className="section"> {s.name}</h4>
-            {this.renderComponents(s.components)}
-          </div>
+      return wod.components.map(m => {
+        return (
+          <p>{m.description.info.header}</p>
         )
       })
+      
     }
     return 
   }
