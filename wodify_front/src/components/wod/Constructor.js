@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from "react-redux"
 import * as actions from "../../actions/wodActions"
 import { Redirect } from 'react-router-dom'
-
+import Toggle from 'material-ui/Toggle';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton'
@@ -99,6 +99,10 @@ class _Constructor extends Component {
           scorings: sc,
           scoring_id: "",
           rx: false,
+          rounds: null,
+          reps: null,
+          weight: null,
+          dist: null,
         }
       }
     }
@@ -200,6 +204,100 @@ class _Constructor extends Component {
     this.setState({check: true})
   }
 
+  renderScoringField(id, i){
+    var cmp = JSON.parse(localStorage.getItem('components'))
+    console.log(cmp)
+    switch(id){
+      case 2:
+        return(
+          <SelectField
+          floatingLabelText="в"
+          value={cmp[i].dist}
+          onChange={(ix, r, v) => {
+            console.log(v)
+            cmp[i].dist = v
+            console.log(cmp[i])
+            this.setState({check: true})
+            localStorage.setItem('components', JSON.stringify(cmp))
+          }}
+          autoWidth={true}
+          style={{width: "120px"}}
+        >
+          <MenuItem value={1} primaryText="miles" />
+          <MenuItem value={2} primaryText="meters" />
+          <MenuItem value={3} primaryText="km" />
+          <MenuItem value={4} primaryText="yards" />
+          <MenuItem value={5} primaryText="feet" />
+          <MenuItem value={6} primaryText="inches" />
+          <MenuItem value={7} primaryText="cm" />
+        </SelectField>
+        )
+      case 3:
+        return (
+          <SelectField
+            floatingLabelText="в"
+            value={cmp[i].weight}
+            // onChange={this.handleChange}
+            autoWidth={true}
+            style={{width: "80px"}}
+            onChange={(ix, r, v) => {
+            cmp[i].weight = v
+            this.setState({check: true})
+            localStorage.setItem('components', JSON.stringify(cmp))
+          }}
+          >
+            <MenuItem value={1} primaryText="lbs" />
+            <MenuItem value={2} primaryText="kg" />
+          </SelectField>
+        )
+      case 4:
+        return (
+          <div className="rounds-reps">
+            <p className="p-rounds">rounds 
+              <input 
+                className="rounds"
+                value={cmp[i].rounds}
+                onChange={(e) => {
+                  cmp[i].rounds = e.target.value
+                  this.setState({check: true})
+                  localStorage.setItem('components', JSON.stringify(cmp))
+                }}/> for </p>
+            <SelectField
+              floatingLabelText="reps"
+              value={cmp[i].reps}
+              autoWidth={true}
+              style={{width: "100px"}}
+              onChange={(ix, r, v) => {
+                cmp[i].reps = v
+                this.setState({check: true})
+                localStorage.setItem('components', JSON.stringify(cmp))
+              }}
+            >
+              <MenuItem value={1} primaryText="lbs" />
+              <MenuItem value={2} primaryText="kg" />
+            </SelectField>
+          </div>
+        )
+      default: return <p/>
+    }
+
+  }
+
+  handleRx = (event, isInputChecked) => {
+    var cmp = JSON.parse(localStorage.getItem('components'))
+    console.log(cmp)
+
+    cmp.map(c => {
+      if(c.id === cur_id){
+        c.rx = isInputChecked
+      }
+      return 
+    })
+
+    cmp.rx = isInputChecked
+    localStorage.setItem('components',JSON.stringify(cmp))
+  }
+
   renderComponents(){
     var components = localStorage.getItem('components')
     var cur_score = 0
@@ -238,6 +336,14 @@ class _Constructor extends Component {
                 >
                 {this.renderScoring(cmp.scorings)}
               </SelectField>
+              {this.renderScoringField(cmp.scoring_id, i)}
+              <div className="rx" onClick={() => {cur_id=cmp.id}}>
+                <Toggle
+                  defaultToggled={cmp.rx}
+                  label="Rx+"
+                  onToggle={this.handleRx}
+                />
+              </div>
             </div>
             <FlatButton 
               label="Удалить"
@@ -282,6 +388,10 @@ class _Constructor extends Component {
             rx: c.rx,
             description: c.description,
             header: c.header,
+            rounds: c.rounds,
+            reps: c.reps,
+            weight: c.weight,
+            dist: c.dist,
           },
           scoring_id: c.scoring_id,
         },

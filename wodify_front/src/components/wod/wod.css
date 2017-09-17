@@ -79,10 +79,16 @@
 .component-title{
   font-size: 14px;
   margin-bottom: 5px;
-  padding-left: 10px;
+  font-family: 'SF UI Display';
 }
 
 .component-scoring{
+  font-size: 10px;
+  font-family: 'Roboto';
+  color: #8E8E93;
+}
+
+.cmp-subtitle{
   font-size: 12px;
   font-family: 'Roboto';
   color: #8E8E93;
@@ -244,7 +250,7 @@
 .textarea{
   margin: 4px;
   width: 86%;
-  min-height: 30px;
+  min-height: 60%;
   background-color: white;
   padding: 6px;
   border-color: gray;
@@ -267,4 +273,44 @@
 .add-constructor-btn{
   margin-left: 80%;
 }
+
+.cmp-section{
+  font-size: 12px;
+  padding-left: 10px;
+}
+
+.rx{
+  width: 50px;
+  font-family: 'SF UI Display';
+  font-size: 12px;
+  margin-left: 70%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.rounds-reps{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 10px;
+  padding-right: 20px; 
+}
+
+.p-rounds{
+  font-size: 14px;
+  color: #A0A0A0;
+  font-family: 'Roboto';
+}
+
+.rounds{
+  width: 40px;  
+  height: 30px;
+  font-size: 12px;
+  padding: 2px;
+  text-align: center;
+}
+
+
+
+
 

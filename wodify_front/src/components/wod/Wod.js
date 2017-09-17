@@ -108,7 +108,13 @@ class _Wod extends Component {
       console.log(wod, 888)
       return wod.components.map(m => {
         return (
-          <p>{m.description.info.header}</p>
+          <div key={m.id} className="cmp-section">
+            <p>{/*m.description.info.header*/}</p>
+            <h4 className="component-title">{m.description.name}</h4>
+            <p className="cmp-subtitle">{m.description.info.description} 
+              {m.description.info.rx ? "Rx" : ""}</p><br/>
+            <Divider /><br/>
+          </div>
         )
       })
       
