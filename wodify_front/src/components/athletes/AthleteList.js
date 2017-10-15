@@ -6,6 +6,8 @@ import {Toolbar, ToolbarGroup} from 'material-ui/Toolbar';
 import MenuItem from 'material-ui/MenuItem';
 import DropDownMenu from 'material-ui/DropDownMenu';
 
+import { Redirect } from 'react-router-dom'
+
 import Athlete from "./Athlete"
 // import AthleteProfile from './AthleteProfile'
 
@@ -16,6 +18,7 @@ import {
   TableHeader,
   TableHeaderColumn,
   TableRow,
+  TableRowColumn,
 } from 'material-ui/Table';
 
 import './athlete.css'
@@ -42,9 +45,13 @@ class _AthleteList extends Component {
       showCheckboxes: false,
       abonement: 1,
       status: 1,
+      redirect: false,
     }
   }
   componentWillMount() {
+
+    localStorage.removeItem('athlete')
+
     this.props.clearFlags()
     const callBack = (ok) => {  // нужно дописать лоадинг
       if (ok) {
@@ -57,9 +64,27 @@ class _AthleteList extends Component {
       this.props.getAthletes({ }, callBack);
     }
   }
+
   cellClicked = (row,column,event) => {
-    console.log(row)
+    var user = JSON.stringify(this.props.athleteList[row])
+    localStorage.setItem('athlete', user)
+
+    localStorage.setItem('redirect', "ok")
+
+    this.setState({redirect: true})
+
   }
+
+  redirect(){
+
+    if(localStorage.getItem('redirect')){
+      return <Redirect to={{
+      pathname: '/admin/athletes/profile',
+      from: '/admin/athletes'}}/>
+    }
+    
+  }
+
   renderAthlete(athlete) {
     return (
       <Athlete
@@ -87,6 +112,7 @@ class _AthleteList extends Component {
         <div className="table-menu">
           <p className="page-title"><b>Атлеты</b></p>
         </div>
+        {this.redirect()}
         {this.renderLoader()}
         <div className="filter">
           <Toolbar style={{justifyContent: "flex-start"}}>
@@ -144,8 +170,21 @@ class _AthleteList extends Component {
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}
           >
-            {this.props.athleteList.map((athlete) => 
-              this.renderAthlete(athlete)) }
+            {this.props.athleteList.map((athlete) => {
+              return (
+                <TableRow key={athlete.id} className="athletesMain">
+                  <TableRowColumn>
+                    <div className="name-ava">
+                      {/*this.renderAvatar()*/}
+                      {athlete.first_name + " " +
+                      athlete.last_name}
+                    </div>
+                  </TableRowColumn>
+                  <TableRowColumn>{athlete.username}</TableRowColumn>
+                  <TableRowColumn>{athlete.phone_number}</TableRowColumn>
+                </TableRow>
+              )
+            }) }
           </TableBody>  
         </Table>
         { !this.props.isMobile && 

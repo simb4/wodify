@@ -2,13 +2,17 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
+import DatePicker from 'react-datepicker'
+import moment from 'moment'
+import 'react-datepicker/dist/react-datepicker.css'
+
 import Loader from "../elements/Loader"
 
 import FlatButton from 'material-ui/FlatButton'
 
 import "./wod.css"
 import ScrollToTop from 'react-scroll-up'
-import Divider from 'material-ui/Divider';
+import Divider from 'material-ui/Divider'
 
 import {
   Table,
@@ -44,13 +48,18 @@ class _Wod extends Component {
       multiSelectable: false,
       enableSelectAll: false,
       showCheckboxes: false,
+      startDate: moment(),
+      date: moment().format('YYYY-MM-DD'),
     }
     this.renderWods = this.renderWods.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
   componentWillMount(){
     if(this.props.wodOfWeek.length === 0){
-      this.props.GetWods()
+      this.props.GetWods({date_of_wod: this.state.date})
     }
+    var d = moment().format('YYYY-MM-DD')
+    this.setState({date: d})
   }
   renderDate(){
     let startDate = this.props.wodOfWeek.start_date
@@ -109,10 +118,9 @@ class _Wod extends Component {
       return wod.components.map(m => {
         return (
           <div key={m.id} className="cmp-section">
-            <p>{/*m.description.info.header*/}</p>
-            <h4 className="component-title">{m.description.name}</h4>
-            <p className="cmp-subtitle">{m.description.info.description} 
-              {m.description.info.rx ? "Rx" : ""}</p><br/>
+            <h4 className="component-title">{m.component.name}</h4>
+            <p className="cmp-subtitle">
+              {m.description.description}</p><br/>
             <Divider /><br/>
           </div>
         )
@@ -120,6 +128,14 @@ class _Wod extends Component {
       
     }
     return 
+  }
+
+  handleChange(date){
+    this.setState({
+      startDate: date,
+      date: date.format('YYYY-MM-DD'),
+    })
+    this.props.GetWods({date_of_wod: date.format('YYYY-MM-DD')})
   }
   renderWods(){
     let wods = this.props.wodOfWeek.wods
@@ -162,7 +178,16 @@ class _Wod extends Component {
       <div className="wod-list">
         <div className="table-nav">
           <div className="inner-nav">
-            {this.renderDate()}
+            {/*this.renderDate()*/}
+            <p className="label"> Выберите дату</p>
+            <DatePicker
+              selected={this.state.startDate}
+              onChange={this.handleChange}
+              showYearDropdown
+              dateFormatCalendar="MMMM"
+              // minDate={moment()}
+              maxDate={moment().add(6, "days")}
+            />
             <div className="add">
               <p className="page-title"><b>WOD КАЛЕНДАРЬ</b></p>
               <Link to="/admin/createwod">

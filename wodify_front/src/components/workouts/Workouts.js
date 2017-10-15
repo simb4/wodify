@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { SERVER_URL } from "../../constants/server"
 
 import * as action from '../../actions/adminActions'
 import * as workActions from '../../actions/workoutActions'
@@ -74,6 +75,7 @@ class _Workouts extends Component {
       cur_week: true,
       value: 0,
       list_athletes: false,
+      athlete: 0,
     }
   }
   componentWillMount(){
@@ -95,10 +97,15 @@ class _Workouts extends Component {
     if(this.props.coaches.length === 0){
       this.props.getCoaches()
     }
+
+    if(this.props.athleteList.length === 0){
+      this.props.getAthletes()
+    }
   }
 
   handleGym = (event, index, gym) => this.setState({gym});
   handleCoach = (event, index, coach) => this.setState({coach});
+  handleAthlete = (event, index, athlete) => this.setState({athlete});
 
   handleRequestClose = () => {
     this.setState({
@@ -175,7 +182,7 @@ class _Workouts extends Component {
       work_id = 0
       people = 0
       if(works.length > 0){
-        for(var i=0; i<works.length; i++){
+        for(i=0; i<works.length; i++){
           if(works[i].day_id === column){
             for(var j=0; j<works[i-1].workouts.length; j++){
               if(works[i-1].workouts[j].start_time === TIME[row]){
@@ -305,6 +312,16 @@ class _Workouts extends Component {
   editRegistered(){
     this.setState({list_athletes: true})
   }
+  handleDelete(){
+    // console.log(JSON.parse(work_id))
+    work_id = JSON.parse(work_id)
+    console.log(work_id)
+    if(this.state.value === 0){
+      this.props.deleteWorkout({workout_id: work_id })
+    } else {
+      this.props.deleteWorkoutFromDict({workout_id: work_id})
+    }
+  }
   getGyms(){
     return this.props.gyms.map((g) => {
       return(
@@ -336,9 +353,13 @@ class _Workouts extends Component {
       max_people: this.state.maxCount!==0 ? this.state.maxCount : people
     }
 
-    console.log(data)
+    // console.log(data)
 
-    this.props.updateWorkout(data)
+    if(this.state.value === 0){
+      this.props.updateWorkout(data)
+    } else {
+      this.props.updateMainWorkout(data)
+    }
     this.setState({
       open: false,
       openDialog: false,
@@ -356,17 +377,43 @@ class _Workouts extends Component {
     this.props.getWorkouts(data)
   }
 
-  handleSubmit=()=>{
+  handleSign=()=>{
     let data = {
-      date_of_workout: dates[day], // надо поменять
-      start_time: start,
-      end_time: end,
-      coach_id: this.state.coach,
-      // gym_id: this.state.gym,
-      name: this.state.name,
-      max_people: this.state.maxCount
+      workout_id: work_id,
+      athlete_id: this.state.athlete
     }
-    this.props.addWorkout(data)
+
+    this.props.signForWorkout(data)
+
+    this.setState({athlete: 0})
+
+  }
+
+  handleSubmit=()=>{
+   
+    if(this.state.value === 0){
+      let data = {
+        date_of_workout: dates[day], // надо поменять
+        start_time: start,
+        end_time: end,
+        coach_id: this.state.coach,
+        // gym_id: this.state.gym,
+        name: this.state.name,
+        max_people: this.state.maxCount
+      }
+      this.props.addWorkout(data)
+    } else {
+       let data = {
+        date_of_workout: dates[day],
+        start_time: start,
+        end_time: end,
+        coach_id: this.state.coach,
+        day_id: day,
+        name: this.state.name,
+        max_people: this.state.maxCount
+      }
+      this.props.addWorkoutToDict(data)
+    }
     this.setState({
       open: false,
       openDialog: false,
@@ -378,6 +425,11 @@ class _Workouts extends Component {
       change: false,
     })
   }
+
+  handleSaveEdit = () => {
+    this.setState({list_athletes: false})
+  }
+
   renderPopover(){
     if(this.state.change){
       return (
@@ -421,8 +473,7 @@ class _Workouts extends Component {
           </div>
         </Popover> 
       )
-    }
-    if(this.state.list_athletes){
+    }else if(this.state.list_athletes){
       return (
         <Popover
           open={this.state.open}
@@ -433,16 +484,67 @@ class _Workouts extends Component {
         >
           <div className="create-box">
             <h3>Редактирование класса</h3>
-            {athletes.map(m => {
-              return (
-                <p>{m.name}</p>
-              )
-            })}
+            <SelectField
+              floatingLabelText="Выберите атлета"
+              value={this.state.athlete}
+              onChange={this.handleAthlete}
+            >
+              {this.props.athleteList.map(a => {
+                return(
+                  <MenuItem key={a.id} value={a.id} primaryText={a.first_name}/>
+                )
+              })}
+            </SelectField>
+            <FlatButton 
+              className="create-workout-btn" 
+              label="Записать" 
+              onClick={this.handleSign.bind(this)}
+            />
+            <FlatButton 
+              className="create-workout-btn" 
+              label="Сохранить" 
+              onClick={this.handleSaveEdit.bind(this)}
+            />
           </div>
+          <Divider/>
+          {console.log(athletes)}
+          {athletes.map(m => {
+            return (
+              <div key={m.id} className="athleteList">
+                <img className="avaList" src={SERVER_URL + m.avatar_url}/>
+                <p>{m.first_name + " " + m.last_name}</p>
+              </div>
+            )
+          })}
         </Popover> 
       )
-    }
-    if(title !== ""){
+    }else if(this.state.value !== 0 && title != ""){
+      console.log("Bakosya")
+      return (
+        <Popover
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          onRequestClose={this.handleRequestClose}
+        >
+          <List>
+            <ListItem primaryText={title} />
+            <Divider inset={true}/>
+            <ListItem primaryText={coach} />
+            <Divider inset={true}/>
+            <div className="view-registered">
+              <p className="edit-registered">Макс. кол-во</p>
+                <ListItem primaryText={registered.substring(2,4)} />
+            </div>
+            <p className="change-coach" 
+              onClick={this.changeCoach.bind(this)}>Редактировать</p>
+            <p className="delete-workout" 
+                onClick={this.handleDelete.bind(this)}>Удалить</p>
+          </List>
+        </Popover> 
+      )
+    } else if(title !== ""){
       return (
         <Popover
           open={this.state.open}
@@ -463,6 +565,8 @@ class _Workouts extends Component {
             </div>
             <p className="change-coach" 
               onClick={this.changeCoach.bind(this)}>Редактировать</p>
+            <p className="delete-workout" 
+                onClick={this.handleDelete.bind(this)}>Удалить</p>
           </List>
         </Popover> 
       )
@@ -621,7 +725,12 @@ const mapStateToProps=(state) => ({
   gyms: state.admin.gymsList,
   gettingGyms: state.admin.isGettingGyms,
   coaches: state.admin.coachList,
-  isWorkoutCreated: state.admin.isWorkoutCreated
+  isWorkoutCreated: state.admin.isWorkoutCreated,
+  deleted: state.work.deleteWorkout,
+  deletedFromDict: state.work.deleteWorkoutFromDict,
+  addedToDict: state.work.isWorkoutAddedToDict,
+  athleteList: state.admin.athleteList,
+  signed: state.work.signForWorkout,
 })
 
 const mapDispatchToProps={
@@ -630,7 +739,13 @@ const mapDispatchToProps={
   getGymList: action.getGyms,
   getCoaches: action.getCoaches,
   addWorkout: action.addWorkout,
-  updateWorkout: action.updateWorkout
+  updateWorkout: action.updateWorkout,
+  updateMainWorkout: workActions.updateWorkoutInDict,
+  deleteWorkout: workActions.deleteWorkouts,
+  deleteWorkoutFromDict: workActions.deleteWorkoutFromDict,
+  addWorkoutToDict: workActions.addWorkoutToDict,
+  getAthletes: action.getAthletes,
+  signForWorkout: workActions.signForWorkout,
 }
 
 const Workouts=connect(

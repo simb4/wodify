@@ -31,6 +31,7 @@ class _AdminMainPage extends Component{
     this.handleCloseModal = this.handleCloseModal.bind(this)
   }
   renderAvatarMenu() {
+
     let styles = {
       modal: false,
       open: this.state.showModal,
@@ -125,20 +126,22 @@ class _AdminMainPage extends Component{
   }
   renderProfilePhoto(){
     var user = this.getUser()
-    var photo = ""
-    if(user.avatar_url !== ""){
+    var photo;
+    if(user.avatar_url){
       photo = SERVER_URL + user.avatar_url
     } else {
-      photo = ""
+      photo = require('./ava.png');
     }
     return (
       <div>
+        {console.log(photo)}
         {this.renderAvatarMenu()}
         <div className="avatar-container">
           <img
             src={photo}
             onClick={this.handleOpenModal}
             alt={this.props.user.first_name}
+            className="avaPNG"
             // onLoad={this.handleAvatarLoad}
             // width={(width>=height)?'auto':(this.props.isMobile?94:144)}
             // height={(width>=height)?(this.props.isMobile?94:144):'auto'}

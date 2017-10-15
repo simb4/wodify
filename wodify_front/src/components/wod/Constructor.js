@@ -31,9 +31,6 @@ class _Constructor extends Component {
   }
 
   componentWillMount(){
-    if(this.props.wodCreated){
-      this.props.clearWodCreated()
-    }
     var id = this.props.wodCreated.id
     if(id){
       localStorage.setItem('wod_id', id);
@@ -232,7 +229,7 @@ class _Constructor extends Component {
           <MenuItem value={7} primaryText="cm" />
         </SelectField>
         )
-      case 3:
+      case 5:
         return (
           <SelectField
             floatingLabelText="в"
@@ -250,7 +247,7 @@ class _Constructor extends Component {
             <MenuItem value={2} primaryText="kg" />
           </SelectField>
         )
-      case 4:
+      case 3:
         return (
           <div className="rounds-reps">
             <p className="p-rounds">rounds 
@@ -291,11 +288,12 @@ class _Constructor extends Component {
       if(c.id === cur_id){
         c.rx = isInputChecked
       }
-      return 
+      return 0
     })
 
     cmp.rx = isInputChecked
     localStorage.setItem('components',JSON.stringify(cmp))
+    return 
   }
 
   renderComponents(){

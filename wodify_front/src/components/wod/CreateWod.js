@@ -9,6 +9,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Loader from "../elements/Loader"
 import RaisedButton from 'material-ui/RaisedButton';
 import * as actions from "../../actions/adminActions"
+import * as wodActions from "../../actions/wodActions"
 
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -32,6 +33,9 @@ class _CreateWod extends Component {
     this.redirectToComponents = this.redirectToComponents.bind(this)
   }
   componentWillMount(){
+    if(this.props.wodCreated){
+      this.props.clearWodCreated()
+    }
     if (!this.props.programs.length) {
       this.props.getPrograms();
     }
@@ -65,6 +69,7 @@ class _CreateWod extends Component {
       date_of_wod: this.state.date,
       program_id: this.state.program
     }
+
     if(this.state.date !== ""){
       this.props.onCreateWod(data)
       localStorage.removeItem('components')
@@ -82,6 +87,7 @@ class _CreateWod extends Component {
     }
     return
   }
+  
   renderLoader(){
     var message = this.props.isLoading
     if(message === "started"){
@@ -113,14 +119,16 @@ class _CreateWod extends Component {
                   showYearDropdown
                   dateFormatCalendar="MMMM"
                   minDate={moment()}
-                  maxDate={moment().add(6, "days")}
+                  // maxDate={moment().add(6, "days")}
                 />
             </div>
             <div className="block">
               <p className="label"> Выберите программу</p>
-              <DropDownMenu value={this.state.program} onChange={this.handleProgramChange}>
+              <DropDownMenu value={this.state.program} 
+                onChange={this.handleProgramChange}>
                   <MenuItem value={0} label="----" primaryText="----"/>
-                  {this.props.programs.map((program) => this.renderProgram(program))}
+                  {this.props.programs.map((program) => 
+                    this.renderProgram(program))}
               </DropDownMenu>
             </div>
              <RaisedButton 
@@ -135,7 +143,6 @@ class _CreateWod extends Component {
       </div>
     );
   }
-
 }
 
 const mapStateToProps = (state) => ({
@@ -147,7 +154,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   getPrograms: actions.getPrograms,
-  onCreateWod: actions.createWod
+  onCreateWod: actions.createWod,
+  clearWodCreated: wodActions.clearWodCreated,
 }
 
 const CreateWod = connect(

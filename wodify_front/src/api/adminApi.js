@@ -9,6 +9,7 @@ const addComponentUrl = SERVER_URL + "main/add_component/"
 const addProgramUrl = SERVER_URL + "main/add_program/"
 const addSectionUrl = SERVER_URL + "main/add_section/"
 const addWorkoutUrl = SERVER_URL + "main/add_workout/"
+const addWorkoutToDictUrl = SERVER_URL + "main/add_workout_to_dict/"
 const addWodUrl = SERVER_URL + "main/add_wod/"
 const fillWodUrl = SERVER_URL + "main/fill_wod/"
 const listAthletesUrl = SERVER_URL + "main/list_athletes/"
@@ -23,7 +24,26 @@ const workoutsFromDictUrl = SERVER_URL + "main/get_workouts_from_dict/"
 const listCoachesUrl = SERVER_URL + "main/list_coaches/"
 const listComponentsUrl = SERVER_URL + "main/list_components/"
 const updateWorkoutUrl = SERVER_URL + "main/update_workout/"
+const updateWorkoutInDictUrl = SERVER_URL + "main/update_workout_in_dict/"
 const getScoresByConstructorUrl = SERVER_URL + "main/get_scores_by_constructor/"
+const deleteWorkoutUrl = SERVER_URL + "main/delete_workout/"
+const deleteWorkoutFromDictUrl = SERVER_URL + "main/delete_workout_from_dict/"
+const signForWorkoutUrl = SERVER_URL + "main/sign_for_workout/"
+const uploadCSVUrl = SERVER_URL + "athlete/add_measure_info/"
+
+export const uploadCSV = (token, data, file) => (
+  fetch(
+    uploadCSVUrl,
+    {
+      method: 'POST',
+      headers: {
+        ...STD_HEADERS,
+        "auth-token": token,
+      },
+      body: file
+    }
+  )
+)
 
 export const listConstructor = (token) => (
   fetch(
@@ -34,6 +54,48 @@ export const listConstructor = (token) => (
         ...STD_HEADERS,
         "auth-token": token,
       }
+    }
+  )
+)
+
+export const deleteWorkout = (token, data) => (
+  fetch(
+    deleteWorkoutUrl,
+    {
+      method: 'POST',
+      headers: {
+        ...STD_HEADERS,
+        "auth-token": token,
+      },
+      body: qs.stringify(data)
+    }
+  )
+)
+
+export const signForWorkout = (token, data) => (
+  fetch(
+    signForWorkoutUrl,
+    {
+      method: 'POST',
+      headers: {
+        ...STD_HEADERS,
+        "auth-token": token,
+      },
+      body: qs.stringify(data)
+    }
+  )
+)
+
+export const deleteWorkoutFromDict = (token, data) => (
+  fetch(
+    deleteWorkoutFromDictUrl,
+    {
+      method: 'POST',
+      headers: {
+        ...STD_HEADERS,
+        "auth-token": token,
+      },
+      body: qs.stringify(data)
     }
   )
 )
@@ -93,6 +155,20 @@ export const updateWorkout = (token, data) => (
   )
 )
 
+export const updateWorkoutInDict = (token, data) => (
+  fetch(
+    updateWorkoutInDictUrl,
+    {
+      method: 'POST', 
+      headers: {
+        ...STD_HEADERS,
+        "auth-token": token,
+      },
+      body: qs.stringify(data, {skipNulls: true})
+    }
+  )
+)
+
 export const fillWod = (token, data) => (
   fetch(
     fillWodUrl,
@@ -107,15 +183,16 @@ export const fillWod = (token, data) => (
   )
 );
 
-export const getWodOfWeek = (token) => (
+export const getWodOfWeek = (token, data) => (
   fetch(
     getWodOfWeekUrl,
     {
-      method: 'GET',
+      method: 'POST',
       headers: {
         ...STD_HEADERS,
         "auth-token": token,
-      }
+      },
+      body: qs.stringify(data)
     }
   )
 )
@@ -164,6 +241,20 @@ export const addAthlete = (token, data) => (
 export const addWorkout = (token, data) => (
   fetch(
     addWorkoutUrl,
+    {
+      method: 'POST',
+      headers: {
+        ...STD_HEADERS,
+        'auth-token': token,
+      },
+      body: qs.stringify(data)
+    }
+  )
+)
+
+export const addWorkoutToDict = (token, data) => (
+  fetch(
+    addWorkoutToDictUrl,
     {
       method: 'POST',
       headers: {

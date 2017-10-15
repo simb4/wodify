@@ -21,6 +21,8 @@ const styles = {
   }
 };
 
+var admin, id
+
 class _NewAthlete extends Component {
   constructor(props){
     super(props)
@@ -46,6 +48,16 @@ class _NewAthlete extends Component {
     this.handleChangeSurname=this.handleChangeSurname.bind(this)
   }
 
+  componentWillMount(){
+
+    if(!admin){
+      admin = localStorage.getItem('state')
+      admin = JSON.parse(admin)
+      id = admin.user.user.administrator.gym.id
+    }
+
+  }
+
   componentWillReceiveProps(nextProps){
  
     if(nextProps.errorMessage !== 
@@ -65,7 +77,8 @@ class _NewAthlete extends Component {
           password: this.state.password, 
           user_type: this.state.value,
           first_name: this.state.name,
-          last_name: this.state.surname
+          last_name: this.state.surname,
+          gym_id: id,
         }
         this.props.register(data)
     }

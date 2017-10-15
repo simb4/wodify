@@ -12,6 +12,7 @@ import Header from '../components/header/Header'
 // import HomePage from '../components/home/HomePage';
 import AdminMainPage from "../components/admin/AdminMain"
 import AthleteList from "../components/athletes/AthleteList"
+import AthleteProfile from "../components/athletes/AthleteProfile"
 import NewAthlete from "../components/athletes/NewAthlete"
 import Wod from "../components/wod/Wod"
 import CreateWod from "../components/wod/CreateWod"
@@ -37,6 +38,8 @@ class _Main extends Component {
             component={AdminMainPage} {...isLoggedIn}/>*/}
           <UserRoute exact path="/admin/athletes" 
             component={AthleteList} {...isLoggedIn}/>
+          <UserRoute exact path="/admin/athletes/profile" 
+            component={AthleteProfile} {...isLoggedIn}/>
           <UserRoute exact path="/admin/profile" 
             component={AdminMainPage} {...isLoggedIn}/>
           <UserRoute exact path="/admin/addathlete" 

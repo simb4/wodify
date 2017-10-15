@@ -9,6 +9,10 @@
   box-sizing: border-box;
 }
 
+tbody{
+  vertical-align: text-top; 
+}
+
 .wod-list{
   font-family: 'SFUIDisplay-Regular';
   width: 96%;

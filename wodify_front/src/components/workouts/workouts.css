@@ -71,6 +71,16 @@ td div div div{
   color: #007AFF;
 }
 
+.delete-workout{
+  text-align: right;
+  text-transform: lowercase;
+  font-size: 12px;
+  padding-top: 10px;
+  padding-right: 10px;
+  cursor: pointer;
+  color: #007AFF;
+}
+
 .add-workout{
   min-width: 200px;
   cursor: pointer;
@@ -87,6 +97,7 @@ td div div div{
 .edit-registered{
   text-transform: lowercase;
   font-size: 12px;
+  padding-left: 10px;
   padding-right: 10px;
   color: #007AFF;
   cursor: pointer;
@@ -108,4 +119,17 @@ td div div div{
 
 .workout-table{
   width: 91%;
+}
+
+.athleteList{
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 10px;
+  margin: 2px;
+}
+
+.avaList{
+  width: 20%;
+  padding: 5px;
 }

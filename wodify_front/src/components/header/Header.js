@@ -97,8 +97,10 @@ class _Header extends Component {
         user = this.props.user.administrator
       }
       var avatar = null
-      if(user.avatar_url !== null){
+      if(user.avatar_url){
         avatar = SERVER_URL + user.avatar_url
+      }else{
+        avatar = require('./ava.png');
       }
       return(
         <div className="hmenu"> 

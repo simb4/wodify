@@ -234,6 +234,20 @@ const updatedWorkout = (state = [], action) => {
   }
 }
 
+const csvUploaded = (state = false, action) => {
+  switch(action.type) {
+    case actionTypes.ACTION_UPLOAD_CSV_SUCCESS:
+      return true
+    case actionTypes.ACTION_UPLOAD_CSV_FAILED:
+    case actionTypes.ACTION_UPLOAD_CSV_STARTED:
+    case actionTypes.ACTION_CLEAR_ALL:
+    case actionTypes.ACTION_LOGGED_OUT:
+      return false
+    default:
+      return state
+  }
+}
+
 const adminReducer = combineReducers({
   athleteList,
   isRegistering,

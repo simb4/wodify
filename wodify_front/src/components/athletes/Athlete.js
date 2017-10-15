@@ -30,10 +30,10 @@ class Athlete extends Component {
 
   render(){
     return (
-      <TableRow>
+      <TableRow className="athletesMain">
         <TableRowColumn>
           <div className="name-ava">
-            {this.renderAvatar()}
+            {/*this.renderAvatar()*/}
             {this.props.athlete.first_name + " " +
             this.props.athlete.last_name}
           </div>

@@ -196,13 +196,13 @@ export const createWod = (data) => (dispatch, getState) => {
 }
 
 
-export const getWeeksWod = () => (dispatch, getState) => {
+export const getWeeksWod = (data) => (dispatch, getState) => {
   dispatch({
     type: actionTypes.ACTION_GET_WEEK_WOD_STARTED,
   })
 
   adminApi
-    .getWodOfWeek(getState().user.token)
+    .getWodOfWeek(getState().user.token,data)
     .then(
       response => {
         if(response.status !== 200) {
@@ -556,5 +556,48 @@ export const updateWorkout = (data) => (dispatch, getState) => {
 
 
 
+export const uploadCSV = (data, file) => (dispatch, getState) => {
 
+  dispatch({
+    type: actionTypes.ACTION_UPLOAD_CSV_STARTED,
+  })
+
+  adminApi
+    .uploadCSV(getState().user.token, data, file)
+    .then(
+      response => {
+        if(response.status !== 200) {
+          dispatch({
+            type: actionTypes.ACTION_UPLOAD_CSV_FAILED,
+            errorMessage: ERRORS.NUMBER + response.status,
+          })
+        } else {
+          response
+          .text()
+          .then(
+            value => {
+              const responseObject = JSON.parse(value)
+              if(responseObject.code === 0){
+                dispatch({
+                  type: actionTypes.ACTION_UPLOAD_CSV_SUCCESS,
+                  athletes: responseObject.athletes
+                })
+              } else{
+                dispatch({
+                  type: actionTypes.ACTION_UPLOAD_CSV_FAILED,
+                  errorMessage: responseObject.message
+                })
+              }
+            }
+          )
+        }
+      },
+      error => {
+        dispatch({
+          type: actionTypes.ACTION_UPLOAD_CSV_FAILED,
+          errorMessage: ERRORS.NO_INTERNET
+        })
+      }
+    )
+}
 
