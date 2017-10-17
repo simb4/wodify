@@ -40,7 +40,12 @@ export const uploadCSV = (token, data, file) => (
         ...STD_HEADERS,
         "auth-token": token,
       },
-      body: file
+      body: qs.stringify({
+        athlete_id: data.athlete_id,
+        date_of_measure: data.date_of_measure,
+        csv_file: file
+      })
+
     }
   )
 )

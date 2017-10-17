@@ -35,7 +35,7 @@ class _Constructor extends Component {
     if(id){
       localStorage.setItem('wod_id', id);
     }
-    if(!this.props.components){
+    if(this.props.components.length === 0){
       this.props.getComponents()
     }
     if(!localStorage.getItem('id')){
@@ -49,14 +49,14 @@ class _Constructor extends Component {
     }
   }
 
-  handleCmp=(index, row, value) => {
-    this.setState({value})
+  handleCmp=(index, row, e_cmp_value) => {
+    this.setState({e_cmp_value})
     var component = {}
     var all_cmp = this.props.components
     var key_id = JSON.parse(localStorage.getItem('id'))
     localStorage.setItem('id', key_id + 1)
     for(var i=0; i<all_cmp.length; i++){
-      if(all_cmp[i].id === value){
+      if(all_cmp[i].id === e_cmp_value){
         component = {
           id: key_id,
           comp_id: all_cmp[i].comp_id, 
@@ -70,12 +70,10 @@ class _Constructor extends Component {
         }
       }
     }
-
     this.setState({componentItem: component})
   }
 
   handleChange=(index, row, value) => {
-
     this.props.getScoring({constructor_id: value})
     this.setState({value})
     var component = {}
@@ -117,7 +115,6 @@ class _Constructor extends Component {
         cmp[i].description = desc;
       }
     }
-
     localStorage.setItem('components', JSON.stringify(cmp))
     this.setState({description: desc})
   }
@@ -132,7 +129,6 @@ class _Constructor extends Component {
         cmp[i].name = name;
       }
     }
-
     localStorage.setItem('components', JSON.stringify(cmp))
     this.setState({name: name})
   }
@@ -196,7 +192,6 @@ class _Constructor extends Component {
       }
       return 0
     })
-
     localStorage.setItem('components', JSON.stringify(new_cmp))
     this.setState({check: true})
   }
@@ -419,6 +414,8 @@ class _Constructor extends Component {
   }
 
   renderExCmp(){
+    console.log('BAKOOOO')
+    console.log(this.props.components)
     return this.props.components.map((cmp) => {
       return <MenuItem 
       value={cmp.id} 
