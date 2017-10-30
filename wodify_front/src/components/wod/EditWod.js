@@ -12,7 +12,7 @@ import "./wod.css"
 
 var cur_id = 0
 
-class _Constructor extends Component {
+class _EditWod extends Component {
 
   constructor(props){
     super(props)
@@ -31,25 +31,11 @@ class _Constructor extends Component {
   }
 
   componentWillMount(){
-    var id = localStorage.getItem('wod_id')
-    if(!id){
-      console.log('ID')
-      id = this.props.wodCreated.id
-      if(id){
-        localStorage.setItem('wod_id', id);
-      }
-    }
     if(this.props.components.length === 0){
       this.props.getComponents()
     }
     if(!localStorage.getItem('id')){
       localStorage.setItem('id', "0")
-    }
-    var components = JSON.stringify([])
-    if(!localStorage.getItem('components'))
-      localStorage.setItem('components', components)
-    else{
-      console.log(JSON.parse(localStorage.getItem('components')))
     }
     if(this.props.constructors.length === 0){
       this.props.listConstructor()
@@ -501,7 +487,7 @@ class _Constructor extends Component {
         {this.renderComponents()}
       </div>
       <RaisedButton 
-        label="Создать"
+        label="Сохранить"
         onClick={this.handleSubmit}
       />
       <RaisedButton 
@@ -545,9 +531,9 @@ const mapDispatchToProps = {
   listConstructor: actions.listConstructor
 }
 
-const Constructor = connect(
+const EditWod = connect(
   mapStateToProps,
   mapDispatchToProps
-)(_Constructor);
+)(_EditWod);
 
-export default Constructor
+export default EditWod

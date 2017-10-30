@@ -14,6 +14,8 @@ import "./wod.css"
 import ScrollToTop from 'react-scroll-up'
 import Divider from 'material-ui/Divider'
 
+import { Redirect } from 'react-router-dom'
+
 import {
   Table,
   TableHeader,
@@ -50,7 +52,7 @@ class _Wod extends Component {
       showCheckboxes: false,
       startDate: moment(),
       date: moment().format('YYYY-MM-DD'),
-      selectedWod: {}
+      redirect: false
     }
     this.renderWods = this.renderWods.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -126,7 +128,6 @@ class _Wod extends Component {
           </div>
         )
       })
-      
     }
     return 
   }
@@ -135,12 +136,45 @@ class _Wod extends Component {
     let wods = this.props.wodOfWeek.wods
     var today = this.props.wodOfWeek.today_date
 
-    if(wods[column-1]){
-      this.setState({selectedWod: wods[column-1]})
+    var components = []
+    var cmp = wods[column-1].wod.components;
+    // console.log(cmp[0])
+    // console.log(cmp)
+    for(var i=0; i<cmp.length; i++){
+      components.push({
+        id: cmp[i].component.id,
+        check: true,
+        comp_id: cmp[i].component.id,
+        constructor_id: cmp[i].component.score_constructor.constructor.id,
+        name: cmp[i].component.name,
+        header: cmp[i].component.description.header,
+        description: cmp[i].component.description.description,
+        scorings: cmp[i].component.description.scorings,
+        scoring_id: cmp[i].component.score_constructor.scoring.id,
+        rx: cmp[i].component.description.rx,
+        rounds: cmp[i].component.description.rounds,
+        reps: cmp[i].component.description.reps,
+        weight: cmp[i].component.description.weight,
+        dist: cmp[i].component.description.dist,
+      })
+      // console.log(components[i])
     }
-    console.log(this.state.selectedWod, 'here')
-  }
 
+    localStorage.setItem('components', JSON.stringify(components))
+    localStorage.setItem('wod_id', JSON.stringify(wods[column-1].wod.wod.id))
+    this.setState({redirect: true})
+  }
+  redirect(){
+
+    if(this.state.redirect === true){
+       return (
+        <Redirect to={{
+        pathname: '/createwod/editwod',
+        from: '/'}}/>
+      )
+    }
+   
+  }
   handleChange(date){
     this.setState({
       startDate: date,
@@ -187,6 +221,7 @@ class _Wod extends Component {
   render() {
     return (
       <div className="wod-list">
+        {this.redirect()}
         <div className="table-nav">
           <div className="inner-nav">
             {/*this.renderDate()*/}

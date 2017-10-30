@@ -3,6 +3,13 @@ import * as adminApi from '../api/adminApi'
 
 import { ERRORS } from '../constants/constants'
 
+export const refresh = () => (dispatch, getState)  => {
+  dispatch({
+    type: actionTypes.ACTOIN_REFRESH_STARTED,
+  })
+}
+
+
 export const getWorkoutsFromDict = () => (dispatch, getState) => {
 
   dispatch({

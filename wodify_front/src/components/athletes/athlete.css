@@ -23,6 +23,10 @@
 
 .ava{
   margin-right: 10px;
+  min-width: 180px;
+  max-width: 200px;
+  min-height: 150px;
+  max-height: 180px;
 }
 
 .filter{
@@ -82,6 +86,65 @@
 }
 /*{this.props.athleteList.map((athlete) => 
               this.renderAthlete(athlete)) }*/
+
+.fileInput{
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.fileInput + label {
+    margin: 0 10px;
+    font-size: 1em;
+    font-weight: 700;
+    color: black;
+    padding: 4px;
+    border: 1px solid black;
+    display: inline-block;
+}
+
+.fileInput:focus + label{
+  outline: 1px dotted #000;
+  outline: -webkit-focus-ring-color auto 5px;
+  cursor: pointer;
+}
+.fileInput + label:hover {
+  cursor: pointer;
+}
+
+.fileName{
+  margin: 5px 2px;
+
+}
+
+.center{
+  text-align: center;
+  padding: 5px;
+}
+
+.uploadCSV-form{
+  min-width: 20%;
+  max-width: 30%;
+  min-height: 100px;
+  max-height: auto;
+  border: 1px solid black;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.uploadCSV-btn{
+  clear: both;
+}
+
+
+
 
 
 

@@ -64,7 +64,6 @@ class _NewAthlete extends Component {
         constants.ERRORS.ACCOUNT_NOT_FOUND){
       this.setState({errorText: nextProps.errorMessage});
     }
- 
     if(nextProps.isLoginExist){
       this.setState({errorText: 
           constants.ERRORS.ACCOUNT_ALREADY_EXISTS});
@@ -169,8 +168,8 @@ class _NewAthlete extends Component {
   redirectToMain() {
     if(this.props.isRegistered){
       return  <Redirect to={{
-                pathname: '/admin/athletes',
-                from: '/admin/newathlete'}}/>
+                pathname: '/athletes',
+                from: '/newathlete'}}/>
     }
   }
   render(){

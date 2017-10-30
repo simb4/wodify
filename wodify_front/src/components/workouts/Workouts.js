@@ -142,7 +142,6 @@ class _Workouts extends Component {
     }
     if(this.state.value === 0){
       var works = this.props.workouts
-      console.log(WORKOUT, 123)
       WORKOUT = {}
       athletes = []
       subtitle = ""
@@ -173,7 +172,6 @@ class _Workouts extends Component {
       } 
     } else {
       works = this.props.workoutsFromDict
-      console.log(WORKOUT, 123)
       WORKOUT = {}
       subtitle = ""
       title = ""
@@ -261,7 +259,7 @@ class _Workouts extends Component {
                 <p className="workout-coach">{d.coach.first_name 
                     + " " + d.coach.last_name}</p>
               <p className="registered"><b>
-                {"0/"+d.max_people}</b></p>
+                {(d.registered ? d.registered+'/' :'0/') + d.max_people}</b></p>
             </div>
           )  
         }
@@ -314,9 +312,7 @@ class _Workouts extends Component {
     this.setState({list_athletes: true})
   }
   handleDelete(){
-    // console.log(JSON.parse(work_id))
     work_id = JSON.parse(work_id)
-    console.log(work_id)
     if(this.state.value === 0){
       this.props.deleteWorkout({workout_id: work_id })
     } else {
@@ -353,9 +349,6 @@ class _Workouts extends Component {
       coach_id: this.state.coach ? this.state.coach : null,
       max_people: this.state.maxCount!==0 ? this.state.maxCount : people
     }
-
-    // console.log(data)
-
     if(this.state.value === 0){
       this.props.updateWorkout(data)
     } else {
@@ -519,7 +512,6 @@ class _Workouts extends Component {
         </Popover> 
       )
     }else if(this.state.value !== 0 && title != ""){
-      console.log("Bakosya")
       return (
         <Popover
           open={this.state.open}
@@ -681,7 +673,7 @@ class _Workouts extends Component {
                 stripedRows={this.state.stripedRows}
                 style={{border: "none", height: "40px"}}
                 >
-                    {this.renderHours()}
+                  {this.renderHours()}
                   </TableBody>
             </Table>
           </div>

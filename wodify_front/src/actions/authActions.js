@@ -79,12 +79,13 @@ export const login = (data) => (dispatch, getState) => {
                     user: responseObject.user
                   });
                 }else{
-                  if(!responseObject.user.administrator){
+                  if(responseObject.code === 0 && !responseObject.user.administrator){
                     dispatch({
                       type: actionTypes.ACTION_LOGIN_FAILED,
                       errorMessage: "Войти могут только пользователи со статусом администратора"
                     });
                   } else {
+                    console.log('HERE')
                     dispatch({
                       type: actionTypes.ACTION_LOGIN_FAILED,
                       errorMessage: ERRORS.INCORRECT_PASSWORD

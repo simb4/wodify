@@ -5,6 +5,7 @@ import moment from 'moment';
 import Divider from 'material-ui/Divider'
 import { FileUpload } from 'redux-file-upload'
 import * as actions from '../../actions/adminActions';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import { toFormData } from '../../constants/transform.js'
 
@@ -16,7 +17,7 @@ class _AthleteProfile extends Component {
     super(props);
     this.state = {
       file: '',
-      imagePreviewUrl: ''
+      submit: false,
     };
   }
 
@@ -29,7 +30,8 @@ class _AthleteProfile extends Component {
 
   _handleSubmit(e) {
     e.preventDefault();
-    // TODO: do something with -> this.state.file
+
+    this.setState({submit: true})
 
     let cur_data = {
       athlete_id: athlete.id,
@@ -53,37 +55,47 @@ class _AthleteProfile extends Component {
     reader.onloadend = () => {
       this.setState({
         file: file,
-        imagePreviewUrl: reader.result
       });
     }
-
     reader.readAsDataURL(file)
-
   }
 
   render(){
     return (
       <div className="container">
         <div className="profileHeader">
-          <img className="ava" src={SERVER_URL + athlete.avatar_url}/>
+          <img className="ava" src={athlete.avatar_url ? 
+            SERVER_URL + athlete.avatar_url : require('./ava.png')}/>
           <div className="info">
             <h2>{athlete.first_name + " " + athlete.last_name}</h2>
             <br/>
             <Divider  inset={true}/>
+            {console.log(athlete)}
             <p>Email: {athlete.username}</p>
             <p>Mобильный телефон: {athlete.phone_number}</p>
             <p>День рождения: {athlete.date_of_birth}</p>
-            <p>Город: {athlete.city.name}</p>
+            <p>Город: {athlete.city ? athlete.city.name : '-'}</p>
             <p>Зал: {athlete.gym.name + ' (' + athlete.gym.address + ')'}</p>
           </div> 
         </div>
-         <form onSubmit={(e)=>this._handleSubmit(e)}>
+        <form 
+          onSubmit={(e)=>this._handleSubmit(e)}
+          className="uploadCSV-form"
+        >
+          <h4 className="center">Загрузить результаты InBody</h4>
           <input className="fileInput" 
             type="file" 
+            id="csv"
             onChange={(e)=>this._handleFileChange(e)} />
-          <button className="submitButton" 
-            type="submit" 
-            onClick={(e)=>this._handleSubmit(e)}>Отправить</button>
+            <label htmlFor="csv">{this.state.file ? "Изменить файл" : "Выбрать файл"}</label>
+            <p className="fileName">Файл: {this.state.file ? this.state.file.name : "не выбран"}</p>
+            <RaisedButton 
+              label="Загрузить" 
+              primary={true}
+              type="submit"
+              onClick={(e)=>this._handleSubmit(e)}
+              className="uploadCSV-btn"
+            />
         </form>
       </div>
     )
