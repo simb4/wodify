@@ -57,16 +57,17 @@ class _Constructor extends Component {
     localStorage.setItem('id', key_id + 1)
     for(var i=0; i<all_cmp.length; i++){
       if(all_cmp[i].id === e_cmp_value){
+        console.log(all_cmp[i], 121212)
         component = {
           id: key_id,
-          comp_id: all_cmp[i].comp_id, 
-          constructor_id: all_cmp[i].constructor_id,
+          comp_id: all_cmp[i].id, 
+          constructor_id: all_cmp[i].score_constructor.constructor.id,
           name: all_cmp[i].name,
-          header: all_cmp[i].header,
-          description: all_cmp[i].description,
-          scorings: all_cmp[i].scorings,
-          scoring_id: all_cmp[i].scoring_id,
-          rx: all_cmp[i].rx,
+          header: all_cmp[i].description.header,
+          description: all_cmp[i].description.description,
+          scorings: all_cmp[i].score_constructor.scoring,
+          scoring_id: all_cmp[i].score_constructor.id,
+          rx: all_cmp[i].description.rx,
         }
       }
     }
@@ -80,7 +81,6 @@ class _Constructor extends Component {
     var key_id = JSON.parse(localStorage.getItem('id'))
     localStorage.setItem('id', key_id + 1)
     var sc = JSON.parse(localStorage.getItem('scores'))
-    console.log(sc, 'scores')
     for(var i=0; i<this.props.constructors.length; i++){
       if(this.props.constructors[i].id === value){
         component = {
@@ -105,7 +105,6 @@ class _Constructor extends Component {
   }
 
   handleDescription(e){
-    console.log(cur_id)
     var desc = e.target.value
     var cmp = localStorage.getItem('components')
     cmp = JSON.parse(cmp)
@@ -137,6 +136,10 @@ class _Constructor extends Component {
     if(this.state.componentItem.name){
       var components = localStorage.getItem('components')
       components = JSON.parse(components)
+
+      console.log(this.state.componentItem, 'hereheeheheh')
+
+
       var cmp = this.state.componentItem
       cmp.scorings = JSON.parse(localStorage.getItem('scores'))
       this.setState({componentItem: cmp})
@@ -198,7 +201,7 @@ class _Constructor extends Component {
 
   renderScoringField(id, i){
     var cmp = JSON.parse(localStorage.getItem('components'))
-    console.log(cmp)
+
     switch(id){
       case 2:
         return(
@@ -206,9 +209,8 @@ class _Constructor extends Component {
           floatingLabelText="в"
           value={cmp[i].dist}
           onChange={(ix, r, v) => {
-            console.log(v)
             cmp[i].dist = v
-            console.log(cmp[i])
+
             this.setState({check: true})
             localStorage.setItem('components', JSON.stringify(cmp))
           }}
@@ -277,7 +279,6 @@ class _Constructor extends Component {
 
   handleRx = (event, isInputChecked) => {
     var cmp = JSON.parse(localStorage.getItem('components'))
-    console.log(cmp)
 
     cmp.map(c => {
       if(c.id === cur_id){
@@ -297,6 +298,8 @@ class _Constructor extends Component {
     if(components){
       components = JSON.parse(components)
       return components.map((cmp, i) => {
+        console.log(cmp, 'Bakoooooooo')
+        console.log(cmp.component_id)
         if(cmp.scoring_id){
           cur_score = cmp.scoring_id
         }
@@ -362,8 +365,8 @@ class _Constructor extends Component {
       localStorage.removeItem('id')
 
       return  <Redirect to={{
-                pathname: '/admin',
-                from: '/admin/createwod/constructor'}}/>
+                pathname: '/',
+                from: '/createwod/constructor'}}/>
     }
   }
 
@@ -401,8 +404,6 @@ class _Constructor extends Component {
       components: submitting
     }
 
-    console.log(data)
-
     this.props.fillWod(data)
 
   }
@@ -414,8 +415,6 @@ class _Constructor extends Component {
   }
 
   renderExCmp(){
-    console.log('BAKOOOO')
-    console.log(this.props.components)
     return this.props.components.map((cmp) => {
       return <MenuItem 
       value={cmp.id} 

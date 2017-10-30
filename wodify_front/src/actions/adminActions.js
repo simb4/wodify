@@ -555,15 +555,14 @@ export const updateWorkout = (data) => (dispatch, getState) => {
 }
 
 
-
-export const uploadCSV = (data, file) => (dispatch, getState) => {
+export const uploadCSV = (data) => (dispatch, getState) => {
 
   dispatch({
     type: actionTypes.ACTION_UPLOAD_CSV_STARTED,
   })
 
   adminApi
-    .uploadCSV(getState().user.token, data, file)
+    .uploadCSV(getState().user.token, data)
     .then(
       response => {
         if(response.status !== 200) {

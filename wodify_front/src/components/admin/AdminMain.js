@@ -12,6 +12,8 @@ import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import { toFormData } from '../../constants/transform.js'
+
 class _AdminMainPage extends Component{
   constructor(props){
     super(props)
@@ -80,7 +82,7 @@ class _AdminMainPage extends Component{
           style={buttonStyle}>
           <input
             type="file"
-            // onChange={(e)=>this.handleAvatarChange(e)}
+            onChange={(e)=>this.handleAvatarChange(e)}
             style={{ display: 'none' }} />
         </RaisedButton>
         {avatar_url &&
@@ -89,7 +91,7 @@ class _AdminMainPage extends Component{
             label="Удалить аватар"
             fullWidth={true}
             style={buttonStyle}
-            // onClick={this.handleAvatarDelete}
+            onClick={this.handleAvatarDelete}
           >
           </RaisedButton>
         }

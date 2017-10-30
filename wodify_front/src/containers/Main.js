@@ -36,23 +36,23 @@ class _Main extends Component {
           
           {/*<UserRoute exact path="/admin" 
             component={AdminMainPage} {...isLoggedIn}/>*/}
-          <UserRoute exact path="/admin/athletes" 
+          <UserRoute exact path="/athletes" 
             component={AthleteList} {...isLoggedIn}/>
-          <UserRoute exact path="/admin/athletes/profile" 
+          <UserRoute exact path="/athletes/profile" 
             component={AthleteProfile} {...isLoggedIn}/>
-          <UserRoute exact path="/admin/profile" 
+          <UserRoute exact path="/profile" 
             component={AdminMainPage} {...isLoggedIn}/>
-          <UserRoute exact path="/admin/addathlete" 
+          <UserRoute exact path="/addathlete" 
             component={NewAthlete} {...isLoggedIn}/>
-          <UserRoute exact path="/admin" component={Wod} 
+          <UserRoute exact path="/" component={Wod} 
             {...isLoggedIn}/>
-          <UserRoute exact path="/admin/createwod" 
+          <UserRoute exact path="/createwod" 
             component={CreateWod} {...isLoggedIn}/>
-          <UserRoute exact path="/admin/createwod/add_sections" 
+          <UserRoute exact path="/createwod/add_sections" 
             component={AddSection} {...isLoggedIn}/>
-          <UserRoute exact path="/admin/createwod/constructor" 
+          <UserRoute exact path="/createwod/constructor" 
             component={Constructor} {...isLoggedIn}/>
-          <UserRoute exact path="/admin/workouts" 
+          <UserRoute exact path="/workouts" 
             component={Workouts} {...isLoggedIn}/>
 
           <HeaderRoute name="not-found" component={NoMatch} />
@@ -89,7 +89,7 @@ export const AuthRoute = (props) => {
         <Component {...props} />
       ) : (
         <Redirect to={props.location.from ? 
-          props.location.from : "/admin"}/>
+          props.location.from : "/"}/>
       )
   )} />
 )}

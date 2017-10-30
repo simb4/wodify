@@ -20,23 +20,6 @@ export const transformRequest = (obj) => {
   return retStr;
 }
 
-// export const transformRequest = (obj) => {
-//   let retStr = '';
-//   let str: string[] = [];
-//   for(let key in obj) {
-//     if(obj[key] instanceof Array) {
-//       console.log(obj[key][0])
-//        str.push((obj[key] !== null && typeof obj[key] === "object") ? 
-//           encodeURIComponent(key) + '[]=' + JSON.stringify(obj[key]) :
-//           encodeURIComponent(key) + '[]=' + encodeURIComponent(obj[key]))
-//     }else {
-//       str.push(encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]));
-//     }
-//   }
-//   retStr = str.join("&");
-//   return retStr;
-// }
-
 export const toFormData = (obj) => {
   let fd = new FormData();
   for(let key in obj) {
@@ -49,6 +32,11 @@ export const toFormData = (obj) => {
     }else {
       fd.append(encodeURIComponent(key), obj[key]);
     }
+  }
+
+  console.log(fd, 'FD')
+ for (var pair of fd.entries()) {
+    console.log(pair[0], pair[1]); 
   }
   return fd;
 }

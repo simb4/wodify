@@ -31,21 +31,16 @@ const deleteWorkoutFromDictUrl = SERVER_URL + "main/delete_workout_from_dict/"
 const signForWorkoutUrl = SERVER_URL + "main/sign_for_workout/"
 const uploadCSVUrl = SERVER_URL + "athlete/add_measure_info/"
 
-export const uploadCSV = (token, data, file) => (
+export const uploadCSV = (token, data) => (
   fetch(
     uploadCSVUrl,
     {
       method: 'POST',
       headers: {
-        ...STD_HEADERS,
+        'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
         "auth-token": token,
       },
-      body: qs.stringify({
-        athlete_id: data.athlete_id,
-        date_of_measure: data.date_of_measure,
-        csv_file: file
-      })
-
+      body: data
     }
   )
 )

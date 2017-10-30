@@ -79,8 +79,8 @@ class _AthleteList extends Component {
 
     if(localStorage.getItem('redirect')){
       return <Redirect to={{
-      pathname: '/admin/athletes/profile',
-      from: '/admin/athletes'}}/>
+      pathname: '/athletes/profile',
+      from: '/athletes'}}/>
     }
     
   }

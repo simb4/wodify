@@ -14,6 +14,7 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton'
+import FontIcon from 'material-ui/FontIcon';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
 import './workouts.css'
@@ -500,14 +501,8 @@ class _Workouts extends Component {
               label="Записать" 
               onClick={this.handleSign.bind(this)}
             />
-            <FlatButton 
-              className="create-workout-btn" 
-              label="Сохранить" 
-              onClick={this.handleSaveEdit.bind(this)}
-            />
           </div>
           <Divider/>
-          {console.log(athletes)}
           {athletes.map(m => {
             return (
               <div key={m.id} className="athleteList">
@@ -516,6 +511,11 @@ class _Workouts extends Component {
               </div>
             )
           })}
+          <FlatButton 
+            className="create-workout-btn" 
+            label="Cохранить"
+            onClick={this.handleSaveEdit.bind(this)}
+          />
         </Popover> 
       )
     }else if(this.state.value !== 0 && title != ""){

@@ -6,6 +6,8 @@ import Divider from 'material-ui/Divider'
 import { FileUpload } from 'redux-file-upload'
 import * as actions from '../../actions/adminActions';
 
+import { toFormData } from '../../constants/transform.js'
+
 var athlete;
 
 class _AthleteProfile extends Component {
@@ -29,17 +31,20 @@ class _AthleteProfile extends Component {
     e.preventDefault();
     // TODO: do something with -> this.state.file
 
-    let data = {
+    let cur_data = {
       athlete_id: athlete.id,
       date_of_measure: moment().format('YYYY-MM-DD'),
-      csv_file: this.state.file // не праааавильно
+      csv_file: this.state.file
     }
 
-    this.props.uploadCSV(data, this.state.file);
+    let data = toFormData(cur_data)
+    console.log(data, 'CSV')
+    console.log(cur_data, 'data')
+    this.props.uploadCSV(data);
 
   }
 
-  _handleImageChange(e) {
+  _handleFileChange(e) {
     e.preventDefault();
 
     let reader = new FileReader();
@@ -75,7 +80,7 @@ class _AthleteProfile extends Component {
          <form onSubmit={(e)=>this._handleSubmit(e)}>
           <input className="fileInput" 
             type="file" 
-            onChange={(e)=>this._handleImageChange(e)} />
+            onChange={(e)=>this._handleFileChange(e)} />
           <button className="submitButton" 
             type="submit" 
             onClick={(e)=>this._handleSubmit(e)}>Отправить</button>

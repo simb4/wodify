@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 
 import HandleLogin from './HandleLogin';
-import Password from './HandlePassword';
+import HandlePassword from './HandlePassword';
 import ResetPasswordPage from './ResetPassword'
 
 import LinearProgress from 'material-ui/LinearProgress';
@@ -78,7 +78,7 @@ class Login extends Component {
       return <HandleLogin onSubmit={this.handleLogin}
               data={{username: this.state.username}}/>
     if(step_id === STEP_AUTH_PASSWORD)
-      return <Password onSubmit={this.handlePassword}
+      return <HandlePassword onSubmit={this.handlePassword}
               onBackClick={this.handleBack} 
               onResetClick={this.handleResetPassword}
               data={{password: this.state.password}}/>

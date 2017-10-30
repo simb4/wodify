@@ -54,21 +54,21 @@ class _Header extends Component {
     if(this.props.isLoggedIn){
       return (
         <div>
-          <Link to="/admin">
+          <Link to="/">
             <FlatButton 
               className="auth-btn" 
               label="WOD" 
               labelStyle={ styles.labelStyle }
             />
           </Link>
-          <Link to="/admin/athletes">
+          <Link to="/athletes">
             <FlatButton 
               className="auth-btn" 
               label="Атлеты" 
               labelStyle={ styles.labelStyle }
             />
           </Link>
-          <Link to="/admin/workouts">
+          <Link to="/workouts">
             <FlatButton 
               className="auth-btn" 
               label="Классы" 
@@ -127,10 +127,10 @@ class _Header extends Component {
               className="popover"
             >
               <Menu>
-                <Link to="/admin/profile" className="link">
+                <Link to="/profile" className="link">
                   <MenuItem primaryText={user.first_name} />
                 </Link>
-                <Link to="/admin/addathlete" className="link">
+                <Link to="/addathlete" className="link">
                   <MenuItem 
                     primaryText="Добавить пользователя"
                   />

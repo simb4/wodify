@@ -50,6 +50,7 @@ class _Wod extends Component {
       showCheckboxes: false,
       startDate: moment(),
       date: moment().format('YYYY-MM-DD'),
+      selectedWod: {}
     }
     this.renderWods = this.renderWods.bind(this)
     this.handleChange = this.handleChange.bind(this)
@@ -130,6 +131,16 @@ class _Wod extends Component {
     return 
   }
 
+  handleCellClick = (row, column, event) => {
+    let wods = this.props.wodOfWeek.wods
+    var today = this.props.wodOfWeek.today_date
+
+    if(wods[column-1]){
+      this.setState({selectedWod: wods[column-1]})
+    }
+    console.log(this.state.selectedWod, 'here')
+  }
+
   handleChange(date){
     this.setState({
       startDate: date,
@@ -190,7 +201,7 @@ class _Wod extends Component {
             />
             <div className="add">
               <p className="page-title"><b>WOD КАЛЕНДАРЬ</b></p>
-              <Link to="/admin/createwod">
+              <Link to="/createwod">
                 <FlatButton 
                   className="create-wod-btn" 
                   label="Добавить WOD"
@@ -201,6 +212,7 @@ class _Wod extends Component {
           </div>
         </div>
         <Table  
+          onCellClick={this.handleCellClick}
           headerStyle={styles.tableHeader}
           fixedHeader={this.state.fixedHeader}
           selectable={this.state.selectable}
