@@ -27,45 +27,6 @@ const isPasswordSetting = (state = false, action) => {
     }
 }
 
-const isPasswordChanged = (state = false, action) => {
-    switch(action.type) {
-        case actionTypes.ACTION_CHANGE_PASSWORD_STARTED:
-        case actionTypes.ACTION_CHANGE_PASSWORD_FAILED:
-        case actionTypes.ACTION_LOGGED_OUT:
-            return false
-        case actionTypes.ACTION_CHANGE_PASSWORD_SUCCESS:
-            return true
-        default:
-            return state 
-    }
-}
-
-const isPasswordChanging = (state = false, action) => {
-    switch(action.type) {
-        case actionTypes.ACTION_CHANGE_PASSWORD_STARTED:
-            return true
-        case actionTypes.ACTION_CHANGE_PASSWORD_SUCCESS:
-        case actionTypes.ACTION_CHANGE_PASSWORD_FAILED:
-        case actionTypes.ACTION_LOGGED_OUT:
-            return false
-        default:
-            return state 
-    }
-}
-
-const isLoginExist = (state = false, action) => {
-  switch (action.type) {
-    case actionTypes.ACTION_CHECK_LOGIN_EXIST:
-        return true;
-    case actionTypes.ACTION_CHECK_LOGIN_NOTEXIST:
-    case actionTypes.ACTION_CHECK_LOGIN_FAILED:
-    case actionTypes.ACTION_CHECK_LOGIN_STARTED:
-    case actionTypes.ACTION_LOGGED_OUT:
-        return false;
-    default:
-        return state;
-  }
-}
 
 const isLoggedIn = (state = false, action) => {
     switch (action.type) {
@@ -110,7 +71,7 @@ const isLoggingIn = (state = false, action) => {
 const isAdmin = (state="" , action) => {
     switch(action.type) {
         case actionTypes.ACTION_LOGIN_SUCCESS:
-            return action.user.is_admin
+            return action.user.is_moderator
         case actionTypes.ACTION_LOGIN_FAILED:
         case actionTypes.ACTION_LOGIN_STARTED:
         case actionTypes.ACTION_LOGGED_OUT:
@@ -138,12 +99,9 @@ const errorMessage = (state = "", action) => {
 }
 
 const authReducer = combineReducers({
-    isLoginExist,
     isLoggedIn,
     isLoggingIn,
     isAdmin,
-    isPasswordChanging,
-    isPasswordChanged,
     errorMessage,
     isPasswordSetting,
     isPasswordSet

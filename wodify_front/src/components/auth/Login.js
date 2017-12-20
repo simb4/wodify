@@ -3,122 +3,128 @@ import { connect } from 'react-redux'
 
 import _ from 'lodash'
 
-import HandleLogin from './HandleLogin';
-import HandlePassword from './HandlePassword';
-import ResetPasswordPage from './ResetPassword'
-
 import LinearProgress from 'material-ui/LinearProgress';
+import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
 
 import '../../styles/Styles.css';
 import './Auth.css';
 
 import * as actions from "../../actions/authActions";
-
-const STEP_AUTH_LOGIN = 1
-const STEP_AUTH_PASSWORD = 2
-const STEP_RESET_PASSWORD = 3
+import {emailValidation, phoneValidation} from '../elements/Validator';
 
 class Login extends Component {
   constructor(props) {
     super(props);
-    let token = "";
-    let step_id = STEP_AUTH_LOGIN;
     this.state = {
       username: '',
       password: '',
-      step_id: step_id,
-      backClick: false,
-      token: token,
+      error: '',
     }
-    this.handleBack = this.handleBack.bind(this);
-    this.handlePassword = this.handlePassword.bind(this);
-    this.handleLogin = this.handleLogin.bind(this);
-    this.handleResetPassword = this.handleResetPassword.bind(this)
+    this.handleLoginChange = this.handleLoginChange.bind(this);
+    this.handleEnter = this.handleEnter.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentWillReceiveProps(nextProps){
-    if (this.state.step_id === STEP_AUTH_LOGIN &&  
-      nextProps.isLoginExist && !this.state.backClick) {
-      this.setState({ step_id: STEP_AUTH_PASSWORD });
+    this.setState({error: nextProps.errorMessage});
+  }
+  handleLoginChange(e){
+    this.setState({username: e.target.value, error: ''});
+  }
+  handlePasswordChange(e) {
+    this.setState({password: e.target.value, error: ''});
+  }
+  handleEnter(target) {
+    if(target.charCode === 13){
+      this.handleSubmit();
     }
   }
-  handleBack(){
-    let s = this.state.step_id - 1;
-    if(s === STEP_AUTH_LOGIN){
-      this.setState({backClick: true});
+  isOnlyDigits(val){
+    return /^\d+$/.test(val) || val.charAt(0) === "+";
+  }
+  getFormat(username){
+    if((username.charAt(0) !== '7' && username.charAt(0) !== '8') 
+      || username.charAt(0) === "+")
+      return username;
+    return "+7"+username.substr(1, username.length);
+  }
+  handleSubmit(){
+    let username = this.state.username;
+    if(username.includes("@") || !this.isOnlyDigits(username)){
+      if(!emailValidation(username)){
+        this.setState({ error: "Неправильный email"});
+        return;
+      }
+    }else {
+      if(!phoneValidation(username)){
+        this.setState({ error: 'Неправильный формат, пример: 87071234567'});
+        return;
+      }
+      username = this.getFormat(username);
     }
-    this.setState({step_id: s});
-  }
-  handleLogin(newData){
-    this.setState({username: newData.username, backClick: false});
-    let data = { username: newData.username };
-    this.props.checkLogin(data);
-  }
-  handlePassword(newData){
-    let data = {
-      username: this.state.username,
-      password: newData.password
-    };
-    this.props.onLoginClick(data);
-  }
-  handleResetPassword(){
-    this.setState({step_id: STEP_RESET_PASSWORD});
-    if(!this.props.isPasswordChanging && !this.props.isPasswordChanged){
-      this.props.resetPassword({username: this.state.username})
-    }
+    this.props.onLogin({
+      username: username,
+      password: this.state.password
+    });
   }
   renderProgress(){
     if(this.props.isLoading)
-      return <LinearProgress mode="indeterminate" 
-        className="linearProgress"/>
+      return <LinearProgress mode="indeterminate" className="linearProgress"/>
     return null;
-  }
-  renderBody() {
-    let step_id = this.state.step_id;
-    if(step_id === STEP_AUTH_LOGIN)
-      return <HandleLogin onSubmit={this.handleLogin}
-              data={{username: this.state.username}}/>
-    if(step_id === STEP_AUTH_PASSWORD)
-      return <HandlePassword onSubmit={this.handlePassword}
-              onBackClick={this.handleBack} 
-              onResetClick={this.handleResetPassword}
-              data={{password: this.state.password}}/>
-    if(step_id === STEP_RESET_PASSWORD){
-      // this.props.resetPassword({username: this.state.username})
-      // if(this.props.isPasswordChanged){
-        return <ResetPasswordPage onSubmit={this.onResetPassword} 
-          token={this.state.token} email={this.state.username}/>
-      // }
-    }
-  }
-  
-  render() {
+}
+  render(){
+    var isDisabled = this.props.isLoading || this.state.username === "";
     return (
       <div className="content-auth">
         <div className="auth-cart">
-          <div className="auth-logo">
-          </div>
-          <div className="auth-body">
-            {this.renderBody()}
+          <div className="auth-title">
+              Добро пожаловать
+            </div>
+            <div className="auth-subtitle">
+              Введите ваш Email, пожалуйста
+            </div>
+          <TextField id="login"
+            autoFocus
+            fullWidth={true}
+            name="username"
+            floatingLabelText="Ваш номер телефона или email"
+            value={this.state.username}
+            onChange={this.handleLoginChange}
+            onKeyPress={this.handleEnter}
+          />
+          <TextField id="password"
+            fullWidth={true}
+            name="username"
+            floatingLabelText="Введите ваш пароль"
+            value={this.state.password}
+            onChange={this.handlePasswordChange.bind(this)}
+            type="password"
+            onKeyPress={this.handleEnter.bind(this)}
+          />
+          <div className="auth-submit">
+            <div className="error-block">
+              {this.state.error}
+            </div>
+            <FlatButton className="next-btn"
+              label="Далее"
+              primary={true}
+              onClick={this.handleSubmit}
+              disabled={isDisabled} />
           </div>
         </div>
         {this.renderProgress()}
       </div>
-    )  
+      )
   }
 }
 
 const mapStateToProps = (state) => ({
-  isLoginExist: state.auth.isLoginExist,
   isLoading: state.auth.isLoggingIn,
-  isLoggedIn: state.auth.isLoggedIn,
-  isPasswordChanging: state.auth.isPasswordChanging,
-  isPasswordChanged: state.auth.isPasswordChanged
+  errorMessage: state.auth.errorMessage,
 })
 
 const mapDispatchToProps = {
-  onLoginClick: actions.login,
-  checkLogin: actions.checkLogin,
-  resetPassword: actions.resetPassword
+  onLogin: actions.login,
 }
 
 export default connect(

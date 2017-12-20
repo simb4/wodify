@@ -90,18 +90,12 @@ class _Header extends Component {
   };
   renderIconElementRight() {
     if(this.props.isLoggedIn){
-      var user = this.props.user.athlete
-      if(this.props.user.coach !== null){
-        user = this.props.user.coach
-      } else if(this.props.user.administrator !== null){
-        user = this.props.user.administrator
-      }
-      var avatar = null
-      if(user.avatar_url){
-        avatar = SERVER_URL + user.avatar_url
-      }else{
+      let user = this.props.user;
+
+      let avatar = user.avatar;
+      if(!avatar)
         avatar = require('./ava.png');
-      }
+
       return(
         <div className="hmenu"> 
           <FlatButton
@@ -110,7 +104,7 @@ class _Header extends Component {
             hoverColor={"none"}
             rippleColor={"none"}
             style={styles.profile}
-            label={user.first_name + " " + user.last_name}
+            label={user.full_name}
             labelPosition="before"
             icon={<Avatar 
                     size={40}
@@ -128,7 +122,7 @@ class _Header extends Component {
             >
               <Menu>
                 <Link to="/profile" className="link">
-                  <MenuItem primaryText={user.first_name} />
+                  <MenuItem primaryText={user.full_name} />
                 </Link>
                 <Link to="/addathlete" className="link">
                   <MenuItem 

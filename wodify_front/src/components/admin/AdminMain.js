@@ -107,15 +107,7 @@ class _AdminMainPage extends Component{
   }
 
   getUser(){
-    var user = this.props.user
-    if(user.athlete !== null){
-      user = user.athlete
-    } else if(user.coach !== null){
-      user = user.coach
-    } else {
-      user = user.administrator
-    }
-    return user
+    return this.props.user
   }
   getStatus(){
     return this.getUser().is_active ? "активен" : "неактивен"

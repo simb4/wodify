@@ -2,52 +2,6 @@ import * as actionTypes from '../constants/actionTypes';
 import * as authApi from '../api/authApi';
 import { ERRORS } from '../constants/constants';
 
-export const checkLogin = (data) => (dispatch, getState) => {
-  if (getState().auth.isLoggingIn) {
-    return Promise.resolve();
-  }
-  dispatch({
-    type: actionTypes.ACTION_CHECK_LOGIN_STARTED
-  });
-
-  authApi
-    .checkLogin(data) 
-    .then(
-      response => {
-        if (response.status !== 200) {
-          dispatch({
-            type: actionTypes.ACTION_CHECK_LOGIN_FAILED,
-            errorMessage: ERRORS.NUMBER + response.status
-          });
-        } else {
-          response
-            .text()
-            .then(
-              value => {
-                const responseObject = JSON.parse(value);
-                if(responseObject.code === 0 && responseObject.exists){
-                  dispatch({
-                    type: actionTypes.ACTION_CHECK_LOGIN_EXIST,
-                  });
-                }else{
-                  dispatch({
-                    type: actionTypes.ACTION_CHECK_LOGIN_FAILED,
-                    errorMessage: ERRORS.ACCOUNT_NOT_FOUND
-                  });
-                }
-              }
-            );
-        }
-      },
-      error => {
-        dispatch({
-          type: actionTypes.ACTION_CHECK_LOGIN_FAILED,
-          errorMessage: ERRORS.NO_INTERNET
-        })
-      }
-  );
-};
-
 export const login = (data) => (dispatch, getState) => {
   if (getState().auth.isLoggingIn) {
     return Promise.resolve();
@@ -72,25 +26,24 @@ export const login = (data) => (dispatch, getState) => {
             .then(
               value => {
                 const responseObject = JSON.parse(value);
-                if(responseObject.code === 0 && responseObject.user.administrator){
-                  dispatch({
-                    type: actionTypes.ACTION_LOGIN_SUCCESS,
-                    token: responseObject.token,
-                    user: responseObject.user
-                  });
-                }else{
-                  if(responseObject.code === 0 && !responseObject.user.administrator){
+                if (responseObject.code === 0) {
+                  if(responseObject.user.is_moderator){
                     dispatch({
-                      type: actionTypes.ACTION_LOGIN_FAILED,
-                      errorMessage: "Войти могут только пользователи со статусом администратора"
+                      type: actionTypes.ACTION_LOGIN_SUCCESS,
+                      token: responseObject.token,
+                      user: responseObject.user
                     });
                   } else {
-                    console.log('HERE')
-                    dispatch({
-                      type: actionTypes.ACTION_LOGIN_FAILED,
-                      errorMessage: ERRORS.INCORRECT_PASSWORD
-                    });
-                  }
+                      dispatch({
+                        type: actionTypes.ACTION_LOGIN_FAILED,
+                        errorMessage: "Войти могут только пользователи со статусом администратора"
+                      });
+                  }                  
+                } else {
+                  dispatch({
+                    type: actionTypes.ACTION_LOGIN_FAILED,
+                    errorMessage: ERRORS.INCORRECT_PASSWORD
+                  });
                 }
               }
             );
