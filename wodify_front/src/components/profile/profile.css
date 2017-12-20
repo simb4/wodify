@@ -1,0 +1,62 @@
+.profile-box{
+  background-color: #fff;
+  padding: 30px;
+  width: 60%;
+  margin: 10px auto;
+}
+
+.profile-photo{
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+}
+
+.photo{
+  width: 200px;
+}
+
+.change-avatar{
+  margin-left: 20px;
+  color: blue;
+  cursor: pointer;
+}
+
+.profile-wrapper{
+  width: 90%;
+  margin: 10px auto;
+  margin-bottom: 50px;
+}
+
+.gym-info{
+  margin-left: 54px;
+}
+
+.white-space{
+  width: 20px;
+}
+
+img{
+  max-width: 200px;
+}
+
+.upload {
+  height: 400px;
+}
+
+.buttons{
+  width: 100%;
+  display: inline-flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.change-btn{
+  margin-right: 10px;
+}
+
+.avaPNG{
+  width: 100px;
+  height: 100px;
+}
+
+

@@ -5,7 +5,7 @@ import * as userActions from '../../actions/userActions';
 import * as adminActions from '../../actions/adminActions';
 
 import { SERVER_URL } from "../../constants/server"
-import "./admin.css"
+import "./profile.css"
 
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
@@ -14,18 +14,15 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import { toFormData } from '../../constants/transform.js'
 
-class _AdminMainPage extends Component{
+class Porfile extends Component{
   constructor(props){
     super(props)
     this.state = {
       save: true,
       update: true,
-      name: this.getUser().first_name,
-      surname: this.getUser().last_name,
-      birth: this.getUser().date_of_birth,
-      phone: this.getUser().phone_number,
+      name: this.getUser().full_name,
+      phone: this.getUser().phone,
       email: this.getUser().username,
-      city:  this.getUser().gym.city.name,
       showModal: false,
       avatar: this.getUser().avatar_url
     }
@@ -33,7 +30,6 @@ class _AdminMainPage extends Component{
     this.handleCloseModal = this.handleCloseModal.bind(this)
   }
   renderAvatarMenu() {
-
     let styles = {
       modal: false,
       open: this.state.showModal,
@@ -171,7 +167,7 @@ class _AdminMainPage extends Component{
     let data = {
       first_name: this.state.name,
       last_name: this.state.surname,
-      phone_number: this.state.phone,
+      phone: this.state.phone,
       gym_id: this.getUser().gym.id,
       gender: this.getUser().gender,
       city_id: this.getUser().gym.city.id,
@@ -183,62 +179,46 @@ class _AdminMainPage extends Component{
     this.props.clearAthleteList()
 
   }
+  renderGymInfo() {
+    return null;/*
+      <div className="gym-info">
+        <p>Статус: {this.getStatus()}</p><br/>
+        <p>Зал: {this.getUser().gym.name}</p><br/>
+        <p>Адрес зала: {this.getUser().gym.address}</p>
+      </div>*/
+  }
   render(){
+    console.log(this.props.user);
     return(
       <div className="profile-wrapper">
         <p className="page-title">Мой профиль</p>
         <div className="profile-box">
           <div className="profile-photo">
             {this.renderProfilePhoto()}
-            <div className="gym-info">
-              <p>Статус: {this.getStatus()}</p><br/>
-              <p>Зал: {this.getUser().gym.name}</p><br/>
-              <p>Адрес зала: {this.getUser().gym.address}</p>
-            </div>
+            {this.renderGymInfo()}
           </div>
           <div className="profile-info">
             <TextField
                 value={this.state.name}
                 disabled={this.state.update}
                 floatingLabelText="Имя"
-                fullWidth={false}
+                fullWidth={true}
                 onChange={this.handleChangeName.bind(this)}
-            /><span className="white-space"> </span>
-            <TextField
-                value={this.state.surname}
-                disabled={this.state.update}
-                floatingLabelText="Фамилия"
-                fullWidth={false}
-                onChange={this.handleChangeSurname.bind(this)}
-            /><br/>
+            />
             <TextField
                 value={this.state.email}
                 disabled={this.state.update}
                 floatingLabelText="Почта"
-                fullWidth={false}
+                fullWidth={true}
                 onChange={this.handleChangeEmail.bind(this)}
-            /><span className="white-space"> </span>
+            />
             <TextField
                 value={this.state.phone}
                 disabled={this.state.update}
                 floatingLabelText="Номер телефона"
-                fullWidth={false}
+                fullWidth={true}
                 onChange={this.handleChangeNumber.bind(this)}
-            /><br/>
-            <TextField
-                value={this.state.city}
-                disabled={this.state.update}
-                floatingLabelText="Город"
-                fullWidth={false}
-                onChange={this.handleChangeCity.bind(this)}
-            /><span className="white-space"> </span>
-            <TextField
-                value={this.state.birth}
-                disabled={this.state.update}
-                floatingLabelText="День рождения"
-                fullWidth={false}
-                onChange={this.handleChangeDateOfBirth.bind(this)}
-            /><br/>
+            />
           </div>
           <div className="buttons">
             <FlatButton 
@@ -269,10 +249,7 @@ const mapDispatchToProps={
   clearAthleteList: adminActions.clearAthleteList
 }
 
-const AdminMainPage=connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(_AdminMainPage);
-
-
-export default AdminMainPage;
+)(Porfile);
