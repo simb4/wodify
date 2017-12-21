@@ -8,9 +8,8 @@ import * as constants from "../constants/constants";
 
 import Login from '../components/auth/Login';
 import Header from '../components/header/Header'
-// import Profile from '../components/profile/Profile';
+import Profile from '../components/profile/Profile';
 // import HomePage from '../components/home/HomePage';
-import AdminMainPage from "../components/admin/AdminMain"
 import AthleteList from "../components/athletes/AthleteList"
 import AthleteProfile from "../components/athletes/AthleteProfile"
 import NewAthlete from "../components/athletes/NewAthlete"
@@ -34,15 +33,13 @@ class _Main extends Component {
             {...isLoggedIn}/>
           <AuthRoute path="/main/reset" component={SetPassword} 
             {...isLoggedIn}/>
-          
-          {/*<UserRoute exact path="/admin" 
-            component={AdminMainPage} {...isLoggedIn}/>*/}
+
           <UserRoute exact path="/athletes" 
             component={AthleteList} {...isLoggedIn}/>
           <UserRoute exact path="/athletes/profile" 
             component={AthleteProfile} {...isLoggedIn}/>
           <UserRoute exact path="/profile" 
-            component={AdminMainPage} {...isLoggedIn}/>
+            component={Profile} {...isLoggedIn}/>
           <UserRoute exact path="/addathlete" 
             component={NewAthlete} {...isLoggedIn}/>
           <UserRoute exact path="/" component={Wod} 

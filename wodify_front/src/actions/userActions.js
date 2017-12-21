@@ -3,7 +3,7 @@ import * as userApi from '../api/userApi'
 import { ERRORS } from '../constants/constants';
 
 
-export const updatingProfile = (data) => (dispatch, getState) => {
+export const updateProfile = (data) => (dispatch, getState) => {
   dispatch({
     type: actionTypes.ACTION_UPDATE_PROFILE_STARTED,
   })

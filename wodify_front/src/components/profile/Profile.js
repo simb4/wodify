@@ -20,14 +20,26 @@ class Porfile extends Component{
     this.state = {
       save: true,
       update: true,
-      name: this.getUser().full_name,
-      phone: this.getUser().phone,
-      email: this.getUser().username,
+      full_name: this.props.user.full_name,
+      phone: this.props.user.phone,
+      email: this.props.user.username,
       showModal: false,
-      avatar: this.getUser().avatar_url
+      avatar: this.props.user.avatar
     }
     this.handleOpenModal = this.handleOpenModal.bind(this)
     this.handleCloseModal = this.handleCloseModal.bind(this)
+  }
+  applyImg(file) {
+
+    let reader = new FileReader();
+    reader.onloadend = () => {
+      this.setState({
+        avatar: file,
+        avatarPreview: reader.result,
+        showModal: false,
+      });
+    }
+    reader.readAsDataURL(file)
   }
   renderAvatarMenu() {
     let styles = {
@@ -55,13 +67,8 @@ class Porfile extends Component{
       borderBottom: "1px solid",
       borderColor: "rgb(224, 224, 224)"
     }
-    var user = this.getUser()
-    var avatar_url = null
-    if(user.avatar_url !== null){
-      avatar_url = SERVER_URL + user.avatar_url
-    } else {
-      avatar_url = ""
-    }
+    var user = this.props.user
+    var avatar_url = this.state.avatarPreview;
     return (
       <Dialog {...styles} >
         <RaisedButton
@@ -78,7 +85,7 @@ class Porfile extends Component{
           style={buttonStyle}>
           <input
             type="file"
-            onChange={(e)=>this.handleAvatarChange(e)}
+            onChange={(e)=>{this.applyImg(e.target.files[0])}}
             style={{ display: 'none' }} />
         </RaisedButton>
         {avatar_url &&
@@ -101,12 +108,8 @@ class Porfile extends Component{
       </Dialog>
       )
   }
-
-  getUser(){
-    return this.props.user
-  }
   getStatus(){
-    return this.getUser().is_active ? "активен" : "неактивен"
+    return this.props.user.is_active ? "активен" : "неактивен"
   }
   handleOpenModal() {
     this.setState({ showModal: true });
@@ -114,38 +117,8 @@ class Porfile extends Component{
   handleCloseModal() {
     this.setState({ showModal: false });
   }
-  renderProfilePhoto(){
-    var user = this.getUser()
-    var photo;
-    if(user.avatar_url){
-      photo = SERVER_URL + user.avatar_url
-    } else {
-      photo = require('./ava.png');
-    }
-    return (
-      <div>
-        {console.log(photo)}
-        {this.renderAvatarMenu()}
-        <div className="avatar-container">
-          <img
-            src={photo}
-            onClick={this.handleOpenModal}
-            alt={this.props.user.first_name}
-            className="avaPNG"
-            // onLoad={this.handleAvatarLoad}
-            // width={(width>=height)?'auto':(this.props.isMobile?94:144)}
-            // height={(width>=height)?(this.props.isMobile?94:144):'auto'}
-          />
-        </div>
-      </div>
-    )
-  }
-
   handleChangeName = (event) => {
-    this.setState({name: event.target.value})
-  }
-  handleChangeSurname = (event) => {
-    this.setState({surname: event.target.value})
+    this.setState({full_name: event.target.value})
   }
   handleChangeEmail = (event) => {
     this.setState({email: event.target.value})
@@ -153,42 +126,42 @@ class Porfile extends Component{
   handleChangeNumber = (event) => {
     this.setState({phone: event.target.value})
   }
-  handleChangeCity = (event) => {
-    this.setState({city: event.target.value})
-  }
-  handleChangeDateOfBirth = (event) => {
-    this.setState({birth: event.target.value})
-  }
   handleUpdate = () => {
     this.setState({save: false, update: false})
   }
   handleSubmit = () => {
     this.setState({update: true})
-    let data = {
-      first_name: this.state.name,
-      last_name: this.state.surname,
-      phone: this.state.phone,
-      gym_id: this.getUser().gym.id,
-      gender: this.getUser().gender,
-      city_id: this.getUser().gym.city.id,
-      avatar_url: this.getUser().avatar_url,
-      date_of_birth: this.state.birth
-    }
-
+    let data = new FormData();
+    data.append('avatar', this.state.avatar);
+    data.append('phone', this.state.phone);
+    data.append('full_name', this.state.full_name);
     this.props.updateProfile(data)
-    this.props.clearAthleteList()
-
+  }
+  renderProfilePhoto(){
+    var photo = this.state.avatarPreview || this.state.avatar || require('./ava.png');
+    return (
+      <div>
+        {this.renderAvatarMenu()}
+        <div className="avatar-container">
+          <img
+            src={photo}
+            onClick={this.state.update ? ()=>{} : this.handleOpenModal}
+            alt={this.props.user.full_name}
+            className="avaPNG"
+          />
+        </div>
+      </div>
+    )
   }
   renderGymInfo() {
     return null;/*
       <div className="gym-info">
         <p>Статус: {this.getStatus()}</p><br/>
-        <p>Зал: {this.getUser().gym.name}</p><br/>
-        <p>Адрес зала: {this.getUser().gym.address}</p>
+        <p>Зал: {this.props.user.gym.name}</p><br/>
+        <p>Адрес зала: {this.props.user.gym.address}</p>
       </div>*/
   }
   render(){
-    console.log(this.props.user);
     return(
       <div className="profile-wrapper">
         <p className="page-title">Мой профиль</p>
@@ -199,7 +172,7 @@ class Porfile extends Component{
           </div>
           <div className="profile-info">
             <TextField
-                value={this.state.name}
+                value={this.state.full_name}
                 disabled={this.state.update}
                 floatingLabelText="Имя"
                 fullWidth={true}
@@ -245,7 +218,7 @@ const mapStateToProps=(state) => ({
 })
 
 const mapDispatchToProps={
-  updateProfile: userActions.updatingProfile,
+  updateProfile: userActions.updateProfile,
   clearAthleteList: adminActions.clearAthleteList
 }
 
