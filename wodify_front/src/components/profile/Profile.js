@@ -4,15 +4,12 @@ import _ from 'lodash';
 import * as userActions from '../../actions/userActions';
 import * as adminActions from '../../actions/adminActions';
 
-import { SERVER_URL } from "../../constants/server"
 import "./profile.css"
 
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
-
-import { toFormData } from '../../constants/transform.js'
 
 class Porfile extends Component{
   constructor(props){
@@ -67,7 +64,6 @@ class Porfile extends Component{
       borderBottom: "1px solid",
       borderColor: "rgb(224, 224, 224)"
     }
-    var user = this.props.user
     var avatar_url = this.state.avatarPreview;
     return (
       <Dialog {...styles} >

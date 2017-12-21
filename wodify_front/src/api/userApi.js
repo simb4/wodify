@@ -1,6 +1,6 @@
 import { SERVER_URL } from '../constants/server';
-import { STD_HEADERS } from '../constants/constants';
-import qs from 'qs'
+// import { STD_HEADERS } from '../constants/constants';
+// import qs from 'qs'
 
 const updateProfileUrl = SERVER_URL + "main/profile/update/"
 

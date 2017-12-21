@@ -34,16 +34,17 @@ class _Main extends Component {
           <AuthRoute path="/main/reset" component={SetPassword} 
             {...isLoggedIn}/>
 
+          <UserRoute exact path="/profile" 
+            component={Profile} {...isLoggedIn}/>
+          <UserRoute exact path="/" component={Wod} 
+            {...isLoggedIn}/>
+
           <UserRoute exact path="/athletes" 
             component={AthleteList} {...isLoggedIn}/>
           <UserRoute exact path="/athletes/profile" 
             component={AthleteProfile} {...isLoggedIn}/>
-          <UserRoute exact path="/profile" 
-            component={Profile} {...isLoggedIn}/>
           <UserRoute exact path="/addathlete" 
             component={NewAthlete} {...isLoggedIn}/>
-          <UserRoute exact path="/" component={Wod} 
-            {...isLoggedIn}/>
           <UserRoute exact path="/createwod" 
             component={CreateWod} {...isLoggedIn}/>
           <UserRoute exact path="/createwod/add_sections" 
@@ -82,7 +83,7 @@ export const HeaderRoute = (props) => {
 }
 
 export const AuthRoute = (props) => {
-  let { component: Component, isLoggedIn, ...rest } = props;
+  let { component: Component, isLoggedIn, ...rest, } = props;
   return (
     <HeaderRoute {...rest} component={props => (
       !isLoggedIn ? (
@@ -102,7 +103,7 @@ export const UserRoute = (props) => {
         <Component {...props} />
       ) : (
         <Redirect to={{
-          pathname: '/',
+          pathname: '/login',
           from: props.location.pathname,
         }}/>
       )

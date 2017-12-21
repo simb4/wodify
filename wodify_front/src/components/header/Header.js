@@ -5,12 +5,10 @@ import { Link } from 'react-router-dom'
 import FlatButton from 'material-ui/FlatButton'
 import AppBar from 'material-ui/AppBar'
 
-import Avatar from 'material-ui/Avatar';
-import Popover from 'material-ui/Popover';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
-
-import {SERVER_URL } from '../../constants/server'
+import Avatar from 'material-ui/Avatar'
+import Popover from 'material-ui/Popover'
+import Menu from 'material-ui/Menu'
+import MenuItem from 'material-ui/MenuItem'
 
 import * as authActions from '../../actions/authActions'
 

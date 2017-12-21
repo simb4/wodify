@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {SERVER_URL} from '../../constants/server'
 import moment from 'moment';
 import Divider from 'material-ui/Divider'
-import { FileUpload } from 'redux-file-upload'
+// import { FileUpload } from 'redux-file-upload'
 import * as actions from '../../actions/adminActions';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -64,7 +64,7 @@ class _AthleteProfile extends Component {
     return (
       <div className="container">
         <div className="profileHeader">
-          <img className="ava" src={athlete.avatar_url ? 
+          <img alt="" className="ava" src={athlete.avatar_url ? 
             SERVER_URL + athlete.avatar_url : require('./ava.png')}/>
           <div className="info">
             <h2>{athlete.first_name + " " + athlete.last_name}</h2>

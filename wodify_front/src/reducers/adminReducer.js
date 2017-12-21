@@ -265,7 +265,8 @@ const adminReducer = combineReducers({
   coachList,
   isWorkoutCreated,
   isWodCreated,
-  updatedWorkout
+  updatedWorkout,
+  csvUploaded,
 });
 
 export default adminReducer;

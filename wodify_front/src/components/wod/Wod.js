@@ -134,7 +134,7 @@ class _Wod extends Component {
 
   handleCellClick = (row, column, event) => {
     let wods = this.props.wodOfWeek.wods
-    var today = this.props.wodOfWeek.today_date
+    // var today = this.props.wodOfWeek.today_date
 
     var components = []
     var cmp = wods[column-1].wod.components;

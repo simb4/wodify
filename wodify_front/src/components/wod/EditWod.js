@@ -155,7 +155,7 @@ class _EditWod extends Component {
   }
 
   renderRx(cmp, cur_id){
-    if(cmp.constructor_id != 4){
+    if(cmp.constructor_id !== 4){
       return(
         <div className="rx" onClick={() => {cur_id=cmp.id}}>
           <Toggle
