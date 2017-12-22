@@ -3,14 +3,14 @@ import authReducer from './authReducer'
 import userReducer from './userReducer'
 import adminReducer from './adminReducer'
 import wodReducer from './wodReducer'
-import workoutsReducer from './workoutsReducer'
+import workoutReducer from './workoutReducer'
 
 const rootReducer = combineReducers({
     auth: authReducer,
     user: userReducer,
     admin: adminReducer,
     wod: wodReducer,
-    work: workoutsReducer,
+    workout: workoutReducer,
 });
 
 export default rootReducer;

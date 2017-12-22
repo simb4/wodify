@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-// import * as workActions from '../../actions/workoutActions'
+import * as workoutActions from '../../actions/workoutActions'
 // import moment from 'moment'
 
 import { TIME } from '../../constants/schedule'
@@ -25,6 +25,18 @@ class _Workouts extends Component {
 
     }
   }
+  componentDidMount() {
+    let start = new Date();
+    let end = new Date(start);
+    end.setDate(start.getDate() + 7);
+    console.log(start.toISOString().split('.')[0]);
+    console.log(end.toISOString().split('.')[0]);
+    this.props.onGetWorkouts({
+      gym_id: 1,
+      timestamp_start: start.toISOString().split('.')[0],
+      timestamp_end: end.toISOString().split('.')[0],
+    });
+  }
   renderHours(){
     return TIME.map((t) => {
       return (
@@ -36,6 +48,7 @@ class _Workouts extends Component {
   }
 
   render(){
+    console.log(this.props.workouts);
     return(
       <div className="workout-wrapper">
         <p className="page-title">Классы</p>
@@ -56,34 +69,21 @@ class _Workouts extends Component {
           <div className="workout-hours">
             <Table 
               fixedHeader={false}
-              selectable={false}
-              multiSelectable={false}
-              style={{backgroundColor: "whitesmoke", border: "none"}}
-            >
-              <TableHeader
-                displaySelectAll={this.state.showCheckboxes}
-                adjustForCheckbox={this.state.showCheckboxes}
-                enableSelectAll={this.state.enableSelectAll}
-                style={{border: "none"}}
-              >
-                <TableRow 
-                  style={{border: "none", height: "24px"}}
-                >
-                  <TableHeaderColumn 
-                    style={{border: "none", height: "64px"}}
-                  >
+              style={{backgroundColor: "whitesmoke", border: "none"}}>
+              <TableHeader style={{border: "none"}}>
+                <TableRow style={{border: "none", height: "24px"}}>
+                  <TableHeaderColumn style={{border: "none", height: "64px"}}>
                   </TableHeaderColumn>
                 </TableRow>
               </TableHeader>
               <TableBody 
-                displayRowCheckbox={this.state.showCheckboxes}
-                deselectOnClickaway={this.state.deselectOnClickaway}
+                displayRowCheckbox={false}
                 showRowHover={this.state.showRowHover}
                 stripedRows={this.state.stripedRows}
                 style={{border: "none", height: "40px"}}
                 >
                   {this.renderHours()}
-                  </TableBody>
+              </TableBody>
             </Table>
           </div>
           <div className="workout-table">
@@ -118,11 +118,11 @@ class _Workouts extends Component {
 }
 
 const mapStateToProps=(state) => ({
-
+  workouts: state.workout.workouts
 })
 
 const mapDispatchToProps={
-
+  onGetWorkouts: workoutActions.getWorkouts
 }
 
 const Workouts=connect(

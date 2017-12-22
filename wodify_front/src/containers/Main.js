@@ -45,6 +45,7 @@ class _Main extends Component {
             component={AthleteProfile} {...isLoggedIn}/>
           <UserRoute exact path="/addathlete" 
             component={NewAthlete} {...isLoggedIn}/>
+
           <UserRoute exact path="/createwod" 
             component={CreateWod} {...isLoggedIn}/>
           <UserRoute exact path="/createwod/add_sections" 
