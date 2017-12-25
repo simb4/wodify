@@ -1,16 +1,52 @@
+/* ================	*/
+/* 	user/auth		*/
+/* ================	*/
+
+// Related to Login.
+export const ACTION_LOGIN = {
+	started: "LOGIN_STARTED",
+	success: "LOGIN_SUCCESS",
+	failed: "LOGIN_FAILED",
+}
+
+// Related to log out method
+export const ACTION_LOGOUT = {
+	started: "LOGOUT_STARTED",
+	success: "LOGOUT_SUCCESS",
+	failed: "LOGOUT_FAILED",
+}
+// related to update user
+export const ACTION_UPDATE_PROFILE = {
+	started: "UPDATE_PROFILE_STARTED",
+	success: "UPDATE_PROFILE_SUCCESS",
+	failed: "UPDATE_PROFILE_FAILED",
+}
+
+
+/* ================	*/
+/* 	Workouts		*/
+/* ================	*/
+
+export const ACTION_GET_WORKOUTS = {
+	started: "GET_WORKOUTS_STARTED",
+	success: "GET_WORKOUTS_SUCCESS",
+	failed: "GET_WORKOUTS_FAILED",
+}
+export const ACTION_ADD_WORKOUT = {
+	started: "ADD_WORKOUT_STARTED",
+	success: "ADD_WORKOUT_SUCCESS",
+	failed: "ADD_WORKOUT_FAILED",
+}
+export const ACTION_GET_COACHES = {
+	started: "GET_COACHES_STARTED",
+	success: "GET_COACHES_SUCCESS",
+	failed: "GET_COACHES_FAILED",
+}
+
 // Related to validation
 export const ACTION_VALIDATION_FAILED = "VALIDATION_FAILED";
 
-// Related to Login Check.
-export const ACTION_CHECK_LOGIN_STARTED = "CHECK_LOGIN_STARTED";
-export const ACTION_CHECK_LOGIN_EXIST = "CHECK_LOGIN_EXIST";
-export const ACTION_CHECK_LOGIN_NOTEXIST = "CHECK_LOGIN_NOTEXIST";
-export const ACTION_CHECK_LOGIN_FAILED = "CHECK_LOGIN_FAILED";
 
-// Related to Login.
-export const ACTION_LOGIN_STARTED = "LOGIN_STARTED";
-export const ACTION_LOGIN_SUCCESS = "LOGIN_SUCCESS";
-export const ACTION_LOGIN_FAILED = "LOGIN_FAILED";
 
 // Related to getting athletes list
 export const ACTION_GET_ATHLETES_STARTED = "GET_ATHLETES_STARTED"
@@ -26,11 +62,6 @@ export const ACTION_ADD_WOD_SUCCESS = "ADD_WOD_SUCCESS"
 export const ACTION_ADD_ATHLETE_STARTED = "ADD_ATHLETE_STARTED"
 export const ACTION_ADD_ATHLETE_SUCCESS = "ADD_ATHLETE_SUCCESS"
 export const ACTION_ADD_ATHLETE_FAILED = "ADD_ATHLETE_FAILED"
-
-// Related to log out method
-export const ACTION_LOGOUT_STARTED = "LOG_OUT_STARTED"
-export const ACTION_LOGOUT_FAILED = "LOG_OUT_FAILED"
-export const ACTION_LOGGED_OUT = "LOGGED_OUT";
 
 // Related to getting wodList
 export const ACTION_GET_WOD_STARTED = "GET_WOD_STARTED"
@@ -64,12 +95,7 @@ export const ACTION_CHANGE_PASSWORD_STARTED = "CHANGE_PASSWORD_STARTED"
 export const ACTION_CHANGE_PASSWORD_SUCCESS = "CHANGE_PASSWORD_SUCCESS"
 export const ACTION_CHANGE_PASSWORD_FAILED = "CHANGE_PASSWORD_FAILED"
 
-// related to getting workouts of week
-export const ACTION_GET_WORKOUTS = {
-	success: "GET_WORKOUTS_SUCCESS",
-	started: "GET_WORKOUTS_STARTED",
-	failed: "GET_WORKOUTS_FAILED",
-}
+
 
 // relating to setting new password
 export const ACTION_SET_PASSWORD_STARTED = "SET_PASSWORD_STARTED"
@@ -81,10 +107,7 @@ export const ACTION_GET_GYMS_STARTED = "GET_GYMS_STARTTED"
 export const ACTION_GET_GYMS_SUCCESS = "GET_GYMS_SUCCESS"
 export const ACTION_GET_GYMS_FAILED = "GET_GYMS_FAILED"
 
-// related to update user
-export const ACTION_UPDATE_PROFILE_STARTED = "UPDATE_PROFILE_STARTED"
-export const ACTION_UPDATE_PROFILE_SUCCESS = "UPDATE_PROFILE_SUCCESS"
-export const ACTION_UPDATE_PROFILE_FAILED = "UPDATE_PROFILE_FAILED"
+
 
 //related to clear athlete list
 export const ACTION_CLEAR_ATHLETE_LIST = "CLEAR_ATHLETE_LIST"
@@ -94,15 +117,6 @@ export const ACTION_GET_COACHES_STARTED = "GET_COACHES_STARTED"
 export const ACTION_GET_COACHES_SUCCESS = "GET_COACHES_SUCCESS"
 export const ACTION_GET_COACHES_FAILED = "GET_COACHES_FAILED"
 
-// related to creating workout
-export const ACTION_ADD_WORKOUT_STARTED = "ADD_WORKOUT_STARTED"
-export const ACTION_ADD_WORKOUT_SUCCESS = "ADD_WORKOUT_SUCCESS"
-export const ACTION_ADD_WORKOUT_FAILED = "ADD_WORKOUT_FAILED"
-
-// related to creating workout in dictionary
-export const ACTION_ADD_WORKOUT_DICT_STARTED = "ADD_WORKOUT_DICT_STARTED"
-export const ACTION_ADD_WORKOUT_DICT_SUCCESS = "ADD_WORKOUT_DICT_SUCCESS"
-export const ACTION_ADD_WORKOUT_DICT_FAILED = "ADD_WORKOUT_DICT_FAILED"
 
 //realted to get sections
 export const ACTION_GET_SECTIONS_STARTED = "GET_SECTIONS_STARTED"

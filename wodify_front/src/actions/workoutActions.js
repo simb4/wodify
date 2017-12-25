@@ -17,6 +17,21 @@ export const getWorkouts = (data) => (dispatch, getState) => {
   })
 }
 
+export const addWorkout = (data) => (dispatch, getState) => {
+  defaultAction(dispatch, getState, {
+    action: actionTypes.ACTION_ADD_WORKOUT,
+    apiCall: () => { return workoutApi.addWorkout(getState().user.token, data) },
+    onSuccess: (response) => ({ workout: response.training }),
+    onFailure: (response) => ({ errorMessage: response.message }),
+  })
+}
 
 
-
+export const getCoaches = (data) => (dispatch, getState) => {
+  defaultAction(dispatch, getState, {
+    action: actionTypes.ACTION_GET_COACHES,
+    apiCall: () => { return workoutApi.getCoaches(getState().user.token, data) },
+    onSuccess: (response) => ({ coaches: response.coaches }),
+    onFailure: (response) => ({ errorMessage: response.message }),
+  })
+}

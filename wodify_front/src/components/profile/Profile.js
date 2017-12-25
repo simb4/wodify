@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import _ from 'lodash';
 import * as userActions from '../../actions/userActions';
-import * as adminActions from '../../actions/adminActions';
 
 import "./profile.css"
 
@@ -215,7 +214,6 @@ const mapStateToProps=(state) => ({
 
 const mapDispatchToProps={
   updateProfile: userActions.updateProfile,
-  clearAthleteList: adminActions.clearAthleteList
 }
 
 export default connect(
