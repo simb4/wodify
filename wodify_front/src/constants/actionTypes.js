@@ -37,6 +37,16 @@ export const ACTION_ADD_WORKOUT = {
 	success: "ADD_WORKOUT_SUCCESS",
 	failed: "ADD_WORKOUT_FAILED",
 }
+export const ACTION_UPDATE_WORKOUT = {
+	started: "UPDATE_WORKOUT_STARTED",
+	success: "UPDATE_WORKOUT_SUCCESS",
+	failed: "UPDATE_WORKOUT_FAILED",
+}
+export const ACTION_DELETE_WORKOUT = {
+	started: "DELETE_WORKOUT_STARTED",
+	success: "DELETE_WORKOUT_SUCCESS",
+	failed: "DELETE_WORKOUT_FAILED",
+}
 export const ACTION_GET_COACHES = {
 	started: "GET_COACHES_STARTED",
 	success: "GET_COACHES_SUCCESS",

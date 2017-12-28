@@ -26,6 +26,24 @@ export const addWorkout = (data) => (dispatch, getState) => {
   })
 }
 
+export const updateWorkout = (data) => (dispatch, getState) => {
+  defaultAction(dispatch, getState, {
+    action: actionTypes.ACTION_UPDATE_WORKOUT,
+    apiCall: () => { return workoutApi.updateWorkout(getState().user.token, data) },
+    onSuccess: (response) => ({ workout: response.training }),
+    onFailure: (response) => ({ errorMessage: response.message }),
+  })
+}
+
+export const deleteWorkout = (data) => (dispatch, getState) => {
+  defaultAction(dispatch, getState, {
+    action: actionTypes.ACTION_DELETE_WORKOUT,
+    apiCall: () => { return workoutApi.deleteWorkout(getState().user.token, data) },
+    onSuccess: (response) => ({ id: data.training_id }),
+    onFailure: (response) => ({ errorMessage: response.message }),
+  })
+}
+
 
 export const getCoaches = (data) => (dispatch, getState) => {
   defaultAction(dispatch, getState, {

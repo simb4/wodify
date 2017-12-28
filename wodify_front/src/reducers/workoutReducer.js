@@ -2,19 +2,31 @@ import { combineReducers } from 'redux'
 import * as actionTypes from '../constants/actionTypes'
 
 const workouts = (state = [], action) => {
-  switch(action.type){
+  let newWorkouts = state.slice();
+  switch(action.type) {
     case actionTypes.ACTION_GET_WORKOUTS.success:
-    console.log(action.workouts[0].timestamp_start)
-    console.log(new Date(action.workouts[0].timestamp_start))
-      return action.workouts.map(work => ({...work,
-        start: new Date(work.timestamp_start+'Z'),
-        end: new Date(work.timestamp_end+'Z'),
-      }))
+      newWorkouts = action.workouts;
+      break;
     case actionTypes.ACTION_ADD_WORKOUT.success:
-      return [...state, action.workout]
+      newWorkouts.push(action.workout);
+      break;
+    case actionTypes.ACTION_UPDATE_WORKOUT.success:
+      newWorkouts = newWorkouts.map(work => (
+        work.id === action.workout.id
+          ? action.workout
+          : work
+        ));
+      break;
+    case actionTypes.ACTION_DELETE_WORKOUT.success:
+      newWorkouts = newWorkouts.filter(work => work.id !== action.id);
+      break;
     default:
       return state;
   }
+  return newWorkouts.map(work => ({...work,
+    start: new Date(work.timestamp_start+'Z'),
+    end: new Date(work.timestamp_end+'Z'),
+  }));
 }
 
 const coaches = (state = [], action) => {

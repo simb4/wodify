@@ -43,19 +43,25 @@ class AddDialog extends React.Component {
       description: this.props.slot.description || '',
       max_users: this.props.slot.max_users || 10,
       coach_id: this.props.slot.coach_id || this.props.coaches[0].id,
+      gym_id: this.props.coaches[0].gym.id,
     }
   }
   handleDelete() {
-
+    this.props.onDeleteWorkout({ training_id: this.props.slot.id });
+    this.props.close();
   }
   handleSubmit() {
-    let { name, description, coach_id, max_users } = this.state;
-    this.props.onAddWorkout({
-      gym_id: this.props.slot.gym_id,
+    let { name, description, coach_id, max_users, gym_id } = this.state;
+    let saveParams = this.props.isEdit
+      ? { training_id: this.props.slot.id }
+      : {};
+    this.props.onSaveWorkout({
       timestamp_start: this.props.slot.start.toISOString().split('.')[0],
       timestamp_end: this.props.slot.end.toISOString().split('.')[0],
-      name, description, coach_id, max_users,
+      gym_id, name, description, coach_id, max_users,
+      ...saveParams,
     });
+    this.props.close();
   }
   render() {
     let actions = [
@@ -165,18 +171,10 @@ class _Workouts extends Component {
     this.props.onGetCoaches({ gym_id: this.props.user.gym.id })
   }
   selectSlot(slot) {
-    this.setState({ openAdd: true, slot: {
-      ...slot,
-      gym_id: this.props.gym_id,
-    }});
+    this.setState({ openAdd: true, slot });
   }
   editSlot(slot) {
-    console.log('ahaha', slot);
-    this.setState({ openEdit: true, slot: {
-      ...slot,
-      coach_id: slot.coach.id,
-      gym_id: this.props.gym_id,
-    }});
+    this.setState({ openEdit: true, slot })
   }
 
   render(){
@@ -202,14 +200,15 @@ class _Workouts extends Component {
         </div>
         {this.state.openAdd &&
           <AddDialog
-            onAddWorkout={this.props.onAddWorkout}
+            onSaveWorkout={this.props.onAddWorkout}
             coaches={this.props.coaches}
             slot={this.state.slot}
             close={this.handleCloseModal} />}
         {this.state.openEdit &&
           <AddDialog
             isEdit={true}
-            onAddWorkout={this.props.onEditWorkout}
+            onDeleteWorkout={this.props.onDeleteWorkout}
+            onSaveWorkout={this.props.onUpdateWorkout}
             coaches={this.props.coaches}
             slot={this.state.slot}
             close={this.handleCloseModal} />}
@@ -227,6 +226,8 @@ const mapStateToProps=(state) => ({
 const mapDispatchToProps={
   onGetWorkouts: workoutActions.getWorkouts,
   onAddWorkout: workoutActions.addWorkout,
+  onUpdateWorkout: workoutActions.updateWorkout,
+  onDeleteWorkout: workoutActions.deleteWorkout,
   onGetCoaches: workoutActions.getCoaches,
 }
 
